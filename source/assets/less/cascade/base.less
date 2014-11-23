@@ -1,0 +1,302 @@
+// 
+// BASE
+// --------------------------------------------------
+// Contains basic styles for modules and various elements.
+// Includes adjustments to Bootstrap's grid & components.
+// If this file gets too large, I'll break it into separate files for organization.
+
+
+// Module Merging
+// -------------------------
+// use when two layout modules in a row have the same inverse setting and/or same background textures
+// set inline class on all elements that need to merge EXCEPT the last
+// long selector makes the styles more important
+body div.merge-bottom {
+  padding: @merged-module-padding;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+
+
+// Images
+// -------------------------
+img {
+  .image();
+}
+.inverse img {
+  .inverse-image();
+}
+
+// basic graphicbox
+
+.graphicbox {
+  background-position: left top;
+  background-repeat: no-repeat;
+  .bg(@box-bg; @color-scheme; jpg);
+}
+
+// Bootstrap Re-Skinning & Edits
+// --------------------------------------------------
+
+// Grid
+// -------------------------
+// Effectively disable the largest max-width for Bootstrap's grid .container
+@media (min-width: @screen-lg-desktop) {
+  .container {
+    max-width: @container-lg-desktop;
+  }
+}
+
+// Forms
+// -------------------------
+.form-control {
+  height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+  padding: @padding-base-vertical @padding-base-horizontal;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+}
+.input-sm {
+  .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+}
+.input-lg {
+  .input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+}
+
+// Blockquote
+// -------------------------
+blockquote p {
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+}
+
+// Panel
+// -------------------------
+
+.panel {
+  border: none;
+  .box-shadow(none);
+  border-radius: @border-radius-base;
+  
+  > .panel-heading,
+  > .panel-body,
+  > .panel-footer {
+    color: @dark-color;
+    background-color: @light-color;
+  }
+  
+  > .panel-heading {
+    border: 1px solid @ui-color;
+  }
+  > .panel-body {
+    border-right: 1px solid @ui-color;
+    border-left: 1px solid @ui-color;
+  }
+  > .panel-footer {
+    border: 1px solid @ui-color;
+  }
+}
+
+.panel-default {
+  background-color: @light-color;
+  
+  > .panel-heading,
+  > .panel-footer {
+    border-color: @ui-color;
+  }
+  
+  > .panel-heading {
+    color: @dark-color;
+    background-color: @light-color;
+  }
+  > .panel-footer {
+  }
+  
+}
+
+.panel-inverse {
+  background-color: @light-color;
+  
+  > .panel-heading {
+    border-color: transparent;
+  }
+  > .panel-footer {
+    border-color: darken(@ui-color, 10%);
+  }
+  
+  > .panel-heading {
+    color: @light-color;
+    .gradient-fill(@dark-color);
+  }
+  
+}
+
+.panel-minor {
+  background-color: @light-color;
+  
+  > .panel-heading,
+  > .panel-footer {
+    border-color: darken(@minor-color, 10%);
+  }
+  
+  > .panel-heading {
+    .gradient-fill(@minor-color);
+  }
+  
+}
+.panel-major {
+  background-color: @light-color;
+  
+  > .panel-heading{
+    color: @light-color;
+    .gradient-fill(@major-color);
+    border-color: darken(@major-color, 20%);
+  }
+  
+  > .panel-footer {
+    color: @dark-color;
+    border-color: fadeout(@major-color, 50%);
+  }
+}
+
+
+
+// Navs
+// -------------------------
+
+.nav {
+  .caret {
+    border-top-color: @major-color;
+    border-bottom-color: @major-color;
+  }
+  .open > a,
+  .open > a:hover,
+  .open > a:focus {
+    color: @dark-color;
+    background-color: @ui-color;
+    
+    .caret {
+      border-top-color: @dark-color;
+      border-bottom-color: @dark-color;
+    }
+  }
+  
+  > li a:focus,
+  > li a:hover {
+    background-color: @ui-color;
+    
+    .caret {
+      border-top-color: @dark-color;
+      border-bottom-color: @dark-color;
+    }
+  }
+  > li.active > a,
+  > li.active > a:hover,
+  > li.active > a:active {
+    background-color: @major-color;
+    color: @light-color;
+  }
+  
+  > li.active > a .caret {
+    border-top-color: @light-color;
+    border-bottom-color: @light-color;
+  }
+  
+}
+
+.inverse .nav {
+  .caret {
+    border-top-color: @minor-color;
+    border-bottom-color: @minor-color;
+  }
+  
+  .open > a,
+  .open > a:hover,
+  .open > a:focus {
+    color: @ui-color;
+    background-color: @dark-color;
+    
+    .caret {
+      border-top-color: @ui-color;
+      border-bottom-color: @ui-color;
+    }
+  }
+  
+  > li a:focus,
+  > li a:hover {
+    color: @ui-color;
+    background-color: @dark-color;
+    
+    .caret {
+      border-top-color: @ui-color;
+      border-bottom-color: @ui-color;
+    }
+  }
+  > li.active > a,
+  > li.active > a:hover,
+  > li.active > a:active {
+    background-color: @minor-color;
+    color: @dark-color;
+  }
+}
+
+// Dropdowns
+// -------------------------
+
+.dropdown-menu {
+  background-color: @light-color;
+  
+  .dropdown-header {
+    color: fadeout(@dark-color, 50%);
+  }
+  
+  > li > a {
+    color: @major-color;
+    background-color: @light-color;
+    
+    &:hover,
+    &:focus {
+      color: @dark-color;
+      background-color: @ui-color;
+    }
+  }
+  
+}
+
+.inverse .dropdown-menu {
+  background-color: @dark-color;
+  
+  .dropdown-header {
+    color: fadeout(@light-color, 50%);
+  }
+
+  > li > a {
+    color: @minor-color;
+    background-color: @dark-color;
+
+    &:hover,
+    &:focus {
+      color: @major-color;
+      background-color: @ui-color;
+    }
+  }
+}
+
+// Typography
+// -------------------------
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+
+  small,
+  .small {
+    color: lighten(@dark-color, 25%);
+  }
+  
+  .inverse & small,
+  .inverse & .small {
+    color: darken(@light-color, 25%);
+  }
+  
+}
+

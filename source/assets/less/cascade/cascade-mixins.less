@@ -1,0 +1,191 @@
+// 
+// CASCADE MIXINS
+// --------------------------------------------------
+
+
+//
+// Modules, Dividers, Merging Modules
+// --------------------------------------------------
+
+.module-padding {
+  padding: @module-padding;
+}
+.module-short-padding {
+  padding: @short-module-padding;
+}
+
+// Divide betweeen modules
+
+.divider-bottom {
+  padding-bottom: 50px;
+  margin-bottom: 50px;
+  border-bottom: 1px solid @ui-color;
+}
+.divider-bottom-double {
+  padding-bottom: 50px;
+  margin-bottom: 50px;
+  border-bottom: 3px double @ui-color;
+}
+.divider-top {
+  padding-top: 50px;
+  margin-top: 50px;
+  border-top: 1px solid @ui-color;
+}
+.divider-top-double {
+  padding-top: 50px;
+  margin-top: 50px;
+  border-top: 3px double @ui-color;
+}
+.divider-bottom-sm {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid lighten(@ui-color, 10%);
+}
+.divider-top-sm {
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid lighten(@ui-color, 10%);
+}
+
+
+// 
+// Images
+// --------------------------------------------------
+
+.image(@border-color: @ui-color) {
+  border: 1px solid @border-color;
+}
+
+// Image box-shadow, switches based upon @flat variable
+
+.image(@border-color: @ui-color) when not (@flat = true) {
+  .box-shadow(0px 0px 20px rgba(0, 0, 0, 0.2));
+}
+
+// Different box-shadow for images inside an inversed module
+
+.inverse-image(@border-color: @ui-color) when not (@flat = true) {
+  .box-shadow(0px 0px 20px rgba(0, 0, 0, 0.5));
+}
+
+// Ensure no shadow when @flat
+
+.image(@border-color: @ui-color) when (@flat = true) {
+  .box-shadow(none) !important;
+}
+.inverse-image(@border-color: @ui-color) when (@flat = true) {
+  .box-shadow(none) !important;
+}
+
+
+
+// 
+// Color
+// --------------------------------------------------
+
+.inverse {
+  background-color: @dark-color;
+  color: @light-color;
+}
+.inverse-text {
+  color: @light-color;
+}
+
+// gradients dependent upon @flat
+// -------------------------
+.gradient-fill(@fill-color) when not (@flat) {
+  #gradient > .vertical(overlay(@fill-color, #ccc), overlay(@fill-color, #333));
+}
+.gradient-fill(@fill-color) when (@flat) {
+  background-color: @fill-color;
+}
+
+
+// 
+// Bootstrap Mixins
+// --------------------------------------------------
+// Duplicated here so you don't have to use Bootstrap LESS to compile Cascade.
+// These mixins available under Bootstrap's Apache License v2.0: http://www.apache.org/licenses/LICENSE-2.0
+
+#gradient {
+
+  // Vertical gradient, from top to bottom
+  //
+  // Creates two color stops, start and end, by specifying a color and position for each color stop.
+  // Color stops are not available in IE9 and below.
+  .vertical(@start-color: #555; @end-color: #333; @start-percent: 0%; @end-percent: 100%) {
+    background-image: -webkit-gradient(linear, left @start-percent, left @end-percent, from(@start-color), to(@end-color)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, @start-color, @start-percent, @end-color, @end-percent); // Safari 5.1+, Chrome 10+
+    background-image:  -moz-linear-gradient(top, @start-color @start-percent, @end-color @end-percent); // FF 3.6+
+    background-image: linear-gradient(to bottom, @start-color @start-percent, @end-color @end-percent); // Standard, IE10
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@start-color),argb(@end-color))); // IE9 and down
+  }
+}
+
+// Reset filters for IE
+//
+// When you need to remove a gradient background, do not forget to use this to reset
+// the IE filter for IE9 and below.
+.reset-filter() {
+  filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
+}
+
+.transition(@transition) {
+  -webkit-transition: @transition;
+          transition: @transition;
+}
+
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow; // iOS <4.3 & Android <4.1
+          box-shadow: @shadow;
+}
+
+// Unstyled keeps list items block level, just removes default browser padding and list-style
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+// Button sizes
+// -------------------------
+.button-size(@padding-vertical; @padding-horizontal; @font-size; @line-height; @border-radius) {
+  padding: @padding-vertical @padding-horizontal;
+  font-size: @font-size;
+  line-height: @line-height;
+  border-radius: @border-radius;
+}
+
+// Icons
+// --------------------------------------------------
+
+.fa {
+   //display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// Input sizes
+// -------------------------
+
+.input-size(@input-height; @padding-vertical; @padding-horizontal; @font-size; @line-height; @border-radius) {
+  height: @input-height;
+  padding: @padding-vertical @padding-horizontal;
+  font-size: @font-size;
+  line-height: @line-height;
+  border-radius: @border-radius;
+
+  select& {
+    height: @input-height;
+    line-height: @input-height;
+  }
+
+  textarea& {
+    height: auto;
+  }
+}
+

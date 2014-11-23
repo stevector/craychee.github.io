@@ -1,0 +1,13 @@
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+    twig.extension.debug:
+        class: Twig_Extensions_Extension_Debug
+        tags:
+            - { name: twig.extension }
+    craychee.extension.text:
+        class: Craychee\Twig\Extensions\Text
+        tags:
+            - { name: twig.extension }

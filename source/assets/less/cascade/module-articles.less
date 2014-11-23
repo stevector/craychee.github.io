@@ -1,0 +1,183 @@
+// 
+// Articles Module
+// --------------------------------------------------
+
+.article {
+  .divider-top-double();
+  margin: 50px auto;
+  .header {
+    .article-title {
+      margin: 0 0 20px;
+    }
+    .article-title,
+    .article-title a {
+      .light-weight-display();
+      color: @dark-color;
+    }
+    .article-title a:hover {
+      color: @major-color;
+      text-decoration: none;
+    }
+    .article-meta {
+      margin-bottom: 50px;
+    }
+  }
+  .continue {
+    margin: 0;
+    text-align: right;
+  }
+}
+.article:first-child {
+  border: none;
+  padding-top: 0;
+}
+.inverse .article-title a {
+  color: @light-color;
+}
+.inverse .article-title a:hover {
+  color: @minor-color;
+}
+
+// 
+// Module variation with fewer characters per line increases readability.
+// -------------------------
+.articles-narrow {
+  
+  .article {
+    min-width: 100%;
+    max-width: 100%;
+    
+    .header {
+      .article-title {
+        text-align: center;
+      }
+      .article-meta {
+        text-align: center;
+        
+      }
+    }
+  }
+  @media (min-width: @screen-phone) {
+    .article {
+      min-width: @screen-xs / 2;
+      max-width: 80%;
+      margin: 50px auto;
+    }
+  }
+  @media (min-width: @screen-tablet) {
+    .article {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+  @media (min-width: @screen-desktop) {
+    .article {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+// 
+// Module variation with sidebar
+// -------------------------
+.articles-sidebar {
+  
+  .sidebar {
+    padding-bottom: 20px;
+    border-left: 1px solid @ui-color;
+    margin-top: 50px;
+    
+    h2,h3,h4,h5 {
+      line-height: 1em;
+    }
+    
+    li {
+      margin-top: 10px;
+    }
+    li:first-child {
+      margin-top: 0;
+    }  
+  }
+  
+  .aside {
+    .divider-top-sm();
+    border-color: @ui-color;
+    
+    h2,h3,h4,h5,h6 {
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+  .aside:first-child {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
+  }
+  
+  .input-search {
+    width: 130px;
+    margin-right: 5px;
+  }
+  .btn-search {
+    width: 70px;
+  }
+    
+  
+}
+
+// 
+// Comments
+// -------------------------
+// Can use inside any articles module variation.
+
+.comments {
+  padding-bottom: 50px;
+  
+  .add-comment {
+    .divider-top();
+    
+    h1,h2,h3,h4,h5,h6 {
+      margin-top: 0;
+      line-height: 1em;
+    }
+  }
+  .comments-header {
+    .divider-top();
+    
+    >h1,>h2,>h3,>h4,>h5,>h6 {
+      margin: 0;
+      line-height: 1em;
+    }
+  }
+  .comments-list {
+    >h1,>h2,>h3,>h4,>h5,>h6 {
+      margin: 0;
+      line-height: 1em;
+    }
+    .media {
+      .divider-top();
+    }
+    .media .media {
+      margin-top: 20px;
+      padding-top: 20px;
+      margin-left: 50px;
+    }
+    .media:first-child {
+      margin-top: 0;
+      border: none;
+    }
+    
+  }
+
+  @media (min-width: @screen-tablet) {
+    .media-object {
+      .pull-left();
+      margin-right: 10px;
+    }
+    .media .media {
+      margin-left: 50px;
+    }
+  }
+}

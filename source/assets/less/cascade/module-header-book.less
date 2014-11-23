@@ -1,0 +1,130 @@
+// 
+// Book Header Module
+// --------------------------------------------------
+
+
+.header-book {
+  .module-padding();
+  padding-top: 10px;
+  
+  .book {
+    text-align: center;
+    height: 275px;
+    border-bottom: 1px solid @ui-color;
+    .bg(book; @color-scheme; png);
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: -165px -50px; // for mobile, position so spine of book is anchored left
+  }
+  
+  // allows user to disable cover design by removing the html class.
+  .cover-default {
+    padding: 50px 40px 50px 40px;
+    
+    .logo {
+      text-shadow:  -1px -1px 0 rgba(0,0,0,0.3)!important; // not disabled for @flat
+      margin-top: 0;
+    }
+    
+    .logo:before {
+      text-align: center; // redundant but fixes IE8
+      display: block;
+      font-size: 75px;
+      margin: 0 auto;
+      color: @major-color;
+      text-shadow:  1px 1px 0 rgba(255,255,255,0.2),
+                    -1px -1px 0 rgba(0,0,0,0.3) !important;  // not disabled for @flat
+    }
+    
+    .tagline {
+      color: fadeout(@light-color, 50%);
+      margin: 10px auto 0;
+      line-height: 1em;
+      .normal-weight();
+      max-width: 100%;
+      min-width: 75%;
+    }
+  }
+  
+  .header {
+    margin-top: 50px;
+    text-align: center;
+    
+    p,
+    h1,h2,h3,h4,h5,h6,
+    .lead,
+    .headline, {
+      margin: 0 auto 30px;
+      max-width: 75%;
+    }
+    
+  }
+  
+  // special query to reposition book graphic when screen size is smaller than it.
+  // min-width set to width of book in the graphic, not the size of the full image,
+  // instead of @screen-phone. Shifts repsonsive breakpoint for this module from 480px to 463px.
+  
+  @media (min-width: 463px) {
+    padding-top: @base-module-padding;
+    .book {
+      height: 250px;
+      background-position: center -50px;
+    }
+    .cover-default {
+      padding: 50px 70px 50px 80px;
+      
+      .tagline {
+        max-width: 50%;
+        min-width: 175px;
+      }
+    }
+  }
+  
+  // other responsive layout
+  
+  @media (min-width: @screen-tablet) {
+    .cover-default {
+      width: 465px;
+      padding: 50px 30px 50px 40px;
+      margin: 0 auto;
+      
+      .logo:before {
+        font-size: 100px;
+      }
+    }
+    .book {
+      height: 325px;
+    }
+  }
+  
+  @media (min-width: @screen-desktop) {
+    .book {
+      border: none;
+      height: 600px;
+    }
+    
+    .cover-default {
+      
+      .logo {
+        margin-top: 90px;
+      }
+      .logo:before {
+        font-size: 150px;
+      }
+    }
+    
+    .header {
+      margin-top: 110px;
+      text-align: left;
+      
+      p,
+      h1,h2,h3,h4,h5,h6,
+      .lead,
+      .headline {
+        margin: 0 0 30px;
+        max-width: 100%;
+      }
+    }
+  }
+  
+}

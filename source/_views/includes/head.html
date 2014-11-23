@@ -1,0 +1,32 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ page.blocks.content | striptags | compact | truncate(150) }}{% endif %}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.title }} Feed" href="/rss.xml" />
+{% if page.canonical %}<link rel="canonical" href="{{ page.canonical }}" />{% endif %}
+
+<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pygments.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/highlight/default.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@dev_meshev">
+<meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+<meta name="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ page.blocks.content | striptags | compact | truncate(150) }}{% endif %}">
+<meta name="twitter:creator" content="@dev_meshev">
+<! @TODO change to a thing that makes sense >
+<meta name="twitter:image:src" content="http://blog.andrewshell.org/uploads/2011/10/andrew.jpg">
+<meta name="twitter:domain" content="blog.andrewshell.org">
+
+<meta property="og:type" content="blog">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:url" content="{{ page.url }}">
+<meta property="og:title" content="{% if page.title %}{{ page.title }}{% endif %}">
+<! @TODO change to a thing that makes sense >
+<meta property="og:image" content="http://blog.andrewshell.org/uploads/2011/10/andrew.jpg">

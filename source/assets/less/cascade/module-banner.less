@@ -1,0 +1,112 @@
+// 
+// Banner Module
+// --------------------------------------------------
+
+.banner-action,
+.banner-form {
+  .module-short-padding();
+  background-color: darken(@light-color, 10%);
+  
+  h1, h2, h3, h4, h5, h6, p, label {
+    margin: 0;
+    line-height: @headline-line-height;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  form,
+  .form-control,
+  .btn {
+    margin: 0 auto;
+  }
+  
+  // adjust layout for desktop-sized screens
+  @media (min-width: @screen-desktop) {
+    h1, h2, h3, h4, h5, h6 {
+      text-align: left;
+      .pull-left();
+    }
+    h1 {
+      margin: -7px 0 -5px;
+    }
+    h2 {
+      margin: -2px 0 -5px;
+    }
+    h3 {
+      margin: 4px 0 0;
+    }
+    h4, h5, h6 {
+      margin: 8px 0 0;
+    }
+    .btn,
+    form {
+      margin: 0;
+      .pull-right();
+    }
+    h2 + .btn,
+    h2 + form {
+      margin: 0;
+    }
+    h1 + .btn,
+    h1 + form {
+      margin: 5px 0 0;
+    }
+  }
+  
+}
+
+// variation contains a header and a button
+.banner-action {
+  @media (min-width: @screen-tablet) {
+    .btn {
+      display: block;
+      max-width: 35%;
+      min-width: auto;
+    }
+  }
+  
+  .btn {
+    display: block;
+    max-width: auto;
+    min-width: auto;
+    width: auto;
+  }
+  
+}
+
+// variation contains a header and an inline-form
+.banner-form {
+  form {
+    width: 280px;
+    text-align: right;
+  }
+  .form-control,
+  .input-group {
+    width: 155px;
+  }
+  // from Bootstrap forms.less
+  // Usually default for @media (min-width: @screen-tablet) and up
+  .form-group  {
+      display: inline-block;
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
+}
+
+// gradients backgrounds for banner modules
+// to use, just add .banner-gradient HTML class
+// these will override any background patterns
+
+.banner-action.banner-gradient,
+.banner-form.banner-gradient {
+  &.inverse-major {
+    .gradient-fill(@major-color);
+  }
+  &.inverse-minor {
+    .gradient-fill(@minor-color);
+  }
+  &.inverse {
+    .gradient-fill(@dark-color);
+  }
+}

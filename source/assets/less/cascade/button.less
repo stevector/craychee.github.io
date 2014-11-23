@@ -1,0 +1,193 @@
+// 
+// BUTTONS
+// -------------------------------------------------
+
+
+// Shape
+// -------------------------
+
+// Round
+
+.btn(@text-color, @text-hover-color, @fill-color, @fill-hover-color) when (@btn-shape = round) {
+  .btn,
+  button {
+    border-radius: @border-radius-base;
+  }
+  .btn-sm {
+    border-radius: @border-radius-small;
+  }
+  .btn-lg,
+  .btn-biline {
+    border-radius: @border-radius-large;
+  }
+}
+
+// Square
+
+.btn(@text-color, @text-hover-color, @fill-color, @fill-hover-color) when (@btn-shape = square) {
+  .btn,
+  button,
+  .btn-sm,
+  .btn-lg,
+  .btn-biline {
+    border-radius: 0px;
+  }
+}
+
+// Pill
+// makes buttons substantially wider.
+
+.btn(@text-color, @text-hover-color, @fill-color, @fill-hover-color) when (@btn-shape = pill) {
+  
+  .btn,
+  button,
+  .btn-group-xs > .btn,
+  .btn-group-sm > .btn,
+  .btn-group-lg > .btn {
+    border-radius: 100px; // browser reduces to 1/2 element height automatically
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .btn-sm,
+  .btn-group-xs > .btn,
+  .btn-group-sm > .btn {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .btn-lg,
+  .btn-group-lg > .btn {
+    padding-right: 25px;
+    padding-left: 25px;
+  }
+  .btn-biline {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+}
+
+// Fill
+// -------------------------
+
+// Gradient
+
+.btn(@text-color, @text-hover-color, @fill-color, @fill-hover-color) when (@btn-fill = gradient) {
+  .btn,
+  button {
+    #gradient > .vertical(overlay(@fill-color, #ccc), overlay(@fill-color, #333));
+    text-shadow: 1px 1px 0px rgba(255,255,255, 0.3);
+    
+    &:hover,
+    &:focus {
+      //#gradient > .vertical(overlay(@fill-hover-color, #ccc), overlay(@fill-hover-color, #333));
+      background-image: none;
+      .reset-filter();
+      background: @fill-hover-color;
+      text-shadow: none;
+    }
+  }
+  
+}
+
+// Solid
+
+.btn(@text-color, @text-hover-color, @fill-color, @fill-hover-color) when (@btn-fill = solid) {
+  .btn,
+  button {
+    background: (@fill-color);
+    text-shadow: 1px 1px 0px rgba(255,255,255, 0.3);
+    
+    &:hover,
+    &:focus {
+      background: @fill-hover-color;
+      text-shadow: none;
+    }
+  }
+}
+
+
+// 
+// Base buttons styles
+// --------------------------------------------------
+
+.btn,
+button {
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  
+  &:hover,
+  &:focus {
+    .transition(all .2s linear);
+  }
+}
+
+// buttons that have 2 lines of text
+
+.btn.btn-biline {
+  transition: none;
+  .biline {
+    display: block;
+    margin: 0;
+    font-size: 0.75em;
+    line-height: 0.75em;
+    padding-bottom: 7px;
+  }
+  // Display icon differently because biline buttons are bigger.
+  i {
+    font-size: 2.25em;
+    float: left;
+    margin: 2px 10px 0 0;
+    display: block;
+  }
+  i + .biline {
+    text-align: left;
+  }
+}
+
+// Mixin for changing button colors inside variations of inverse.
+
+.btn(@text-color, @text-hover-color, @fill-color, @fill-hover-color) {
+  .btn,
+  button {
+    color: @text-color;
+    border: 1px solid lighten(@fill-color, 10%);
+    
+    &.btn-biline .biline {
+      color: fadeout(@text-color, 30%);
+    }
+    
+    &:hover,
+    &:focus {
+      color: @text-hover-color;
+      border: 1px solid lighten(@fill-hover-color, 10%);
+      
+      &.btn-biline .biline {
+        color: fadeout(@text-hover-color, 30%);
+      }
+    }
+    
+  }
+}
+
+// Button Sizes
+// -------------------------
+
+// From Bootstrap's buttons.less
+
+.btn-lg {
+  // line-height: ensure even-numbered height of button next to large input
+  .button-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+}
+.btn-sm,
+.btn-xs {
+  // line-height: ensure proper height of button next to small input
+  .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+}
+.btn-xs {
+  padding: 1px 5px;
+}
+
+// From Bootstrap's button-groups.less
+
+.btn-group-xs > .btn { .btn-xs(); }
+.btn-group-sm > .btn { .btn-sm(); }
+.btn-group-lg > .btn { .btn-lg(); }

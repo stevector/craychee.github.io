@@ -1,0 +1,10 @@
+.DS_Store
+/.sculpin
+/app/cache/*
+/app/config/sculpin_kernel_*.yml
+/app/config/sculpin_site_*.yml
+/app/logs/*
+/output_*/
+/source/assets/codekit-config.json
+/vendor/
+s3.conf

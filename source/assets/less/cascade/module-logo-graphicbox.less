@@ -1,0 +1,25 @@
+// 
+// Logo Graphicbox Module
+// --------------------------------------------------
+
+.logo-graphicbox {
+  .module-padding();
+  text-align: center;
+  
+  .graphicbox {
+    .inverse();
+    .image();
+    padding: percentage((1 / @grid-columns));
+    
+    .tagline,
+    .tagline em {
+      margin-top: 0;
+      .normal-weight();
+    }
+  }
+  
+  &.inverse .graphicbox {
+    .inverse-image();
+  }
+  
+}

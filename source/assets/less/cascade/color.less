@@ -1,0 +1,220 @@
+// 
+// COLOR
+// --------------------------------------------------
+// 
+// 
+// 
+// Supported @color-scheme values
+// --------------------------------------------------
+// @color-scheme: blues;
+// @color-scheme: retro;
+// 
+//
+// Notes
+// --------------------------------------------------
+// 
+// @major-color
+// Bright, high saturation
+// Suitable for branding, Calls To Action
+// Contrasts well with both @light-color and @dark-color
+// 
+// @minor-color
+// May be less prominent than @major-color, but always more prominent than the rest of the palette
+// Useful for secondary elements, subheaders, graphics, highlights
+// May be muted, higher intensity, or complimentary to @major-color
+// 
+// @light-color
+// A light tint color, tends to be closer to white
+// Suitable for background, or foreground when .inverse is used
+// 
+// @dark-color
+// A dark shade color, tends to be closer to black
+// Suitable for foreground, or background when .inverse is used
+// 
+// @ui-color
+// A medium shade/tint, low saturation
+// Sees the least usage
+// Only used for UI/chrome, such as borders
+//
+// .matching-color
+// Ony used for text elements.
+// Relative to whether parent element has .inverse or not.
+// Inside normal (non-inversed) elements, text elements with .matching-color use @major-color
+// Inside inversed elements, text elements with .matching-color use @minor-color
+//
+
+// 
+// Color Schemes
+// --------------------------------------------------
+
+.color-scheme(blues) {
+  @major-color:   #196c8e;  // rich blue
+  @minor-color:   #6dbfe1;  // light blue
+  @light-color:   #efede5;  // cream
+  @dark-color:    #313840;  // midnight blue
+  @ui-color:      #fff;  // white
+}
+.color-scheme(retro) {
+  @major-color:   #be4f27;  // rust orange
+  @minor-color:   #b5ded7;  // light blue
+  @light-color:   #fefefd;  // off-white
+  @dark-color:    #413a35;  // gray brown
+  @ui-color:      #f5e6d1;  // cream
+}
+
+
+// 
+// Core Color
+// --------------------------------------------------
+// Can be overridden by module-specific css
+
+body {
+  background-color: @light-color;
+  color: @dark-color;
+  
+  a {
+    color: @major-color;
+  }
+  a:hover,
+  a:focus {
+    color: @dark-color;
+  }
+  .logo a {
+    color: inherit;
+  }
+  .logo a:hover,
+  .logo a:hover i {
+    color: @major-color;
+    text-decoration: none;
+  }
+  
+  h1,h2,h3,h4,h5,h5,p,b,i,em,strong,li,span,label,a {
+    &.major-color {
+      color: @major-color !important;
+    }
+    &.matching-color {
+      color: @major-color; // not !important because matching-color can change based upon inverse
+    }
+    &.minor-color {
+      color: @minor-color !important;
+    }
+    &.light-color {
+      color: @light-color !important;
+    }
+    &.dark-color {
+      color: @dark-color !important;
+    }
+    // Should be used only rarely, but just in case you need it.
+    &.ui-color {
+      color: @ui-color !important;
+    }
+  }
+  
+  a:hover {
+    &.major-color {
+      color: @minor-color !important;
+    }
+    &.matching-color {
+      color: @minor-color; // not !important because matching-color can change based upon inverse
+    }
+    &.minor-color {
+      color: @major-color !important;
+    }
+    &.light-color {
+      color: @major-color !important;
+    }
+    &.dark-color {
+      color: @minor-color !important;
+    }
+    // Should be used only rarely, but just in case you need it.
+    &.ui-color {
+      color: @major-color !important;
+    }
+  }
+  
+  .btn(@dark-color, @light-color, @minor-color, @major-color);
+  
+  div,
+  .module {
+    
+    &.inverse {
+      background-color: @dark-color;
+      color: @light-color;
+      
+      .btn(@dark-color, @light-color, @minor-color, @major-color);
+      a {
+        color: @minor-color;
+      }
+      a:hover,
+      a:focus {
+        color: @light-color;
+      }
+      
+      .matching-color {
+        color: @minor-color;
+      }
+      
+      .input-group-addon {
+        color: @dark-color;
+      }
+      
+    }
+    
+    &.inverse-major {
+      background-color: @major-color;
+      color: @light-color;
+      
+      .btn(@dark-color, @major-color, @minor-color, @light-color);
+      a {
+        color: @minor-color;
+      }
+      a:hover,
+      a:focus {
+        color: @light-color;
+      }
+      
+      .matching-color {
+        color: @dark-color;
+      }
+      
+      .input-group-addon {
+        color: @dark-color;
+      }
+      
+    }
+    
+    &.inverse-minor {
+      background-color: @minor-color;
+      color: @dark-color;
+      
+      .btn(@light-color, @minor-color, @major-color, @dark-color);
+      a {
+        color: @major-color;
+      }
+      a:hover,
+      a:focus {
+        color: @light-color;
+      }
+      
+      .matching-color {
+        color: @light-color;
+      }
+      
+      .input-group-addon {
+        color: @dark-color;
+      }
+      
+    }
+    
+    // Should be used only rarely, but just in case you need it.
+    &.inverse-ui {
+      background-color: @ui-color;
+      color: @dark-color;
+    }
+  }
+  
+}// /body
+
+
+// leave this last!
+.color-scheme(@color-scheme);

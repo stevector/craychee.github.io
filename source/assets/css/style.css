@@ -1,0 +1,103 @@
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+body {
+  font-weight: 300;
+}
+p,
+.hentry {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  line-height: 1.6em;
+  font-size: 20px;
+}
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav > li > a {
+  font-weight: 400;
+}
+article {
+  min-height: 600px;
+}
+article img.text-right {
+  margin: 0 0 10px;
+}
+.blurred-lines {
+  background-image: url(../img/pattern_pinstripe-tight.png);
+}
+.section {
+  margin-top: -21px;
+  margin-bottom: 21px;
+}
+.section .page-header {
+  padding-bottom: 9.5px;
+  margin: 42px 0 21px;
+  border: none;
+}
+.entry-title {
+  margin: 0;
+}
+#search {
+  margin-bottom: 26px;
+}
+.footer {
+  padding: 20px 0;
+  margin-top: 21px;
+}
+.fa-rss {
+  color: #ff8c00;
+}
+#andrew img {
+  background: url(../img/andrew.jpg);
+  background-size: contain;
+  border-radius: 4px 4px 4px 4px;
+  height: auto;
+  margin-bottom: 26px;
+  max-width: 100%;
+}
+.form-inline .form-group {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+.well h1,
+.well h2,
+.well h3 {
+  margin-top: 0;
+}
+.inverse {
+  background-color: #F26E24;
+  color: #ffffff;
+}
+.inverse a {
+  color: #ffffff;
+}
+.inverse a:hover {
+  color: #ffffff;
+}
+.dl-indented dt {
+  margin: 0;
+  padding: 5px 0 10px;
+}
+.dl-indented dd {
+  margin: 0 0 5px;
+  padding: 0 0 0 20px;
+}
+@media (min-device-pixel-ratio: 2), (-webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-resolution: 120dpi) {
+  #andrew img {
+    background-image: url(../img/andrew-2x.jpg);
+    background-size: contain;
+  }
+}
+@media (min-width: 768px) {
+  article img.text-right {
+    float: right;
+    margin: 0 0 10px 10px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    max-width: 750px;
+  }
+}

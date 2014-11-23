@@ -1,0 +1,79 @@
+// 
+// Footer Module
+// --------------------------------------------------
+
+// Simple variation
+// -------------------------
+
+.footer-simple {
+  .module-short-padding();
+  
+  .logo,
+  p, h1, h2, h3, h4, h6, small {
+    text-align: center;
+  }
+  .logo {
+    margin: 0 auto;
+  }
+  
+  // adjust layout for desktop-sized screens
+  @media (min-width: @screen-desktop) {
+    .logo {
+      text-align: left;
+      margin: 0;
+      .pull-left();
+    }
+    .legal,
+    p, small {
+      margin: 5px 0 0;
+      text-align: right;
+      .pull-right();
+    }
+  }  
+}
+// Variation of Simple to support longer logo and legal copy 
+// -------------------------
+// Use in addition to .footer-simple class to modify layout.
+.footer-simple-long {
+  @media (min-width: @screen-desktop) {
+    .logo-small {
+      margin-top: 3px;
+    }
+    .legal,
+    p, small {
+      max-width: 50%;
+      line-height: 1em;
+    }
+  }
+}
+
+// List variation
+// -------------------------
+
+.footer-list {
+  .module-short-padding();
+  
+  h2,h3,h4,h5,h6 {
+    margin-top: 0;
+  }
+  
+  .container > div {
+    margin-top: 30px;
+  }
+  .container > div:first-child {
+    margin-top: 0;
+  }
+  
+  .logo-small {
+    margin-bottom: 10px;
+  }
+  
+  @media (min-width: @screen-tablet) {
+    .logo-small {
+      margin-bottom: 30px;
+    }
+    .container > div {
+      margin-top: 0;
+    }
+  }
+}

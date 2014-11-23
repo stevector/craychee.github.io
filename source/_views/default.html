@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}{% endblock title %}</title>
+	{% include 'includes/head.html' %}
+</head>
+<body>
+{% include 'includes/header.html' %}
+
+{% block content_wrapper %}
+
+<div class="section blurred-lines">
+    <div class="container">
+
+        <div class="page-header">
+        {% if page.title %}<h1 class="textfill"><span>{{ page.title }}</span></h1>{% endif %}
+        {% if page.subtitle %}<p class="lead">{{ page.subtitle }}</p>{% endif %}
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+
+{% block content %}{% endblock %}
+
+</div><!-- .container -->
+
+{% endblock content_wrapper %}
+
+{% include 'includes/footer.html' %}
+</body>
+</html>
