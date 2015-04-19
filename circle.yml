@@ -2,10 +2,15 @@ machine:
   php:
     version: 5.4.37
 
+hosts:
+  craychee.local: 127.0.0.1
+
 dependencies:
   pre:
   - curl -O https://download.sculpin.io/sculpin.phar
   - php sculpin.phar install
+  - cp circle.conf /etc/apache2/sites-available/default
+  - sudo sed -e "s?%HOME%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   post:
   - php sculpin.phar generate --server
 
