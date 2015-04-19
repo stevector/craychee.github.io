@@ -10,6 +10,7 @@ dependencies:
   - php sculpin.phar install
   - cp circle.conf /etc/apache2/sites-available/default
   - sudo sed -e "s?%HOME%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo service apache2 restart
   post:
   - php sculpin.phar generate --env prod
 
