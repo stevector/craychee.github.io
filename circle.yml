@@ -16,5 +16,5 @@ test:
 deployment:
   production:
     branch: publish
-      commands:
-        - sh publish.sh
+    commands:
+      - sh publish.sh
