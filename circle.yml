@@ -1,9 +1,8 @@
 machine:
   php:
     version: 5.4.37
-
-hosts:
-  craychee.local: 127.0.0.1
+  hosts:
+    craychee.local: 127.0.0.1
 
 dependencies:
   pre:
