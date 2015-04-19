@@ -8,7 +8,6 @@ git config --global user.name 'Michelle'
 git checkout -b master
 
 # Build the site
-php sculpin.phar generate --env=prod
 touch output_prod/.nojekyll
 if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
 

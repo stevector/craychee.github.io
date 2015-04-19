@@ -11,7 +11,7 @@ dependencies:
   - cp circle.conf /etc/apache2/sites-available/default
   - sudo sed -e "s?%HOME%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   post:
-  - php sculpin.phar generate --server
+  - php sculpin.phar generate --env prod
 
 test:
   override:
