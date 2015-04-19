@@ -1,11 +1,22 @@
 #!/bin/bash
 
-# Replace "sculpin generate" with "php sculpin.phar generate" if sculpin.phar
-# was downloaded and placed in this directory instead of sculpin having been
-# installed globally.
+# configure env
+git config --global user.email 'michellekrejci@gmail.com'
+git config --global user.name 'Michelle'
 
-sculpin generate --env=prod
+# checkout publish branch
+git checkout -b master
+
+# Build the site
+touch output_prod/.nojekyll
 if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
 
-rsync -avze 'ssh -p 4668' output_prod/ username@yoursculpinsite:public_html
-if [ $? -ne 0 ]; then echo "Could not publish the site"; exit 1; fi
+# commit build
+git add -f output_prod
+git commit -m "Build website"
+
+# only commit output dir
+git filter-branch --subdirectory-filter output_prod/ -f
+
+# push to GitHub Pages
+git push "https://github.com/craychee/craychee.github.io.git" -f master

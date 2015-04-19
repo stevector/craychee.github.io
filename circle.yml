@@ -1,0 +1,18 @@
+machine:
+  php:
+    version: 5.4.37
+  general:
+    branches:
+      only:
+        - publish
+
+dependencies:
+  pre:
+  - curl -O https://download.sculpin.io/sculpin.phar
+  - php sculpin.phar install
+  post:
+  - php sculpin.phar generate --env=prod
+
+deployment:
+  commands:
+      - ./publish.sh
