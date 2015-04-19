@@ -1,0 +1,16 @@
+{
+    "minimum-stability": "alpha",
+    "name": "craychee/craychee.github.io",
+    "description": "Personal blog of Michelle Krejci.",
+    "require-dev": {
+        "behat/behat": "3.0.*@dev"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "type": "project",
+    "require": {
+        "behat/mink-extension": "~2.0",
+        "behat/mink-goutte-driver": "~1.1"
+    }
+}

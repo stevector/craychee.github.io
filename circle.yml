@@ -1,15 +1,20 @@
 machine:
   php:
     version: 5.4.37
-general:
-  branches:
-    only:
-      - publish
 
 dependencies:
   pre:
   - curl -O https://download.sculpin.io/sculpin.phar
   - php sculpin.phar install
   post:
-  - php sculpin.phar generate --env=prod
-  - ./publish.sh
+  - php sculpin.phar generate --server
+
+test:
+  override:
+      - bin/behat -f pretty
+
+deployment:
+  production:
+    branch: publish
+      commands:
+        - sh publish.sh
