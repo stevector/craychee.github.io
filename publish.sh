@@ -5,11 +5,11 @@ git config --global user.email 'michellekrejci@gmail.com'
 git config --global user.name 'Michelle'
 
 # checkout publish branch
+git branch -D master
 git checkout -b master
 
 # Build the site
 touch output_prod/.nojekyll
-if [ $? -ne 0 ]; then echo "Could not generate the site"; exit 1; fi
 
 # commit build
 git add -f output_prod
