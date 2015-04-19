@@ -12,7 +12,4 @@ dependencies:
   - php sculpin.phar install
   post:
   - php sculpin.phar generate --env=prod
-
-deployment:
-  commands:
-      - ./publish.sh
+  - ./publish.sh
