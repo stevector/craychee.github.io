@@ -7,4 +7,6 @@ Feature: Installation Verification
   Scenario: Verify that the site and its variables are installed.
     Given I am on homepage
     Then I should see "Craychee"
-    And I should see "I make websites. I made this one."
+    And I should see "I make and test websites. This is a record of the small innovations and insights I make along the way."
+    When I follow "About"
+    Then I should see "About Michelle"
