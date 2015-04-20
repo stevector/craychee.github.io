@@ -10,10 +10,11 @@ categories:
     - testing
 
 ---
-My setup here was adapted from [this Wouter de Jong](wonter) for [Circleci][circle], which should absolutely be read first.
+My setup here was adapted from [this excellent Wouter de Jong][wonter] post, which described automated deployment of sculpin using `travisci`, for [Circleci][circle] and testing with [behat][behat]. The original blog should absolutely be read first.
 
 [circle]:https://circleci.com
 [wonter]:http://wouterj.nl/2015/02/using-travis-to-build-your-sculpin-blog/
+[behat]:http://docs.behat.org/en/v3.0/
 
 Here is what my `circle.yml` for deploying this sculpin blog looks like:
 
@@ -99,6 +100,6 @@ The `%HOME%` variable was replaced inside the `circle.yml`:
       - sudo sed -e "s?%HOME%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
 ~~~
 
-With all that setup, I can execute my behat test suite and deploy to github pages if all is well. I took entirely Wonter's recommendation for my `publish.sh`, only omitting the build of the `output_prod` directory.
+With all that setup, **I can execute my behat test suite** and deploy to github pages if all is well. I took entirely Wonter's recommendation for my `publish.sh`, only omitting the build of the `output_prod` directory.
 
 One last thing: I didn't need to set up a github token on `circleci` for deployment. This is either a feature of circleCI or a security breach on my part.
