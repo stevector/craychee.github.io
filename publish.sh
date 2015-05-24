@@ -9,6 +9,7 @@ git branch -D master
 git checkout -b master
 
 # Build the site
+cp CNAME output_prod/CNAME
 touch output_prod/.nojekyll
 
 # commit build
