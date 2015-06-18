@@ -1,10 +1,9 @@
----
-exclude_from_search: true
----
+<!DOCTYPE html>
+<html>
 <head>
 <meta charset="utf-8">
 
-<title>Michelle Krejci | Developer</title>
+<title>Michelle Krejci | Engineer</title>
 <style type="text/css">
 
 article,
@@ -263,13 +262,11 @@ body.pdf h1 {
   letter-spacing: 0;
   margin-top: 0;
   font-size: 48px;
-  text-transform: uppercase;
-  font-weight: normal;
+  text-transform: none;
 }
 body.pdf h2 {
   letter-spacing: 0;
   text-transform: uppercase;
-  font-style: italic;
   font-weight: normal;
 }
 body.pdf h3 {
@@ -323,8 +320,6 @@ body.pdf dl {
   margin: .7em 0 0;
   page-break-inside: avoid !important;
   display: block;
-  width: 84%;
-  float: left;
 }
 body.pdf dl strong {
   float: right;
@@ -346,7 +341,7 @@ body.pdf dl em {
   content: ".";
 }
 body {
-  font-family: 'Hoefler Text', Times New Roman, Times, serif;
+  font-family: 'Helvetica Neue', 'Helvetica', Arial, serif;
   color: #444;
 }
 h1,
@@ -354,7 +349,15 @@ h2,
 h3,
 h4,
 ul dl dt {
-  font-family: Futura, "Century Gothic", AppleGothic, sans-serif;
+  font-family: 'Helvetica Neue Light', 'Helvetica', Arial, serif;
+}
+h1:before {
+  content: "+";
+  font-weight: bold;
+  color: orange;
+  margin: -1em 0 0 -0.5em;
+  position: relative;
+  top: -0.4em;
 }
 .container {
   margin: 0 auto;
@@ -403,25 +406,23 @@ h1 {
   padding: 0;
   font-size: 36px;
   letter-spacing: -1px;
-  font-weight: normal;
+  font-weight: bold;
 }
 h2 {
   margin: 0;
   padding: 0;
   font-size: 18px;
-  font-style: italic;
   letter-spacing: -1px;
-  font-weight: normal;
+  font-weight: bold;
 }
 h3 {
   margin: 0;
   padding: 0 0 .5em;
   font-size: 150%;
-  font-style: italic;
-  font-weight: normal;
+  font-weight: bold;
 }
 h3+p {
-  margin: .6em 0 16px;
+  margin: 0 0 16px;
   padding: 0;
   display: block;
   font-size: 104%;
@@ -470,7 +471,8 @@ ol li:nth-child(1) {
   border-top: none;
 }
 dl {
-  display: inline-block;
+  float: left;
+  display: block;
   width: 75%;
   margin: 0;
   padding: 0;
@@ -494,6 +496,32 @@ dl em {
   font-size: 110%;
   margin: .15em 0 .5em;
   font-style: bold;
+}
+dl dd li {
+  width: 100%;
+  margin: 0 1em 1em;
+  list-style-type: square;
+}
+dl dt {
+  display: block;
+  clear: both;
+}
+dl dt {
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+}
+h3 + dl dt:first-child {
+  border: 0;
+  padding-top: 0;
+}
+dl dd p:first-child {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.2em;
+}
+ul li dt {
+  border: 0;
+  padding-top: 0;
 }
 #footer {
   display: none;
@@ -544,15 +572,11 @@ dl em {
   h1 {
     margin-top: 0;
     font-size: 48px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-weight: normal;
+    letter-spacing: -1px;
   }
   h2 {
     text-transform: uppercase;
-    font-style: italic;
-    letter-spacing: 2px;
-    font-weight: normal;
+    letter-spacing: 3px;
   }
   h3 {
     float: left;
@@ -591,9 +615,6 @@ dl em {
   ol li:nth-child(3) {
     border-top: none;
   }
-  dl {
-    margin: .5em 0 0;
-  }
   dl strong {
     float: right;
     margin-top: -2em;
@@ -613,10 +634,10 @@ dl em {
     <div class="resume">
         <h1>Michelle Krejci</h1>
 
-<h2>Developer</h2>
+<h2>Engineer</h2>
 
 <blockquote>
-  <p><a href="/michelle_krejci_resume.pdf" download>Download PDF</a><br />
+  <p><a href="Michelle_Krejci_Engineer.pdf">Download PDF</a><br />
   <a href="mailto:michelle@craychee.io?Subject=Your%20resume">michelle@craychee.io</a></p>
 </blockquote>
 
@@ -624,7 +645,7 @@ dl em {
 
 <h3 id="profile">Profile</h3>
 
-<p>Slayer of technical debt and champion of behavior-driven development. Excels at data migration and configuration management. Motivated to tackle ever-more complex problems and grow beyond Drupal.</p>
+<p>DevOps competent, not yet proficient. Interested in being exhuasted each day from thinking too hard.</p>
 
 <hr />
 
@@ -632,16 +653,16 @@ dl em {
 
 <ul>
 <li><dl>
-<dt>Drupal Development</dt>
-<dd>Builds out functionality with test-driven development that defines a feature&#8217;s completion and ensure that the code satisfies it without regression</dd>
+<dt>DevOps</dt>
+<dd>Provide means to define and build version controlled, distributable, production-analagous virtual environments. Create a replicable, explicit deployment strategy that deploys each sprint.</dd>
 </dl></li>
 <li><dl>
-<dt>Migration</dt>
-<dd>Migrates data sets in Drupal to Drupal, CSV, XML, and SQL ranging in complexity from several dozen rows to nearly one million</dd>
+<dt>Behavior Driven Development</dt>
+<dd>Define the system requirements up front, make acceptance criteria executable and the domain language ubiqutous with tools like behat or phpspec.</dd>
 </dl></li>
 <li><dl>
-<dt>Continuous Integration</dt>
-<dd>Implements, refines, and presents on a variety of tools and strategies aimed at injecting QA into the whole of the development process</dd>
+<dt>Project Lead</dt>
+<dd>Lead development team through defining and building functionality with behavior driven development that defines a feature&#8217;s completion and ensure that the code satisfies it without regression.</dd>
 </dl></li>
 </ul>
 
@@ -651,14 +672,14 @@ dl em {
 
 <ol>
 <li>PHP</li>
-<li>GIT</li>
+<li>git</li>
 <li>Vagrant</li>
 <li>Composer</li>
 <li>Behat</li>
-<li>Chef</li>
-<li>Javascript</li>
-<li>OS X</li>
-<li>Linux</li>
+<li>Ansible</li>
+<li>Symfony</li>
+<li>Scripting</li>
+<li>Debian/Ubuntu</li>
 </ol>
 
 <hr />
@@ -666,6 +687,11 @@ dl em {
 <h3 id="experience">Experience</h3>
 
 <dl>
+<dt>Palantir.net</dt>
+<dd><em>Engineer</em>
+<strong>2014-current</strong>
+Acting as Team Lead since October 2014. Instramental in creating a modern-workflow for the company leveraging Ansible, Packer, Vagrant, Composer, Behat, and Travis CI.</dd>
+
 <dt>Promet Source</dt>
 <dd><em>Developer</em>
 <strong>2012-2014</strong>
@@ -674,20 +700,20 @@ Mentored by and mentee of passionate, hard-working technical and non-technical D
 
 <hr />
 
-<h3 id="talks">Talks</h3>
+<h3 id="skills">Talks</h3>
 
 <ul>
 <li><dl>
-<dt>Drupal Con 2013</dt>
-<dd><em>Making Support Fun and Profitable</em>  explained the audit process as part of a presentation team in association with Pantheon and Chapter Three</dd>
+<dt>MidCamp / Twin Cities Camp 2015</dt>
+<dd><em>On PhpSpec and Not the Drupal Way</em>  An explaination of behavior driven unit testing.</dd>
 </dl></li>
 <li><dl>
-<dt>MidCamp 2014 / Drupal Camp Chicago 2014</dt>
-<dd><em>DIY Continuous Integration</em>  a Drupal-specific presentation aimed as an introduction of CI from source management, to configuration management, to deployment, and behavior-driven testing</dd>
+<dt>NICE Camp</dt>
+<dd><em>Production is an Artifact of Development</em>  A walk through my development workflow that conceptualizes production as a product of development, and thus a separate repository, deployable on a successful merge to master.</dd>
 </dl></li>
 <li><dl>
-<dt>Higher Ed Web 2013</dt>
-<dd><em>Continuous Integration: What and Why</em>  a platform-agnostic introduction to CI for higher education tech professionals</dd>
+<dt>Higher Ed Web 2014</dt>
+<dd><em>Continuous Integration Training</em>  A tech-agnostic training aimed as an introduction of CI from source management, to configuration management, to deployment, and behavior-driven testing.</dd>
 </dl></li>
 </ul>
 
@@ -706,7 +732,7 @@ Graduate of University of Sheffield, UK. Work as an adjunct professor and editor
 
 <h3 id="footer">Footer</h3>
 
-<p>Michelle Krejci &#8212; <a href="mailto:michelle@craychee.io?Subject=Your%20resume">michellekrejci@gmail.com</a></p>
+<p>Michelle Krejci &#8212; <a href="mailto:michelle@craychee.io?Subject=Your%20resume">michelle@craychee.io</a></p>
 
 <hr />
 
@@ -714,3 +740,4 @@ Graduate of University of Sheffield, UK. Work as an adjunct professor and editor
 </div>
 
 </body>
+</html>
