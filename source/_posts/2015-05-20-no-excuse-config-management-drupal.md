@@ -5,12 +5,11 @@ tags:
 - Ansible
 - php
 - Pantheon
-    categories:
+categories:
     - devops
     - configuration management
 
 ---
-
 Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
 
 *No time to learn a new language.*  
