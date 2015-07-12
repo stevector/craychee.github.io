@@ -9,27 +9,27 @@ tags:
     - devops
     - configuration management
 
-        ---
+---
 
-        Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
+Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
 
-        *No time to learn a new language.*  
-        *We do not have any resources to manage it.*  
-        *The learning curve is too steep.*  
+*No time to learn a new language.*  
+*We do not have any resources to manage it.*  
+*The learning curve is too steep.*  
 
-        While these excuses might have (barely) held when the configuration options were Chef, Puppet, and Salt, [Ansible](http://www.ansible.com/home) is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.
+While these excuses might have (barely) held when the configuration options were Chef, Puppet, and Salt, [Ansible](http://www.ansible.com/home) is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.
 
-        So don't.
+So don't.
 
-        With [Phansible](http://phansible.com/), a point-and-click Ansible configuration maker for php envionments, you can get going even faster with more time to shame others who are dragging their feet.
+With [Phansible](http://phansible.com/), a point-and-click Ansible configuration maker for php envionments, you can get going even faster with more time to shame others who are dragging their feet.
 
-        ## Local environment config in 3 Easy Steps
+## Local environment config in 3 Easy Steps
 
-        **NOTE** This particular example is tuned for a [Pantheon](https://pantheon.io/) environment. Of course, you should always tune your local environment as much as possible to your target production environment. Pantheon's [architecture](https://pantheon.io/platform/our-architecture) is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a `mod_php`/`Apache` environment at some later point.
+**NOTE** This particular example is tuned for a [Pantheon](https://pantheon.io/) environment. Of course, you should always tune your local environment as much as possible to your target production environment. Pantheon's [architecture](https://pantheon.io/platform/our-architecture) is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a `mod_php`/`Apache` environment at some later point.
 
-        ###Step 1. Point and click config
+###Step 1. Point and click config
 
-        Go over to [Phansible](http://phansible.com/). There are 6 configuration sections.
+Go over to [Phansible](http://phansible.com/). There are 6 configuration sections.
 
 * **Vagrant**  
     Accept all of the [vagrant](http://phansible.com/#section-vagrant) defaults. We can edit manually later (see "optional" configs below).
@@ -107,6 +107,7 @@ tags:
 
 Note the *root* directory in my template. You may choose a different path. I am also using a wildcard as a placeholder for my domain name.
 For example, in this `Vagrantfile` [here](https://github.com/craychee/drupal-adonis/blob/master/Vagrantfile#L5), `adonis.dev` is the domain name. 
+
 At this point, you can run `vagrant up` and you have a provisioned local vagrant environment that you can drop your Drupal in.
 
 ### OPTIONAL: make it your own.
