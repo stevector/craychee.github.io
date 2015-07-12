@@ -10,6 +10,8 @@ categories:
     - configuration management
 
 ---
+**TL;DR**: You can view/fork the example ansible configuration described below here: [https://github.com/craychee/drupal-fleet-yard](https://github.com/craychee/drupal-fleet-yard).
+
 Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
 
 *No time to learn a new language.*  
@@ -66,15 +68,15 @@ Go over to [Phansible](http://phansible.com/). There are 6 configuration section
     To the `php_packages` array, add `php5-dev`.  
     To the `sys_packages` array, add:  
 
-* `sendmail`
-* `drush`
-* `unzip`
-* `zip`
-* `g++`
-* `libssl-dev`
-* `apache2-utils`
+    * `sendmail`  
+    * `drush`  
+    * `unzip`  
+    * `zip`  
+    * `g++`  
+    * `libssl-dev`  
+    * `apache2-utils`  
 
-    ###4. Replace the Nginx template with a safer, Drupal-readable template:
+###4. Replace the Nginx template with a safer, Drupal-readable template:
 
 ~~~php
     server {
