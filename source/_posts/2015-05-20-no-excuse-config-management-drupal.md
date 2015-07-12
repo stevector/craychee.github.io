@@ -5,40 +5,40 @@ tags:
 - Ansible
 - php
 - Pantheon
-categories:
+    categories:
     - devops
     - configuration management
 
----
+        ---
 
-Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
+        Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
 
-*No time to learn a new language.*  
-*We do not have any resources to manage it.*  
-*The learning curve is too steep.*  
+        *No time to learn a new language.*  
+        *We do not have any resources to manage it.*  
+        *The learning curve is too steep.*  
 
-While these excuses might have (barely) held when the configuration options were Chef, Puppet, and Salt, [Ansible](http://www.ansible.com/home) is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.
+        While these excuses might have (barely) held when the configuration options were Chef, Puppet, and Salt, [Ansible](http://www.ansible.com/home) is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.
 
-So don't.
+        So don't.
 
-With [Phansible](http://phansible.com/), a point-and-click Ansible configuration maker for php envionments, you can get going even faster with more time to shame others who are dragging their feet.
+        With [Phansible](http://phansible.com/), a point-and-click Ansible configuration maker for php envionments, you can get going even faster with more time to shame others who are dragging their feet.
 
-## Local environment config in 3 Easy Steps
+        ## Local environment config in 3 Easy Steps
 
-**NOTE** This particular example is tuned for a [Pantheon](https://pantheon.io/) environment. Of course, you should always tune your local environment as much as possible to your target production environment. Pantheon's [architecture](https://pantheon.io/platform/our-architecture) is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a `mod_php`/`Apache` environment at some later point.
+        **NOTE** This particular example is tuned for a [Pantheon](https://pantheon.io/) environment. Of course, you should always tune your local environment as much as possible to your target production environment. Pantheon's [architecture](https://pantheon.io/platform/our-architecture) is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a `mod_php`/`Apache` environment at some later point.
 
-###Step 1. Point and click config
+        ###Step 1. Point and click config
 
-Go over to [Phansible](http://phansible.com/). There are 6 configuration sections.
+        Go over to [Phansible](http://phansible.com/). There are 6 configuration sections.
 
 * **Vagrant**  
-Accept all of the [vagrant](http://phansible.com/#section-vagrant) defaults. We can edit manually later (see "optional" configs below).
+    Accept all of the [vagrant](http://phansible.com/#section-vagrant) defaults. We can edit manually later (see "optional" configs below).
 
 * **Webserver**  
-Accept all of the [webserver](http://phansible.com/#section-webserver) defaults. (The webserver defaults are `nginx` and `php5-fpm`, which happens to be Phansible's architecture too.)
+    Accept all of the [webserver](http://phansible.com/#section-webserver) defaults. (The webserver defaults are `nginx` and `php5-fpm`, which happens to be Phansible's architecture too.)
 
 * **Php Settings**
-Add the following configuration options:
+    Add the following configuration options:
 
     Php version: 5.6  
     Composer: enabled  
@@ -52,20 +52,20 @@ Add the following configuration options:
     * `php5-xdebug`
 
 * **Database**  
-Install MariaDB. Set a **root password** that you will remember (this is just a local enviroment). Create a default database and username/password for your local Drupal project. (I, for example, always use `default` as the database name, username, and password.)
+    Install MariaDB. Set a **root password** that you will remember (this is just a local enviroment). Create a default database and username/password for your local Drupal project. (I, for example, always use `default` as the database name, username, and password.)
 
 * **System packages**  
-We don't have a lot of options here. Add `git` and `vim`.
+    We don't have a lot of options here. Add `git` and `vim`.
 
 * **Timezone**  
-Set the timezone to wherever you are.
+    Set the timezone to wherever you are.
 
-###2. Press the big `Generate` button.
+    ###2. Press the big `Generate` button.
 
-###3. Open up the zip package and add additional packages.
-Open `ansible/vars/common.yml`.  
-To the `php_packages` array, add `php5-dev`.  
-To the `sys_packages` array, add:  
+    ###3. Open up the zip package and add additional packages.
+    Open `ansible/vars/common.yml`.  
+    To the `php_packages` array, add `php5-dev`.  
+    To the `sys_packages` array, add:  
 
 * `sendmail`
 * `drush`
@@ -75,6 +75,38 @@ To the `sys_packages` array, add:
 * `libssl-dev`
 * `apache2-utils`
 
+    ###4. Replace the Nginx template with a safer, Drupal-readable template:
+
+~~~php
+    server {
+    listen  80;
+    server_name ~^(www\.)?(?<domain>.+)$;
+    root /var/www/sites/$domain/www;
+    index index.html index.php;
+    location / {
+    try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    error_page 404 /404.html;
+
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+    root /usr/share/nginx/www;
+    }
+
+    location ~ \.php$ {
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+    }
+  }
+
+~~~
+
+Note the *root* directory in my template. You may choose a different path. I am also using a wildcard as a placeholder for my domain name.
+For example, in this `Vagrantfile` [here](https://github.com/craychee/drupal-adonis/blob/master/Vagrantfile#L5), `adonis.dev` is the domain name. 
 At this point, you can run `vagrant up` and you have a provisioned local vagrant environment that you can drop your Drupal in.
 
 ### OPTIONAL: make it your own.
