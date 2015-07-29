@@ -17,9 +17,9 @@ Building your Drupal project in a known-state is the foundation to your Continuo
 
 Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
 
-> No time to learn a new language.
-> We do not have any resources to manage it.
-> The learning curve is too steep.
+> No time to learn a new language.  
+> We do not have any resources to manage it.  
+> The learning curve is too steep.  
 
 While these excuses may have (barely) held when the configuration options were Chef, Puppet, and Salt, [Ansible](http://www.ansible.com/home) is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.
 
@@ -64,13 +64,15 @@ Go over to [Phansible](http://phansible.com/). There are 6 configuration section
 
     Go find someone to brag to about putting your system configuration into code.
 
-    ###2. Open up the zip package and add additional packages.
-    Open `ansible/vars/all.yml`.  
-    To the `php:packages` array, add `php5-dev`.  
-    To the `sys:packages` array, add:  `[sendmail, drush ,unzip, zip, g++, libssl-dev, apache2-utils]`.  
+###2. Open up the zip package and add additional packages.
+Open `ansible/vars/all.yml`.  
+To the `php:packages` array, add `php5-dev`.  
+To the `sys:packages` array, add:  `[sendmail, drush ,unzip, zip, g++, libssl-dev, apache2-utils]`.  
+
 
 ###3. Test that this can stand up an actual Drupal
 Make sure that the following are installed on your computer:
+
 * [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 4.3.x
 * [vagrant](http://downloads.vagrantup.com/) >= 1.6.x
 * [ansible](http://docs.ansible.com/ansible/intro_installation.html#installing-the-control-machine) >= 1.8.x
@@ -83,12 +85,15 @@ When asked for a password, enter your machine's sudo password.
 
 You may get the error `ERROR: The file ansible/inventories/dev is marked as executable, but failed to execute correctly.`. If so, just run `chmod -x ansible/inventories/dev` and start the provisioning process up again by running `vagrant provision`.
 
-Watch as ansible builds your system. Go find another person to high five. 
+Watch as ansible builds your system. Go find another person to high five.
 
 When it finishes, visit `192.168.33.99` on your local. You should have a Drupal there ready to be installed.
 
-**Want to make sure you followed all of my instructions**: You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-drupal). I feel confident that you figured it out though.
+**Want to make sure you followed all of my instructions**: You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-drupal). I feel confident that you figured it out.
 
+WOOT!
+
+####So... now what?
 Sure you could point and click through the install (remember what database, user, and password you set up for MariaDB, or look at your code config inside `ansible/vars/all.yml`), but now that you have put your system requirements explicit (in code) and executable, don't you want to make your drupal build executable too?
 
 Of course you do. Coming soon: **No Excuses Part II: Making your Drupal Build explicit and executable**
