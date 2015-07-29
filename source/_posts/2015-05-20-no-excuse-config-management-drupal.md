@@ -5,20 +5,23 @@ tags:
 - Ansible
 - php
 - Pantheon
+- CI
 categories:
     - devops
+    - CI
     - configuration management
 
 ---
-**TL;DR**: You can view/fork the example ansible configuration described below here: [https://github.com/craychee/drupal-fleet-yard](https://github.com/craychee/drupal-fleet-yard).
+
+Building your Drupal project in a known-state is the foundation to your Continuous Integration process.  You want to write and execute tests---and you should!--but your tests won't mean anything if you cannot define and build inside a known-state. Get your system under control first, then we will talk about getting your Drupal application under control.
 
 Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
 
-*No time to learn a new language.*  
-*We do not have any resources to manage it.*  
-*The learning curve is too steep.*  
+> No time to learn a new language.
+> We do not have any resources to manage it.
+> The learning curve is too steep.
 
-While these excuses might have (barely) held when the configuration options were Chef, Puppet, and Salt, [Ansible](http://www.ansible.com/home) is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.
+While these excuses may have (barely) held when the configuration options were Chef, Puppet, and Salt, [Ansible](http://www.ansible.com/home) is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.
 
 So don't.
 
@@ -26,100 +29,66 @@ With [Phansible](http://phansible.com/), a point-and-click Ansible configuration
 
 ## Local environment config in 3 Easy Steps
 
-**NOTE** This particular example is tuned for a [Pantheon](https://pantheon.io/) environment. Of course, you should always tune your local environment as much as possible to your target production environment. Pantheon's [architecture](https://pantheon.io/platform/our-architecture) is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a `mod_php`/`Apache` environment at some later point.
+**NOTE** This particular example is tuned for a [Pantheon](https://pantheon.io/) environment. Of course you should always tune your local environment as much as possible to your target production environment. Pantheon's [architecture](https://pantheon.io/platform/our-architecture) is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a `mod_php`/`Apache` environment at some later point.
 
 ###Step 1. Point and click config
 
 Go over to [Phansible](http://phansible.com/). There are 6 configuration sections.
 
-* **Vagrant**  
-    Accept all of the [vagrant](http://phansible.com/#section-vagrant) defaults. We can edit manually later (see "optional" configs below).
+* **Machine Settings**  
+    Under the [vagrant](http://phansible.com/#section-vagrant) section, change the **hostname** to something that reflects your project. I will call mine `no-excuses`. Bump your **memory** to `2048`.
+
+    If no one using Windows will use this project, open the **Advanced Options** accordion and de-select `Include windows.sh script`. Since I foresee that a reader of this blog post is working from Windows, I will leave this option selected. (If you are that dear reader, please email me if you give these instructions a shot and tell me how it went.)
+
+* **System packages**  
+    We don't have a lot of options here. Add `git` and `vim`. We will manually add a few more that Drupal needs later.
 
 * **Webserver**  
-    Accept all of the [webserver](http://phansible.com/#section-webserver) defaults. (The webserver defaults are `nginx` and `php5-fpm`, which happens to be Phansible's architecture too.)
+    Under **Document Root**, change it to `/vagrant/www`. Accept all of the other [webserver](http://phansible.com/#section-webserver) defaults. (The webserver defaults are `nginx` and `php5-fpm`, which happens to be Pantheon's architecture too. If you are partial to Apache2 and feel comfortable deviate slightly from my instructions here, you have my blessing. There is not much difference where we are concerned here.)
 
-* **Php Settings**
-    Add the following configuration options:
+* **Languages**
+    Choose and add the following configuration options:
 
     Php version: 5.6  
     Composer: enabled  
     Xdebug: enabled  
-    php packages:  
-    * `php5-gd`
-    * `php5-cli`
-    * `php5-curl`
-    * `php5-mcrypt`
-    * `php5-mysql`
-    * `php5-xdebug`
+    php packages: `php5-gd, php5-cli, php5-curl, php5-mcrypt, php5-mysql, php5-xdebug`
 
 * **Database**  
     Install MariaDB. Set a **root password** that you will remember (this is just a local enviroment). Create a default database and username/password for your local Drupal project. (I, for example, always use `default` as the database name, username, and password.)
 
-* **System packages**  
-    We don't have a lot of options here. Add `git` and `vim`.
-
 * **Timezone**  
-    Set the timezone to wherever you are.
+    Set the timezone to wherever you are / wherever is closest to where you are. I am in Chicago so I select `America/Chicago`.
 
-    ###2. Press the big `Generate` button.
+    ####Press the big `Generate` button.
 
-    ###3. Open up the zip package and add additional packages.
-    Open `ansible/vars/common.yml`.  
-    To the `php_packages` array, add `php5-dev`.  
-    To the `sys_packages` array, add:  
+    Go find someone to brag to about putting your system configuration into code.
 
-    * `sendmail`  
-    * `drush`  
-    * `unzip`  
-    * `zip`  
-    * `g++`  
-    * `libssl-dev`  
-    * `apache2-utils`  
+    ###2. Open up the zip package and add additional packages.
+    Open `ansible/vars/all.yml`.  
+    To the `php:packages` array, add `php5-dev`.  
+    To the `sys:packages` array, add:  `[sendmail, drush ,unzip, zip, g++, libssl-dev, apache2-utils]`.  
 
-###4. Replace the Nginx template with a safer, Drupal-readable template:
+###3. Test that this can stand up an actual Drupal
+Make sure that the following are installed on your computer:
+* [virtualBox](https://www.virtualbox.org/wiki/Downloads) >= 4.3.x
+* [vagrant](http://downloads.vagrantup.com/) >= 1.6.x
+* [ansible](http://docs.ansible.com/ansible/intro_installation.html#installing-the-control-machine) >= 1.8.x
 
-~~~php
-    server {
-    listen  80;
-    server_name ~^(www\.)?(?<domain>.+)$;
-    root /var/www/sites/$domain/www;
-    index index.html index.php;
-    location / {
-    try_files $uri $uri/ /index.php?$query_string;
-    }
+Go download the latest version of Drupal either with drush or from [here](https://www.drupal.org/project/drupal). Unzip/Untar (if you downloaded without drush), move it inside your phansible directory and rename it `www` (remember when we set the name of the Document Root?). Your project directory should now contain two directories, **ansible** and **www**, and one file, `Vagrantfile`.
 
-    error_page 404 /404.html;
+Run `vagrant up`.
 
-    error_page 500 502 503 504 /50x.html;
-    location = /50x.html {
-    root /usr/share/nginx/www;
-    }
+When asked for a password, enter your machine's sudo password.
 
-    location ~ \.php$ {
-    fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    fastcgi_pass unix:/var/run/php5-fpm.sock;
-    fastcgi_index index.php;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    include fastcgi_params;
-    }
-  }
+You may get the error `ERROR: The file ansible/inventories/dev is marked as executable, but failed to execute correctly.`. If so, just run `chmod -x ansible/inventories/dev` and start the provisioning process up again by running `vagrant provision`.
 
-~~~
+Watch as ansible builds your system. Go find another person to high five. 
 
-Note the *root* directory in my template. You may choose a different path. I am also using a wildcard as a placeholder for my domain name.
-For example, in this `Vagrantfile` [here](https://github.com/craychee/drupal-adonis/blob/master/Vagrantfile#L5), `adonis.dev` is the domain name. 
+When it finishes, visit `192.168.33.99` on your local. You should have a Drupal there ready to be installed.
 
-At this point, you can run `vagrant up` and you have a provisioned local vagrant environment that you can drop your Drupal in.
+**Want to make sure you followed all of my instructions**: You can view/fork my no-excuses-example [here](). I feel confident that you figured it out though.
 
-### OPTIONAL: make it your own.
+Sure you could point and click through the install (remember what database, user, and password you set up for MariaDB, or look at your code config inside `ansible/vars/all.yml`), but now that you have put your system requirements explicit (in code) and executable, don't you want to make your drupal build executable too?
 
-This point-and-click system config is only going to get you started. It will, I hope, carve enough of a path forward that you will be compelled to make more of your system requirements explicit and expose more of your tunables. You are a developer.
-
-#### Create a pre-provisioned box, host on Atlas
-
-I have been developing using vagrant for three years now and have developed some preferences. You can see my `Vagrantfile` [here](https://github.com/craychee/drupal-fleet-yard/blob/master/Vagrantfile). The biggest difference is that I compile, box, and version my system requirements at the start of each project, host that pre-provisioned box on [Atlas](https://atlas.hashicorp.com/) and just pull that box down on a project, such as [drupal-adonis](https://github.com/craychee/drupal-adonis/blob/master/Vagrantfile#L7).
-
-The **pros** about this approach is that I have faster up time without needing to provision with every build of the virtual machine. The **con** is that I am not tying the project-specific system configuration directly to the project's repository history nor any other tunables that are needed along the way.
-
-#### Add tests
-I have found it useful to babysit my own work by not only ensuring that my primary playbook compiles without failures but that it has provisioned what it is saying it provisioned. [Here](https://github.com/craychee/drupal-fleet-yard/blob/master/.travis.yml) is my Travis yml.
+Of course you do. Coming soon: **No Excuses Part II: Making your Drupal Build explicit and executable**
