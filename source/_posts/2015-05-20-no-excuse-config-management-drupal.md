@@ -89,11 +89,11 @@ Watch as ansible builds your system. Go find another person to high five.
 
 When it finishes, visit `192.168.33.99` on your local. You should have a Drupal there ready to be installed.
 
-**Want to make sure you followed all of my instructions**: You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-drupal). I feel confident that you figured it out.
+**Want to make sure you followed all of my instructions**: You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-drupal/tree/0.1.0). I feel confident that you figured it out.
 
 WOOT!
 
 ####So... now what?
 Sure you could point and click through the install (remember what database, user, and password you set up for MariaDB, or look at your code config inside `ansible/vars/all.yml`), but now that you have put your system requirements explicit (in code) and executable, don't you want to make your drupal build executable too?
 
-Of course you do. Coming soon: **No Excuses Part II: Making your Drupal Build explicit and executable**
+Of course you do. Read more: **[No Excuses Part II: Making your Drupal Build explicit and executable](http://craychee.io/blog/2015/05/20/no-excuse-config-management-drupal/)**
