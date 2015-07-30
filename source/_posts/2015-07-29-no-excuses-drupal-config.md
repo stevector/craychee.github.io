@@ -1,5 +1,5 @@
 ---
-title: No Excuses Part II: Making your Drupal Build explicit and executabl
+title: No Excuses Part II: Making your Drupal Build explicit and executable
 tags:
 - Ansible
 - php
