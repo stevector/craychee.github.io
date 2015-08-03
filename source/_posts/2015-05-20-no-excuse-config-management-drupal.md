@@ -1,5 +1,5 @@
 ---
-title: No Excuses: Drupal-optomized Environment Config with (Ph)Ansible
+title: No Excuses Part I: Drupal-optomized Environment Config with (Ph)Ansible
 subtitle: with an assist from Phansible
 tags:
 - Ansible
@@ -10,7 +10,7 @@ categories:
     - devops
     - CI
     - configuration management
-
+description: You have run out of excuses for not implementing a Continuous Integration process. I will give you everything you need to automate your system and drupal build, automate tests and automate deployment. We start today with the basics: getting your system into a versioned, distributable, known-state.
 ---
 
 Building your Drupal project in a known-state is the foundation to your Continuous Integration process.  You want to write and execute tests---and you should!--but your tests won't mean anything if you cannot define and build inside a known-state. Get your system under control first, then we will talk about getting your Drupal application under control.

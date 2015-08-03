@@ -7,7 +7,7 @@ tags:
 categories:
     - automated testing
     - Drupal
-
+description: Here's a special April Fool's Day trick for Behat: swap out your Selenium Driver with Phantomjs for better performance.
 ---
 Here's a special April Fool's Day trick for Behat: swap out your Selenium Driver with Phantomjs.
 

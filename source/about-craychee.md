@@ -1,6 +1,7 @@
 ---
 layout: default
 title: About Michelle
+active: contact
 exclude_from_search: true
 ---
 

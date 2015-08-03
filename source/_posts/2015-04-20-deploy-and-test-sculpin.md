@@ -8,7 +8,7 @@ tags:
 categories:
     - sculpin
     - testing
-
+description: Automate the deployment of your Sculpin project's artifact to Github Pages using CircleCI. Set it and forget it.
 ---
 My setup here was adapted from [this excellent Wouter de Jong][wonter] post, which described automated deployment of sculpin using `travisci`, for [Circleci][circle] and testing with [behat][behat]. The original blog should absolutely be read first.
 

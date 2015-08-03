@@ -1,0 +1,12 @@
+---
+layout: default
+title: Tags
+use:
+    - posts_tags
+---
+
+<ul>
+{% for tag,posts in data.posts_tags %}
+<li><h3><a href="/tag/{{ tag | url_encode(true) }}" rel="bookmark">{{ tag | capitalize }}</a></h3></li>
+{% endfor %}
+</ul>

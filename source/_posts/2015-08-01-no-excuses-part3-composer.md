@@ -1,5 +1,5 @@
 ---
-title: No Excuses Part III: Build Drupal with composer
+title: No Excuses Part III: Build Drupal with Composer
 tags:
 - Ansible
 - php
@@ -9,7 +9,7 @@ categories:
     - devops
     - CI
     - configuration management
-
+description: Excuses are up; time to build your Drupal with Composer.
 ---
 
 **NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/) and [No Excuses Part II](http://craychee.io/blog/2015/07/29/no-excuses-Drupal-config/).

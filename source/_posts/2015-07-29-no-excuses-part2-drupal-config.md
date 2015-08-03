@@ -9,7 +9,7 @@ categories:
     - devops
     - CI
     - configuration management
-
+description: We continue to get you started with a Continuous Integration process by getting your Drupal build locked down so you can build it over and over again.
 ---
 
 **NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/).

@@ -5,7 +5,7 @@ tags:
 - Drupal
 categories:
     - Drupal
-
+description: If you get this error, especially on a virtual machine or a CI server, I think I might know what the trouble is.
 ---
 So, you got the error `WD php: Exception: To start over, you must empty your existing database.` when attempting a `drush si`?
 
