@@ -77,7 +77,7 @@ Make sure that the following are installed on your computer:
 * [vagrant](http://downloads.vagrantup.com/) >= 1.6.x
 * [ansible](http://docs.ansible.com/ansible/intro_installation.html#installing-the-control-machine) >= 1.8.x
 
-Go download the latest version of Drupal either with drush or from [here](https://www.drupal.org/project/drupal). Unzip/Untar (if you downloaded without drush), move it inside your phansible directory and rename it `www` (remember when we set the name of the Document Root?). Your project directory should now contain two directories, **ansible** and **www**, and one file, `Vagrantfile`.
+Go download the latest version of Drupal either with drush or from [here](https://www.Drupal.org/project/Drupal). Unzip/Untar (if you downloaded without drush), move it inside your phansible directory and rename it `www` (remember when we set the name of the Document Root?). Your project directory should now contain two directories, **ansible** and **www**, and one file, `Vagrantfile`.
 
 Run `vagrant up`.
 
@@ -89,11 +89,12 @@ Watch as ansible builds your system. Go find another person to high five.
 
 When it finishes, visit `192.168.33.99` on your local. You should have a Drupal there ready to be installed.
 
-**Want to make sure you followed all of my instructions**: You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-drupal/tree/0.1.0). I feel confident that you figured it out.
+**Want to make sure you followed all of my instructions?**
+You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-Drupal/tree/0.1.0). I feel confident that you figured it out.
 
 WOOT!
 
 ####So... now what?
-Sure you could point and click through the install (remember what database, user, and password you set up for MariaDB, or look at your code config inside `ansible/vars/all.yml`), but now that you have put your system requirements explicit (in code) and executable, don't you want to make your drupal build executable too?
+Sure you could point and click through the install (remember what database, user, and password you set up for MariaDB, or look at your code config inside `ansible/vars/all.yml`), but now that you have put your system requirements explicit (in code) and executable, don't you want to make your Drupal build executable too?
 
-Of course you do. Read more: **[No Excuses Part II: Making your Drupal Build explicit and executable](http://craychee.io/blog/2015/05/20/no-excuse-config-management-drupal/)**
+Of course you do. Read more: **[No Excuses Part II: Making your Drupal Build explicit and executable](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/)**

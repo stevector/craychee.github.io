@@ -12,7 +12,7 @@ categories:
 
 ---
 
-**NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-drupal/).
+**NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/).
 
 SSH into your newly built machine by running `vagrant ssh`. Then navigate to `/vagrant/www` and run `drush si --db-url=mysql://default:default@localhost/default -y` (substituting whatever you set the user/password/database config to).
 
@@ -40,10 +40,13 @@ $databases=array('default' => array(
         'host' => 'localhost',
     ),
 ),);
-$drupal_hash_salt='161302b5bf927369e7c370212318c8f1837b03bbecb94eadb9eeed17a7875d1e';
+$Drupal_hash_salt='161302b5bf927369e7c370212318c8f1837b03bbecb94eadb9eeed17a7875d1e';
 ~~~
+(Your database/username/password might be different depending on how you configured mariaDB. If you forgot, open up `ansible/vars/all.yml` and check.)
 
-This is going to work great locally but let's also think through the different environments that we are going to be building Drupal in. We know that we need at least **test environment** (like [travisCI](https://travis-ci.com/) or [circleCI](https://circleci.com/about) to test our deployment strategy and run our test suite) and a **production environment**. There are probably at least two more enivonments in between (**development**, for a stakeholders to view progress and **staging** for content entry or final approval). We aren't going to talk about those environments today but we will keep them in mind for how we set up our build script.
+This is going to work great locally but let's also think through the different environments that we are going to be building Drupal in.
+
+We know that we need at least **test environment** (like [travisCI](https://travis-ci.com/) or [circleCI](https://circleci.com/about) to test our deployment strategy and run our test suite) and a **production environment**. There are probably at least two more enivonments in between (e.g., **development**, for a stakeholders to view progress and **staging** for content entry or final approval). We aren't going to talk about those environments today but we will keep them in mind for how we set up our build script.
 
 Let's create a new directory inside the project root called `cnf` to manage all such environment-specific configuration as we create them. Move the `settings.php` we just created into the `cnf` directory. We will rename it later but for now, let's move on to creating a script that will add this `settings.php` to our project and then bootstrap Drupal.
 
@@ -57,9 +60,9 @@ set -e
 ~~~
 Let's not add this to the project root but a directory of its own, like we did with settings. Create a directory called `build` and move `install.sh` there.
 
-Remember that we ultimately want a site install to happen when we run our script. We started by manually running `drush si --db-url=mysql://default:default@localhost/default -y`. We created a settings file but we need to get it into the `sites/default/` directory of our Drupal and then pipe drush commands to the project.
+Remember that we ultimately want a site install to happen when we run our script. We started by manually running `drush si` and passed through database parameters. We created a settings file but we need to get it into the `sites/default/` directory of our Drupal and then pipe drush commands to the project.
 
-In order to do this, we need to tell bash where we are, where the project is relative to where we are, and what to do with our drush commands. That looks like this:
+In order to do this, we need to give bash some information: where we are, where the project is relative to where we are, and what to do with our drush commands. That looks like this:
 ~~~sh
 #!/bin/bash
 
@@ -93,13 +96,13 @@ $drush si --site-name=no-excuses --account-pass=admin
 
 This is what we did: made the source and the destination of our settings config writeable (Drupal has an annoying habit of setting permissions for you), symlinked `settings.php` into where it belongs, and then ran `drush si` with a few variables passed through to make our lives easier.
 
-At this point you should be able run this script again and again and to navigate to `192.168.33.99` and log in with admin/admin without issue.
+At this point you should be able reliably build your Drupal project again and again with this script. Navigate to `192.168.33.99` and log in with admin/admin to see the result.
 
 ###Step 3. Make this script run when Vagrant builds.
 
-Our goal here is to have the drupal build when we run `vagrant up` so that when cloning the project, assuming the developer has met the system requirements (e.g. VirtualBox, Ansible, vagrant), this is all that they need to run to get start developing where you left off. Everyone building the project the same way, over and over again, speeds up development and reduces human error.
+Our goal now is to have the Drupal build when we run `vagrant up` so that when cloning the project, assuming the developer has met the system requirements (e.g. VirtualBox, Ansible, vagrant), this is all that they need to run to get start developing where you left off. Everyone building the project the same way, over and over again, speeds up development and reduces human error.
 
-We have one script that we need to run: `install.sh`. Adding it to our Vagrantfile looks like this:
+We have one script that we need to run: `install.sh`. Adding it to our `Vagrantfile` looks like this:
 ~~~sh
   config.vm.provision :shell, inline: <<SCRIPT
   su vagrant -c 'cd /vagrant && build/install.sh;'
@@ -108,7 +111,7 @@ SCRIPT
 
 Done.
 
-Now one problem that isn't a problem yet but will be is that the `settings.php` that we are symlinking into Drupal on our build will be different based on the environment. We want the same build script to run no matter what.
+Our `settings.php` strategy will need to accommodate different `settings.php`, depending on the environment. We want the same build script to build the project the same way no matter what the environment.
 
 There are a number of ways to handle environment-specific config. This is how we are going to do it:
 
@@ -128,7 +131,8 @@ Great. Now, when vagrant provisions, it will check if there is a `settings.php` 
 
 Repeatable, maintainable, executable Drupal build: check.
 
-**Want to make sure you followed all of my instructions**: You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-drupal/tree/0.2.0). I feel confident that you figured it out.
+**Want to make sure you followed all of my instructions?**
+You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-Drupal/tree/0.2.0). I feel confident that you figured it out.
 
 ####Great ...Now what?
 You will presumably do other things with Drupal besides run install. Your script might start to look like:
