@@ -3963,7 +3963,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .nav > li > a > img {
-  width: 85%;
+  max-width: none;
 }
 
 .nav > .pull-right {
