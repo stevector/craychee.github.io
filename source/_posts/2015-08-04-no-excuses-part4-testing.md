@@ -12,7 +12,7 @@ categories:
 description: Finally, we will set up some tests. We are going to add Behat for system testing and test our build with each commit on a CI server.
 ---
 
-**NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/), [No Excuses Part II](http://craychee.io/blog/2015/07/29/no-excuses-Drupal-config/), and [No Excuses Part III]().
+**NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/), [No Excuses Part II](http://craychee.io/blog/2015/07/29/no-excuses-Drupal-config/), and [No Excuses Part III](http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/).
 
 Continuous Integration has become synonmous with testing and automation. In order to merge and push code together on a tight iteration, assurances and checkpoints must be built into the system.
 
@@ -202,3 +202,13 @@ Great. Now circleCI will be able to use the same version of Drush that we are.
 Make sure all your files are added and pushed to GitHub. (If you are new to GitHub, [this](https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/) should get you started.) Go to [add projects](https://circleci.com/add-projects), find your project, and click "Build Project".
 
 Now sit back and watch your project build and test itself.
+
+**Want to make sure you followed all of my instructions?**
+You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-Drupal/tree/0.4.0).
+
+####Great ...Now what?
+You are going to need to catch yourself up on writing tests for Drupal with Behat. I recommend [Jack Franks talk](https://www.youtube.com/watch?v=i6-940AnZxc).
+
+When should you write tests? Early and often.
+
+**Coming soon:** No Excuses Part V: Automated Deployment

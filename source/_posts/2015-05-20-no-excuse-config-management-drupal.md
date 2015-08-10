@@ -38,8 +38,6 @@ Go over to [Phansible](http://phansible.com/). There are 6 configuration section
 * **Machine Settings**  
     Under the [vagrant](http://phansible.com/#section-vagrant) section, change the **hostname** to something that reflects your project. I will call mine `no-excuses`. Bump your **memory** to `2048`.
 
-    If no one using Windows will use this project, open the **Advanced Options** accordion and de-select `Include windows.sh script`. Since I foresee that a reader of this blog post is working from Windows, I will leave this option selected. (If you are that dear reader, please email me if you give these instructions a shot and tell me how it went.)
-
 * **System packages**  
     We don't have a lot of options here. Add `git` and `vim`. We will manually add a few more that Drupal needs later.
 
@@ -67,7 +65,7 @@ Go over to [Phansible](http://phansible.com/). There are 6 configuration section
 ###2. Open up the zip package and add additional packages.
 Open `ansible/vars/all.yml`.  
 To the `php:packages` array, add `php5-dev`.  
-To the `sys:packages` array, add:  `[sendmail, drush ,unzip, zip, g++, libssl-dev, apache2-utils]`.  
+To the `server:packages` array, add:  `[sendmail, drush ,unzip, zip, g++, libssl-dev, apache2-utils]`.  
 
 
 ###3. Test that this can stand up an actual Drupal
@@ -92,9 +90,19 @@ When it finishes, visit `192.168.33.99` on your local. You should have a Drupal 
 **Want to make sure you followed all of my instructions?**
 You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-Drupal/tree/0.1.0). I feel confident that you figured it out.
 
-WOOT!
+**Did something go wrong?**
+You may get an error like:
+~~~
+==> default: Exporting NFS shared folders...
+NFS is reporting that your exports file is invalid. Vagrant does
+this check before making any changes to the file. Please correct
+the issues below and execute "vagrant reload":
+~~~
+If so, remove your `exports` file (on a Mac, that would be `sudo rm /etc/exports`) and run `vagrant reload` again.
+
+You should take some time to read through Vagrant's [documentation](http://docs.vagrantup.com/v2/getting-started/) to bring yourself up to speed with the basics.
 
 ####So... now what?
 Sure you could point and click through the install (remember what database, user, and password you set up for MariaDB, or look at your code config inside `ansible/vars/all.yml`), but now that you have put your system requirements explicit (in code) and executable, don't you want to make your Drupal build executable too?
 
-Of course you do. Read more: **[No Excuses Part II: Making your Drupal Build explicit and executable](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/)**
+Of course you do. Read more: **[No Excuses Part II: Making your Drupal Build explicit and executable](http://craychee.io/blog/2015/07/29/no-excuses-part2-drupal-config/)**

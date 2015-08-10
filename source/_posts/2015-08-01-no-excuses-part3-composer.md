@@ -233,7 +233,10 @@ Now all of our dependencies are being managed and assembled with composer, we ha
 **Want to make sure you followed all of my instructions?**
 You can view/fork my no-excuses-example [here](https://github.com/craychee/no-excuses-Drupal/tree/0.3.0).
 
+**Did you get an error?**
+Occassionally I get an error that looks like `Failed to remove file "/vagrant/www/sites/default/vendor"`. I admit that I do not have a graceful way to resolve this. When I get this, from my host machine (i.e., not inside the vagrant box) I just blow away the `www` directory as a sudo user: `sudo rm -Rf www`.
+
 ####Great ...Now what?
 You will be adding **contrib** modules side `composer.json` (and running `composer update`) or you can use `composer require [...]`. As for the rest, if you are using my method of assembling Drupal root, you will add custom modules inside a **modules** directory inside the project root and custom themes inside **themes** directory. You will only be commiting your own work and configuration along with your composer.json.
 
-**Coming soon:** No Excuses Part IV: Time to test.
+Up Next: **[No Excuses Part IV: Time to test](http://craychee.io/blog/2015/08/04/no-excuses-part4-testing/)**

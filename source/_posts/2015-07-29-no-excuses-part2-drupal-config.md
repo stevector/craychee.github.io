@@ -102,7 +102,7 @@ At this point you should be able reliably build your Drupal project again and ag
 
 Our goal now is to have the Drupal build when we run `vagrant up` so that when cloning the project, assuming the developer has met the system requirements (e.g. VirtualBox, Ansible, vagrant), this is all that they need to run to get start developing where you left off. Everyone building the project the same way, over and over again, speeds up development and reduces human error.
 
-We have one script that we need to run: `install.sh`. Adding it to our `Vagrantfile` looks like this:
+We have one script that we need to run: `install.sh`. Adding it to the bottom of our `Vagrantfile` looks like this:
 ~~~sh
   config.vm.provision :shell, inline: <<SCRIPT
   su vagrant -c 'cd /vagrant && build/install.sh;'
@@ -159,6 +159,8 @@ $drush updb
 $drush cc all
 ~~~
 
-But now that we have our environemt and our project locked down in a known state, we can finally add tests. BUT before we do that, we are going to take a quick detour and better manage our Drupal.
+Note that you can always just directly run this script (by running `build/install.sh`) from inside of the vagrant box any time you would like (the more you do this, the better). If you want to trigger vagrant to do it, you can run `vagrant provision`, which will run both the ansible and the shell commands, or `vagrant provision --provision-with shell` to just run the install. I think you will find that your workflow will have you building the environment at the start of the day but just running the build script (`install.sh`) directly many times over daily.
 
-Coming soon: **No Excuses Part III: Building Drupal with Composer**
+But now that we have our environment and our project locked down in a known state, we can finally add tests. BUT before we do that, we are going to take a quick detour and better manage our Drupal.
+
+Up Next **[No Excuses Part III: Building Drupal with Composer](http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/)**
