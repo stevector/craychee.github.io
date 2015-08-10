@@ -14,7 +14,7 @@ description: Finally, we will set up some tests. We are going to add Behat for s
 
 **NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/), [No Excuses Part II](http://craychee.io/blog/2015/07/29/no-excuses-Drupal-config/), and [No Excuses Part III](http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/).
 
-Continuous Integration has become synonmous with testing and automation. In order to merge and push code together on a tight iteration, assurances and checkpoints must be built into the system.
+Continuous Integration has become synonymous with testing and automation. In order to merge and push code together on a tight iteration, assurances and checkpoints must be built into the system.
 
 But there are other reasons to test. Among them, defining 'done' with a client and translating the definition of done into code so that we can know when a feature is complete. It adds focus to the process, documentation to the project, and regression testing to the project's lifecycle. Making the definition of done executable means you can ask "is it done?" and "has it stayed done?".
 
@@ -108,6 +108,8 @@ Feature: Installation Verification
 ~~~
 Note that the text "Welcome to no-excuses" is the text that I am expecting since "no-excuses" is the name of my example project. This text will be different if you have named you project something other than "no-excuses".
 
+Now let's run this locally. From inside your project's root (inside your vagrant box), run `bin/behat` and your test suite will run. If your project is built successfully, everything should pass.
+
 This test is a great start because it allows us to verify that our site is built properly and we can log into it as expected. This is especially important if we are testing our build without access to a browser GUI, such as on a CI Server.
 
 ###Step Three: Run that test on a CI Server
@@ -117,7 +119,7 @@ You need to have a [GitHub](https://github.com/) account.
 You need to make [your project a repository](https://help.github.com/articles/create-a-repo/) on your GitHub account.  
 Sign up for a free account on [circleCI](https://circleci.com/).  
 
-Great. Now we are going to add some files to explain to circleCI how to build our Drupal project in the same way that we are building our Drupal project locally. I go through a bit more explaination about what I am doing in the [previous blog post](http://craychee.io/blog/2015/04/11/circleci/). For now, you are going to need to just trust me. Yikes.
+Great. Now we are going to add some files to explain to circleCI how to build our Drupal project in the same way that we are building our Drupal project locally. I go through a bit more explanation about what I am doing in the [previous blog post](http://craychee.io/blog/2015/04/11/circleci/). For now, you are going to need to just trust me. Yikes.
 
 First, navigate to your `cnf` directory and create a file called `circle.conf`. Add these contents:
 ~~~conf
