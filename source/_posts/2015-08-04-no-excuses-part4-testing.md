@@ -162,8 +162,10 @@ $databases=array('default' => array(
     ),
 ),);
 $drupal_hash_salt='161302b5bf927369e7c370212318c8f1837b03bbecb94eadb9eeed17a7875d1e';
+require_once DRUPAL_ROOT . '/sites/default/vendor/autoload.php';
 ~~~
-Remember how we set up the build to just copy in the `settings.php` into Drupal before running site install because the connection information would be different per environment? 
+
+Remember how we set up the build to just copy in the `settings.php` into Drupal before running site install because the connection information would be different per environment? (Note that you don't need the `require_once` line if you aren't using Composer to manage Drupal.)
 
 Now return to the project root. Create a file called `circle.yml` and add these contents:
 ~~~yml

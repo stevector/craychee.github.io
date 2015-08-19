@@ -19,7 +19,7 @@ There is no getting around using composer. If you are going to continue to devel
 Might as well stop with the excuses and start managing your project's dependencies (which includes drupal itself) with composer.
 
 ### Step One: Generate Your composer
-Ensure that you are inside your virtual machine (`vagrant ssh`) and navigate to the project root (`/vagrant`). Run `composer init` to walk through the creation of our first composer project.
+Ensure that you are inside your virtual machine (`vagrant ssh`) and navigate to the project root (`/vagrant`, **not** `~/vagrant`). Run `composer init` to walk through the creation of our first composer project.
 
 Let's do this.
 
@@ -164,6 +164,8 @@ Or this:
 
 From inside your virtual machine, run `composer install`. drupal will be installed inside `vendor`.
 
+This might take a while initially. You can run and get a cup of coffee OR you can head over to [http://drupal-composer.org/](http://drupal-composer.org/) and make a donation. The packagist account that we are using is supported by donations.
+
 ### Step Four: Add a drupal module to the dependencies.
 
 Add this to your `composer.json`:
@@ -181,7 +183,7 @@ We now have our drupal root inside `vendor/drupal/drupal` (or `vendor/pantheon-s
 
 Brilliant. Now how do we make a drupal root?
 
-You have a number of options. Greg Anderson describes his method of using drupal installers [here](). In this method, drupal doesn't hit `vendor`. drupal is assembled with composer. This method is similar to the method described on [drupal.org](https://www.drupal.org/node/2471553).
+You have a number of options. Greg Anderson describes his method of using drupal installers [here](https://pantheon.io/blog/example-repository-build-drupal-composer-travis). In this method, drupal doesn't hit `vendor`. drupal is assembled with composer. This method is similar to the method described on [drupal.org](https://www.drupal.org/node/2471553).
 
 For reasons that are beyond the scope of this blog series, I prefer to let composer do its thing (install inside `vendor`) and I then assemble drupal root using a symphony2 library. There is safety in numbers, so if you prefer to follow the installer path method, I won't be disappointed in you.
 
@@ -213,6 +215,11 @@ Make sure that you have completely removed `www` from the project. We are going 
 Now run `composer update`.
 
 Check the contents of your newly created `www` to ensure that you have your drupal root. Or better still, visit `http://192.168.33.99/`, log in, and ensure that `features` is available for you to enable now.
+
+One more thing, add this to the bottom of your `local.settings.php`:
+~~~php
+require_once DRUPAL_ROOT . '/sites/default/vendor/autoload.php';
+~~~
 
 ### Step Six: Add this to our vagrant provision
 
