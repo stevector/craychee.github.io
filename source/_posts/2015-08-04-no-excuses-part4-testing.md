@@ -12,7 +12,7 @@ categories:
 description: Finally, we will set up some tests. We are going to add Behat for system testing and test our build with each commit on a CI server.
 ---
 
-**NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/), [No Excuses Part II](http://craychee.io/blog/2015/07/29/no-excuses-Drupal-config/), and [No Excuses Part III](http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/).
+**NOTE** This post is a continuation of [No Excuses Part I](/blog/2015/05/20/no-excuse-config-management-drupal), [No Excuses Part II](/blog/2015/07/29/no-excuses-part2-drupal-config), and [No Excuses Part III](http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/).
 
 Continuous Integration has become synonymous with testing and automation. In order to merge and push code together on a tight iteration, assurances and checkpoints must be built into the system.
 
@@ -215,4 +215,4 @@ You are going to need to catch yourself up on writing tests for Drupal with Beha
 
 When should you write tests? Early and often.
 
-**Up Next:** [No Excuses Part V: Automated Deployment](http://craychee.io/blog/2015/08/08/no-excuses-part5-deployment/)
+Up Next: **[No Excuses Part V: Automated Deployment](http://craychee.io/blog/2015/08/08/no-excuses-part5-deployment/)**

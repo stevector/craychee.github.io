@@ -12,7 +12,7 @@ categories:
 description: In the last part of our No Excuses series, we are going to automate our deployment.
 ---
 
-**NOTE** This post is the conclusion of a series that included [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-Drupal/), [No Excuses Part II](http://craychee.io/blog/2015/07/29/no-excuses-Drupal-config/), [No Excuses Part III](http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/), and [No Excuses Part IV](http://craychee.io/blog/2015/08/04/no-excuses-part4-testing/).
+**NOTE** This post is the conclusion of a series that included [No Excuses Part I](/blog/2015/05/20/no-excuse-config-management-drupal), [No Excuses Part II](/blog/2015/07/29/no-excuses-part2-drupal-config), [No Excuses Part III](http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/), and [No Excuses Part IV](http://craychee.io/blog/2015/08/04/no-excuses-part4-testing/).
 
 You're not legit until the only thing that's deploying your code is a CI server.
 
@@ -61,7 +61,7 @@ For example, I don't need Drush or the Drupal Behat Extension on production so m
 
 Over on CircleCI, go to *Settings* >> *Tweaks* >> *Environment variables*.
 
-![CircleCI Environment Variable screenshot](/img/circleci_custom_variables.jpg)  
+![CircleCI Environment Variable screenshot](/img/circleci_custom_variables.jpg)
 
 **Create and Save the following variables:**  
 PANTHEON_EMAIL: This should be the email of either your account or another account that also has access to the Pantheon project you just set up.  

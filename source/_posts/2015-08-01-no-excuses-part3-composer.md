@@ -12,7 +12,7 @@ categories:
 description: Excuses are up; time to build your drupal with Composer.
 ---
 
-**NOTE** This post is a continuation of [No Excuses Part I](http://craychee.io/blog/2015/05/20/no-excuse-config-management-drupal/) and [No Excuses Part II](http://craychee.io/blog/2015/07/29/no-excuses-drupal-config/).
+**NOTE** This post is a continuation of [No Excuses Part I](/blog/2015/05/20/no-excuse-config-management-drupal), and [No Excuses Part II](/blog/2015/07/29/no-excuses-part2-drupal-config).
 
 There is no getting around using composer. If you are going to continue to develop modern php applications (including with drupal) composer is *the* dependency manager for PHP.  We will be using composer to install `behat` in the next part so although you could skip this part and get right to testing, you can't completely avoid it.
 
