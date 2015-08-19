@@ -215,4 +215,4 @@ You are going to need to catch yourself up on writing tests for Drupal with Beha
 
 When should you write tests? Early and often.
 
-**Coming soon:** No Excuses Part V: Automated Deployment
+**Up Next:** [No Excuses Part V: Automated Deployment](http://craychee.io/blog/2015/08/08/no-excuses-part5-deployment/)
