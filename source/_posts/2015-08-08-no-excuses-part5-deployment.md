@@ -147,8 +147,8 @@ deployment:
   pantheon:
     branch: master
     commands:
-      - composer install --no-dev --no-scripts
       - build/install.sh
+      - composer install --no-dev --no-scripts
       - bin/deploy
       - mysqldump -u ubuntu circle_test > pantheon.sql
       - terminus drush sqlc < pantheon.sql --site=no-excuses --env=dev
