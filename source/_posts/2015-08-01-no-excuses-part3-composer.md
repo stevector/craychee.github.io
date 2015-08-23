@@ -14,9 +14,9 @@ description: Excuses are up; time to build your drupal with Composer.
 
 **NOTE** This post is a continuation of [No Excuses Part I](/blog/2015/05/20/no-excuse-config-management-drupal), and [No Excuses Part II](/blog/2015/07/29/no-excuses-part2-drupal-config).
 
-There is no getting around using composer. If you are going to continue to develop modern php applications (including with drupal) composer is *the* dependency manager for PHP.  We will be using composer to install `behat` in the next part so although you could skip this part and get right to testing, you can't completely avoid it.
+There is no getting around using composer. If you are going to continue to develop modern php applications (including with Drupal) composer is *the* dependency manager for PHP.  We will be using composer to install `behat` in the next part so although you could skip this part and go right to testing, you can't completely avoid it.
 
-Might as well stop with the excuses and start managing your project's dependencies (which includes drupal itself) with composer.
+Might as well stop with the excuses and start managing your project's dependencies (which includes Drupal itself) with composer.
 
 ### Step One: Generate Your composer
 Ensure that you are inside your virtual machine (`vagrant ssh`) and navigate to the project root (`/vagrant`, **not** `~/vagrant`). Run `composer init` to walk through the creation of our first composer project.
@@ -34,13 +34,13 @@ You will now be asked if you would you like to define your dependencies interact
 
 You can read more about composer's scheme [here](https://getcomposer.org/doc/04-schema.md).
 
-
 ### Step Two: Make drupal a Dependency
 
-We need to use the drupal-composer [packagist](https://packagist.org/) repository. This wonderful project mirrors all of drupal.org's projects for composer, which we will need since we want projects from drupal.org installed via composer.
+We need to use the drupal-composer [packagist](https://packagist.drupal-composer.org/) repository. This wonderful project mirrors all of drupal.org's projects for composer, which we will need since we want projects from drupal.org installed via composer.
 
 Add this to the `composer.json`:
 ~~~json
+[...]
 "repositories": [
     {
         "type": "composer",
@@ -94,7 +94,7 @@ Then under `require` we will add:
         }
 ~~~
 
-We just told composer that we want to use `pantheon-systems`'s repository. Any repository that depends on `drupal/drupal` or modules that drupal core contains should be replaced by `pantheon-systems`, which is more than capable of fulfilling all of your drupal needs. For example, `drupal/pathauto` (a mirror of https://www.drupal.org/project/pathauto), depends on `drupal/path`, which is part of core. The drupal composer project expects that drupal core is `drupal/drupal`, so here we are saying that `pantheon-systems/drops-7` can satisfy that requirement instead.
+We just told composer that we want to use `pantheon-systems`'s repository. Any repository that depends on `drupal/drupal` or modules that drupal core contains should be replaced by `pantheon-systems`, which is more than capable of fulfilling all of your Drupal needs. For example, `drupal/pathauto` (a mirror of https://www.drupal.org/project/pathauto), depends on `drupal/path`, which is part of core. The drupal composer project expects that drupal core is `drupal/drupal`, so here we are saying that `pantheon-systems/drops-7` can satisfy that requirement instead.
 
 **Note** that I only listed a few drupal core modules here (`field`, `file`, `system`, `path`). I did this only for brevity. You can either list all of drupal's core modules so that you don't need to add additional dependencies or you can list them all, as this [example repository](https://github.com/pantheon-systems/example-drupal7-travis-composer/blob/master/composer.json) does, or you can take it on a case by case basis.
 
@@ -162,9 +162,9 @@ Or this:
 
 ### Step Three: Install
 
-From inside your virtual machine, run `composer install`. drupal will be installed inside `vendor`.
+From inside your virtual machine, run `composer install`. Drupal will be installed inside `vendor`.
 
-This might take a while initially. You can run and get a cup of coffee OR you can head over to [http://drupal-composer.org/](http://drupal-composer.org/) and make a donation. The packagist account that we are using is supported by donations.
+This might take a while initially. You get a cup of coffee OR head over to [http://drupal-composer.org/](http://drupal-composer.org/) and make a donation. The packagist account that we are using is supported by donations.
 
 ### Step Four: Add a drupal module to the dependencies.
 
@@ -179,13 +179,13 @@ And run `composer update` to install.
 
 ### Step Five: Make the drupal root that drupal expects.
 
-We now have our drupal root inside `vendor/drupal/drupal` (or `vendor/pantheon-systems/drupal`) and our first drupal contrib module inside `vendor/drupal/features`.
+We now have our Drupal root inside `vendor/drupal/drupal` (or `vendor/pantheon-systems/drupal`) and our first Drupal contrib module inside `vendor/drupal/features`.
 
-Brilliant. Now how do we make a drupal root?
+Brilliant. Now how do we make a Drupal root?
 
-You have a number of options. Greg Anderson describes his method of using drupal installers [here](https://pantheon.io/blog/example-repository-build-drupal-composer-travis). In this method, drupal doesn't hit `vendor`. drupal is assembled with composer. This method is similar to the method described on [drupal.org](https://www.drupal.org/node/2471553).
+You have a number of options. Greg Anderson describes his method of using drupal installers [here](https://pantheon.io/blog/example-repository-build-drupal-composer-travis). In this method, Drupal doesn't hit `vendor`. Drupal is assembled with composer. This method is similar to the method described on [drupal.org](https://www.drupal.org/node/2471553).
 
-For reasons that are beyond the scope of this blog series, I prefer to let composer do its thing (install inside `vendor`) and I then assemble drupal root using a symphony2 library. There is safety in numbers, so if you prefer to follow the installer path method, I won't be disappointed in you.
+For reasons that are beyond the scope of this blog series, I prefer to let composer do its thing (install inside `vendor`) and I then assemble Drupal root using a symphony2 library. There is safety in numbers, so if you prefer to follow the installer path method, I won't be disappointed in you.
 
 If you do want to stick with me here, we are going to require said library:
 ~~~json
@@ -214,7 +214,7 @@ Make sure that you have completely removed `www` from the project. We are going 
 
 Now run `composer update`.
 
-Check the contents of your newly created `www` to ensure that you have your drupal root. Or better still, visit `http://192.168.33.99/`, log in, and ensure that `features` is available for you to enable now.
+Check the contents of your newly created `www` to ensure that you have your Drupal root. Or better still, visit `http://192.168.33.99/`, log in, and ensure that `features` is available for you to enable now.
 
 One more thing, add this to the bottom of your `local.settings.php`:
 ~~~php
@@ -244,6 +244,6 @@ You can view/fork my no-excuses-example [here](https://github.com/craychee/no-ex
 Occasionally I get an error that looks like `Failed to remove file "/vagrant/www/sites/default/vendor"`. I admit that I do not have a graceful way to resolve this. When I get this, from my host machine (i.e., not inside the vagrant box) I just blow away the `www` directory as a sudo user: `sudo rm -Rf www`. I will send one lemon-flavored toothpick to anyone who can resolve this for me on a more sustained basis.
 
 ####Great ...Now what?
-You will be adding **contrib** modules side `composer.json` (and running `composer update`) or you can use `composer require [...]`. As for the rest, if you are using my method of assembling drupal root, you will add custom modules inside a **modules** directory inside the project root and custom themes inside **themes** directory. You will only be commiting your own work and configuration along with your composer.json.
+You will be adding **contrib** modules side `composer.json` (and running `composer update`) or you can use `composer require [...]`. As for the rest, if you are using my method of assembling Drupal root, you will add custom modules inside a **modules** directory inside the project root and custom themes inside **themes** directory. You will only be commiting your own work and configuration along with your composer.json.
 
-Up Next: **[No Excuses Part IV: Time to test](http://craychee.io/blog/2015/08/04/no-excuses-part4-testing/)**
+Up Next: **[No Excuses Part IV: Time to test](/blog/2015/08/04/no-excuses-part4-testing/)**

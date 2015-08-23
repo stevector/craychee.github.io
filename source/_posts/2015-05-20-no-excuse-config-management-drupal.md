@@ -1,6 +1,5 @@
 ---
-title: No Excuses Part I: Drupal-optomized Environment Config with (Ph)Ansible
-subtitle: with an assist from Phansible
+title: No Excuses Part I: Drupal-optomized Environment Config with (Ph)Ansible and Vagrant
 tags:
 - Ansible
 - php
@@ -13,13 +12,12 @@ categories:
 description: You have run out of excuses for not implementing a Continuous Integration process. I will give you everything you need to automate your system and drupal build, automate tests and automate deployment. We start today with the basics: getting your system into a versioned, distributable, known-state.
 ---
 
-Building your Drupal project in a known-state is the foundation to your Continuous Integration process.  You want to write and execute tests---and you should!--but your tests won't mean anything if you cannot define and build inside a known-state. Get your system under control first, then we will talk about getting your Drupal application under control.
+Building your Drupal project in a known-state is the foundation of your Continuous Integration process.  You want to write and execute tests---and you should!--but your tests won't mean anything if you cannot define and build inside a known-state. Get your system under control first, then we will talk about getting your Drupal application under control.
 
-Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled.
-
-> No time to learn a new language.  
-> We do not have any resources to manage it.  
-> The learning curve is too steep.  
+Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled:
+> "I don't have time to learn a new language."  
+> "We do not have any resources to manage it."  
+> "The learning curve is too steep."  
 
 While these excuses may have (barely) held when the configuration options were Chef, Puppet, and Salt, [Ansible](http://www.ansible.com/home) is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.
 
@@ -29,7 +27,7 @@ With [Phansible](http://phansible.com/), a point-and-click Ansible configuration
 
 ## Local environment config in 3 Easy Steps
 
-**NOTE** This particular example is tuned for a [Pantheon](https://pantheon.io/) environment. Of course you should always tune your local environment as much as possible to your target production environment. Pantheon's [architecture](https://pantheon.io/platform/our-architecture) is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a `mod_php`/`Apache` environment at some later point.
+**NOTE** This particular example is tuned for a [Pantheon](https://pantheon.io/) environment. You should always tune your local environment as much as possible to your target production environment. Pantheon's [architecture](https://pantheon.io/platform/our-architecture) is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a `mod_php`/`Apache` environment at some later point.
 
 ###Step 1. Point and click config
 
@@ -42,7 +40,7 @@ Go over to [Phansible](http://phansible.com/). There are 6 configuration section
     We don't have a lot of options here. Add `git` and `vim`. We will manually add a few more that Drupal needs later.
 
 * **Webserver**  
-    Under **Document Root**, change it to `/vagrant/www`. Accept all of the other [webserver](http://phansible.com/#section-webserver) defaults. (The webserver defaults are `nginx` and `php5-fpm`, which happens to be Pantheon's architecture too. If you are partial to Apache2 and feel comfortable deviate slightly from my instructions here, you have my blessing. There is not much difference where we are concerned here.)
+    Under **Document Root**, change it to `/vagrant/www`. Accept all of the other [webserver](http://phansible.com/#section-webserver) defaults. (The webserver defaults are `nginx` and `php5-fpm`, which happens to be Pantheon's architecture too. If you are partial to Apache2 and feel comfortable deviating from my instructions here, you have my blessing. There is not much difference where we are concerned here.)
 
 * **Languages**
     Choose and add the following configuration options:
@@ -56,7 +54,7 @@ Go over to [Phansible](http://phansible.com/). There are 6 configuration section
     Install MariaDB. Set a **root password** that you will remember (this is just a local enviroment). Create a default database and username/password for your local Drupal project. (I, for example, always use `default` as the database name, username, and password.)
 
 * **Timezone**  
-    Set the timezone to wherever you are / wherever is closest to where you are. I am in Chicago so I select `America/Chicago`.
+    Set the timezone to wherever you are / wherever is closest to where you are. I am in Chicago, so I select `America/Chicago`.
 
     ####Press the big `Generate` button.
 
@@ -105,4 +103,4 @@ You should take some time to read through Vagrant's [documentation](http://docs.
 ####So... now what?
 Sure you could point and click through the install (remember what database, user, and password you set up for MariaDB, or look at your code config inside `ansible/vars/all.yml`), but now that you have put your system requirements explicit (in code) and executable, don't you want to make your Drupal build executable too?
 
-Of course you do. Read more: **[No Excuses Part II: Making your Drupal Build explicit and executable](http://craychee.io/blog/2015/07/29/no-excuses-part2-drupal-config/)**
+Of course you do. Read more: **[No Excuses Part II: Making your Drupal Build explicit and executable](/blog/2015/07/29/no-excuses-part2-drupal-config/)**

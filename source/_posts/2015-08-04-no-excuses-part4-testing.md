@@ -26,7 +26,7 @@ Hang onto your butts, this one is going to be an awesomely wild adventure.
 
 ###Step One: Install and Configure Behat (the Drupal Extension)
 
-With Composer already installed (thanks, Ansible), and a composer.json already defined in our project root (see [here](https://getcomposer.org/doc/01-basic-usage.md#composer-json-project-setup) if you skipped No Excuses Part III), we only need to add Behat as a dependency.
+With composer already installed (thanks, Ansible), and a `composer.json` already defined in our project root (see [here](https://getcomposer.org/doc/01-basic-usage.md#composer-json-project-setup) if you skipped No Excuses Part III), we only need to add Behat as a dependency.
 
 Update your `composer.json` so that it includes:
 ~~~json
@@ -161,7 +161,6 @@ $databases=array('default' => array(
         'host' => '127.0.0.1',
     ),
 ),);
-$drupal_hash_salt='161302b5bf927369e7c370212318c8f1837b03bbecb94eadb9eeed17a7875d1e';
 require_once DRUPAL_ROOT . '/sites/default/vendor/autoload.php';
 ~~~
 
@@ -192,7 +191,7 @@ test:
   override:
       - bin/behat
 ~~~
-These are instructions for circleCI to build our project and, after configuring Apache2, they are identical from our local build: run composer install and then `build/install.sh` to build the project, then run `bin/behat` to verify everything is working as expected.
+These are instructions for circleCI to build our project and, after configuring Apache2, they are identical from our local build: run `composer install` and then `build/install.sh` to build the project, then run `bin/behat` to verify everything is working as expected.
 
 Since circleCI doesn't have Drush installed and our version of Drush, installed with `apt-get`, is outdated anyway, we added Drush to the project with composer instead. Now we can tell our build to use that version of Drush instead when building our project.
 
@@ -215,4 +214,4 @@ You are going to need to catch yourself up on writing tests for Drupal with Beha
 
 When should you write tests? Early and often.
 
-Up Next: **[No Excuses Part V: Automated Deployment](http://craychee.io/blog/2015/08/08/no-excuses-part5-deployment/)**
+Up Next: **[No Excuses Part V: Automated Deployment](/blog/2015/08/08/no-excuses-part5-deployment/)**

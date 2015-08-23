@@ -12,13 +12,13 @@ categories:
 description: We continue to get you started with a Continuous Integration process by getting your Drupal build locked down so you can build it over and over again.
 ---
 
-**NOTE** This post is a continuation of [No Excuses Part I](/blog/2015/05/20/no-excuse-config-management-drupal);
+**NOTE** This post is a continuation of [No Excuses Part I](/blog/2015/05/20/no-excuse-config-management-drupal).
 
-SSH into your newly built machine by running `vagrant ssh`. Then navigate to `/vagrant/www` and run `drush si --db-url=mysql://default:default@localhost/default -y` (substituting whatever you set the user/password/database config to).
+SSH into your newly built machine by running `vagrant ssh`. Then navigate to `/vagrant/www` and run `drush si --db-url=mysql://default:default@localhost/default -y` (substituting whatever you set the user/password/database config to in Part I).
 
 That was fun. Let's not force ourselves to remember to do that all the time though.
 
-In order for this to be executable over and over in different environments and able to accommodate the build as it gets more complicated, we need to do the following:
+In order for this to be executable over and over in different environments and be able to accommodate the build as it gets more complicated, we need to do the following:
 
 1. Set up a `settings.php` for a local build (and discuss a good place to put this).
 2. Create a bash script of drush that can be executed outside of the Drupal root.
@@ -40,7 +40,6 @@ $databases=array('default' => array(
         'host' => 'localhost',
     ),
 ),);
-$Drupal_hash_salt='161302b5bf927369e7c370212318c8f1837b03bbecb94eadb9eeed17a7875d1e';
 ~~~
 (Your database/username/password might be different depending on how you configured mariaDB. If you forgot, open up `ansible/vars/all.yml` and check.)
 
@@ -73,7 +72,7 @@ base=$(cd $path/.. && pwd)
 drush="drush $drush_flags -y -r $base/www"
 ~~~
 
-Now when you run `install.sh`, `$path` is assigned the value of the location of the path of the bash script relative to where you ran it from. `$base` then is one directory down from there, or the `install.sh` parent, which is the project root. Finally, we are telling bash that when we use `$drush`, all arguments that follow are `$drush flags` and we always pass `-y` flag after those arguments and execute those commands from inside our project (`$base`)/www directory (where we keep our Drupal root).
+Now when you run `install.sh`, `$path` is assigned the value of the location of the path of the bash script relative to where you ran it from. `$base` is one directory down from there, which is the project root. Finally, we are telling bash that when we use `$drush`, all arguments that follow are `$drush flags` and we always pass `-y` flag after those arguments and execute those commands from inside our project (`$base`)/www directory (where we keep our Drupal root).
 
 Now that we taught bash those variables, we can do what we need to do: copy our `settings.php` into Drupal and execute a drush command.
 ~~~sh
@@ -116,8 +115,8 @@ Our `settings.php` strategy will need to accommodate different `settings.php`, d
 There are a number of ways to handle environment-specific config. This is how we are going to do it:
 
 1. Rename the `settings.php` inside `cnf` to `local.settings.php`.
-2. Edit your `.gitignore` and add `settings.php`. (While you are at it, make sure `.vagrant` is in the .gitignore too.)
-3. Add this to our Vagrantfile config:
+2. Edit your `.gitignore` and add `settings.php`. (While you are at it, make sure `.vagrant` is in the `.gitignore` too.)
+3. Add this to our `Vagrantfile` config:
 ~~~sh
   config.vm.provision :shell, inline: <<SCRIPT
   if [[ ! -f /vagrant/cnf/settings.php ]]; then
@@ -159,8 +158,8 @@ $drush updb
 $drush cc all
 ~~~
 
-Note that you can always just directly run this script (by running `build/install.sh`) from inside of the vagrant box any time you would like (the more you do this, the better). If you want to trigger vagrant to do it, you can run `vagrant provision`, which will run both the ansible and the shell commands, or `vagrant provision --provision-with shell` to just run the install. I think you will find that your workflow will have you building the environment at the start of the day but just running the build script (`install.sh`) directly many times over daily.
+Note that you can always just directly run this script (by running `build/install.sh`) from inside of the vagrant box any time you would like. The more you do this, the better. If you want to trigger vagrant to do it, you can run `vagrant provision`, which will run both the ansible and the shell commands, or `vagrant provision --provision-with shell` to just run the install. I think you will find that your workflow will have you building the environment at the start of the day but just running the build script (`install.sh`) directly many times over daily.
 
-But now that we have our environment and our project locked down in a known state, we can finally add tests. BUT before we do that, we are going to take a quick detour and better manage our Drupal.
+Now that we have our environment and our project locked down in a known state, we can finally add tests. BUT before we do that, we are going to take a quick detour and better manage our Drupal.
 
-Up Next **[No Excuses Part III: Building Drupal with Composer](http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/)**
+Up Next **[No Excuses Part III: Building Drupal with Composer](/blog/2015/08/01/no-excuses-part3-composer/)**
