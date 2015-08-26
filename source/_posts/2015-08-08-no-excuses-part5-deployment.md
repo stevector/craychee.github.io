@@ -101,8 +101,8 @@ pantheon=$base/pantheon
 git="( $base/pantheon && git $git_flags)"
 
 # Build the deployment artifact.
-rm $base/cnf/settings.php
-mv $base/cnf/pantheon.settings.php $base/cnf/settings.php
+sudo rm -f $base/cnf/settings.php
+sudo mv $base/cnf/pantheon.settings.php $base/cnf/settings.php
 
 # Use this bit only if you are using my method of using Composer.
 $base/bin/rootcanal --prod
