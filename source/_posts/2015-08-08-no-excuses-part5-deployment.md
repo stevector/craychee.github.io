@@ -65,7 +65,7 @@ Over on CircleCI, go to *Settings* >> *Tweaks* >> *Environment variables*.
 
 **Create and Save the following variables:**  
 PANTHEON_EMAIL: This should be the email of either your account or another account that also has access to the Pantheon project you just set up.  
-PANTHEON_PASSWORD: This should be the email of either your account or another account that also has access to the Pantheon project you just set up.  
+PANTHEON_PASSWORD: This should be the password of either your account or another account that also has access to the Pantheon project you just set up.  
 PANTHEON_CODE This should be the repository URL for the project that you created on Pantheon, ending in `.git`. You can get to this by clicking on "Connection Info" over at Pantheon. Note that when you copy the repository, it will have the name of your site appended to it after `.git`. Remove that bit.  
 
 **Note** that my instructions above have you deploy with your Pantheon user account. If you work on a team or for a dev shop, you should consider creating a separate user that has access to your sites that you use only for deployment.

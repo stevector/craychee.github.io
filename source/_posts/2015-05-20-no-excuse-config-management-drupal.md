@@ -12,7 +12,7 @@ categories:
 description: You have run out of excuses for not implementing a Continuous Integration process. I will give you everything you need to automate your system and drupal build, automate tests and automate deployment. We start today with the basics: getting your system into a versioned, distributable, known-state.
 ---
 
-**UPDATE** [Jeff Geerling](http://jeffgeerling.com/) is offering a coupon for 50% off the recommended price for his recently published book *Ansible for DevOps: Server and configuration management for humans* to reader's of this series who want to learn more about Ansible: http://leanpub.com/ansible-for-devops/c/zDAUa4QMP1CL. If I do my job right, that will be everyone.
+**UPDATE** [Jeff Geerling](http://jeffgeerling.com/) is offering a coupon for 50% off the recommended price for his recently published book *Ansible for DevOps: Server and configuration management for humans* to reader's of this series who want to learn more about Ansible: [http://leanpub.com/ansible-for-devops/c/zDAUa4QMP1CL)](http://leanpub.com/ansible-for-devops/c/zDAUa4QMP1CL). If I do my job right, that will be everyone.
 
 Building your Drupal project in a known-state is the foundation of your Continuous Integration process.  You want to write and execute tests---and you should!--but your tests won't mean anything if you cannot define and build inside a known-state. Get your system under control first, then we will talk about getting your Drupal application under control.
 
