@@ -1,0 +1,58 @@
+// 
+// TYPOGRAPHY
+// --------------------------------------------------
+
+
+//
+// List of all supported @font-pairing values
+// -------------------------------------------------
+// 1  @font-pairing: sans;
+// 4  @font-pairing: serif;
+// 
+
+.typography(sans) {
+  @import 'pairing-sans.less';
+}
+.typography(serif) {
+  @import 'pairing-serif.less';
+}
+.typography(@font-pairing);
+
+
+//
+// Base type rules
+// -------------------------------------------------
+  
+@font-size-base:          @pairing-font-size-base;  // was 16px;
+@font-size-large:         @pairing-font-size-large;  // was ceil(@font-size-base * 1.25);
+@font-size-small:         @pairing-font-size-small;  // was ceil(@font-size-base * 0.85);
+@line-height-base:        1.5;
+@line-height-computed:    floor(@font-size-base * @line-height-base); // was ~24px
+
+.text-font-family {
+  font-family: @text-font-family;
+}
+.display-font-family {
+  font-family: @display-font-family;
+}
+body {
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+}
+h1, h2 {
+  line-height: @headline-line-height;
+}
+h3,h4,h5,h6,
+.lead {
+  line-height: @line-height-base;
+}
+strong, b {
+  .bold-weight();
+}
+strong em,
+em strong {
+  .bold-italic();
+}
+em {
+  .normal-italic();
+}

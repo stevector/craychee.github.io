@@ -1,0 +1,42 @@
+// 
+// Icon & Passage Module
+// --------------------------------------------------
+
+.icon-passage {
+  .module-padding();
+  
+  .icon {
+    text-align: center;
+  }
+    
+  .passage {
+    padding-top: 20px;
+    
+    h1,h2,h3,h4,h5 {
+      text-align: center;
+    }
+    
+    h1:first-child,
+    h2:first-child,
+    h3:first-child,
+    h4:first-child,
+    h5:first-child {
+      margin-top: 0;
+    }
+  }
+  .row {
+    margin-top: @base-module-padding - 20px; // subtract .passage padding-top for consistent spacing
+  }
+  .row:first-child {
+    margin-top: 0;
+  }
+  
+  @media (min-width: @screen-tablet) {
+    .passage {
+      h1,h2,h3,h4,h5 {
+        text-align: left;
+      }
+    }
+  }
+  
+}

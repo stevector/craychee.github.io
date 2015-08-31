@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>No Excuses Part V: Automated Deployment | Blog of Michelle Krejci</title>
+	<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="In the last part of our No Excuses series, we are going to automate our deployment.">
+<link rel="alternate" type="application/rss+xml" title="Blog of Michelle Krejci Feed" href="/rss.xml" />
+
+<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pygments.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/highlight/default.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@dev_meshev">
+<meta name="twitter:title" content="No Excuses Part V: Automated Deployment">
+<meta name="twitter:description" content="In the last part of our No Excuses series, we are going to automate our deployment.">
+<meta name="twitter:creator" content="@dev_meshev">
+<meta name="twitter:image:src" content="http://craychee.io/img/michelle.jpg">
+<meta name="twitter:domain" content="craychee.io">
+
+<meta property="og:type" content="blog">
+<meta property="og:site_name" content="Blog of Michelle Krejci">
+<meta property="og:url" content="/blog/2015/08/08/no-excuses-part5-deployment">
+<meta property="og:title" content="No Excuses Part V: Automated Deployment">
+<meta property="og:image" content="http://craycheeio/img/michelle.jpg">
+</head>
+<body>
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about-craychee/">About</a></li>
+                <li><a href="mailto:michelle@craychee.io?Subject=Your blog"><img alt="Email Craychee" src="/img/icon_contact.png" /></a></li>
+                <li><a href="http://twitter.com/dev_meshev"><img alt="Craychee's Twitter Account'" src="/img/icon_twitter.png" /></a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<article>
+
+<div class="section blurred-lines">
+    <div class="container">
+
+        <div class="page-header">
+        <h1 class="textfill"><span>No Excuses Part V: Automated Deployment</span></h1>                </div>
+
+    </div>
+</div>
+
+<div class="container">
+
+<div class="entry-content">
+<p><strong>NOTE</strong> This post is the conclusion of a series that included <a href="/blog/2015/05/20/no-excuse-config-management-drupal">No Excuses Part I</a>, <a href="/blog/2015/07/29/no-excuses-part2-drupal-config">No Excuses Part II</a>, <a href="http://craychee.io/blog/2015/08/01/no-excuses-part3-composer/">No Excuses Part III</a>, and <a href="http://craychee.io/blog/2015/08/04/no-excuses-part4-testing/">No Excuses Part IV</a>.</p>
+
+<p>You're not legit until the only thing that's deploying your code is a CI server.</p>
+
+<p>In this the last part of our series we are going to put all of our work making our build executable and repeatable and testable to its fullest fruition: with automated deployment.</p>
+
+<h3 id="step-one%3A-create-a-pantheon-site.">Step One: Create a Pantheon site.</h3>
+
+<p>Head over to <a href="https://pantheon.io/">Pantheon</a> and create a free account if you don't have one.</p>
+
+<p>Once you have an account, create a site by instantiated a Drupal 7 from scratch. Don't overthink it. We just need the database to be generated. (There must be another way around this but this is the best way that I have found to instantiate a site on Pantheon where what I need is a database instance and a codebase.)</p>
+
+<p>When your new site is set up and you are taken to the dashboard for the new project, make sure that you set <code>Connection Mode</code> to "git".</p>
+
+<h3 id="step-two%3A-generate-ssh-key">Step Two: Generate SSH Key</h3>
+
+<p>We are going to create an ssh key just for deployment. We will put the private key on circleCI and the public key on Pantheon. Then those two can talk it out.</p>
+
+<p>From the command line, run <code>ssh-keygen</code>. Don't save the file into <code>.ssh</code>. You can call it whatever you would like. I will call mine <code>deploy_key</code>.</p>
+
+<p><strong>Do not</strong> create a passphrase.</p>
+
+<p>On Pantheon, go to <em>My Dashboard</em> >> <em>Account</em> >> <em>SSH Keys</em> and save your ssh key ending in <code>.pub</code>. Over on CircleCI, go to <em>Settings</em> >> <em>Permissions</em> >> <em>SSH Permissions</em> and add your private key (the one that does not end in .pub).</p>
+
+<p>You are all set up for the two to talk to each other. You can delete the ssh keys on your local machine.</p>
+
+<h3 id="step-three%3A-define-what-should-go-on-production-and-what-shouldn%27t">Step Three: Define what should go on production and what shouldn't</h3>
+
+<p>Since we are going to deploy (and <em>only</em> deploy) the code that belongs on production to Pantheon, we need to separate out code that shouldn't be on production into Composer's <code>require-dev</code> section.</p>
+
+<p>For example, I don't need Drush or the Drupal Behat Extension on production so my <code>composer.json</code> will look like:</p>
+
+<pre><code class="json">[...]
+    "require": {
+        "pantheon-systems/drops-7": "7.38",
+        "craychee/rootcanal": "dev-master",
+        "drupal/features": "~7.2"
+    },
+    "require-dev": {
+        "drush/drush": "7.*",
+        "drupal/drupal-extension": "~3.0"
+    },
+[...]
+</code></pre>
+
+<h3 id="step-four%3A-add-custom-variables-to-circleci">Step Four: Add Custom Variables to CircleCi</h3>
+
+<p>Over on CircleCI, go to <em>Settings</em> >> <em>Tweaks</em> >> <em>Environment variables</em>.</p>
+
+<p><img src="/img/circleci_custom_variables.jpg" alt="CircleCI Environment Variable screenshot" /></p>
+
+<p><strong>Create and Save the following variables:</strong><br />
+PANTHEON_EMAIL: This should be the email of either your account or another account that also has access to the Pantheon project you just set up.<br />
+PANTHEON_PASSWORD: This should be the password of either your account or another account that also has access to the Pantheon project you just set up.<br />
+PANTHEON_CODE This should be the repository URL for the project that you created on Pantheon, ending in <code>.git</code>. You can get to this by clicking on "Connection Info" over at Pantheon. Note that when you copy the repository, it will have the name of your site appended to it after <code>.git</code>. Remove that bit.</p>
+
+<p><strong>Note</strong> that my instructions above have you deploy with your Pantheon user account. If you work on a team or for a dev shop, you should consider creating a separate user that has access to your sites that you use only for deployment.</p>
+
+<h3 id="step-five%3A-add-a-deployment-script">Step Five: Add a deployment script</h3>
+
+<p>Inside the <code>bin</code> directory, create a file called <code>deploy</code> and add these contents:</p>
+
+<pre><code class="sh">#!/bin/bash
+
+set -e
+
+# Get Pantheon's Command Line Tool, terminus.
+sudo curl https://github.com/pantheon-systems/cli/releases/download/0.5.5/terminus.phar -L -o /usr/local/bin/terminus &amp;&amp; sudo chmod +x /usr/local/bin/terminus
+
+# Log into terminus.
+terminus auth login $PANTHEON_EMAIL --password=$PANTHEON_PASSWORD
+
+# Clone deployment repository.
+expect &lt;&lt;delim
+  set timeout 60
+  eval spawn git clone $PANTHEON_CODE pantheon
+  set prompt ":|#|\\\$"
+  interact -o -nobuffer -re $prompt return
+  send "$PANTHEON_PASSWORD\r"
+expect eof
+delim
+
+# Set variables
+path=$(dirname "$0")
+base=$(cd $path/.. &amp;&amp; pwd)
+pantheon=$base/pantheon
+git="( $base/pantheon &amp;&amp; git $git_flags)"
+
+# Build the deployment artifact.
+sudo rm -f $base/cnf/settings.php
+sudo mv $base/cnf/pantheon.settings.php $base/cnf/settings.php
+
+# Use this bit only if you are using my method of using Composer.
+$base/bin/rootcanal --prod
+
+# Add deployment artifact to the repository.
+rm -Rf $pantheon/*
+mv $base/www/* $pantheon/
+
+# configure git env
+git config --global user.email $PANTHEON_EMAIL
+git config --global user.name $CIRCLE_PROJECT_USERNAME
+
+# checkout publish branch
+(cd $pantheon ; git checkout -b publish)
+(cd $pantheon ; git branch -D master)
+(cd $pantheon ; git checkout -b master)
+
+# commit build
+(cd $pantheon ; git add -Af)
+(cd $pantheon ; git commit -m "Successful verified merge of $CIRCLE_PROJECT_USERNAME $CIRCLE_SHA1.")
+
+# push to Pantheon
+(cd $pantheon ; git push -f origin master)
+</code></pre>
+
+<p>This script gets <a href="https://github.com/pantheon-systems/cli">terminus</a>, Pantheon's command line tool, gets Pantheon's repository, rebuilds the Drupal root by coping everything over (use only if you are building Drupal with Composer using my suggested method, per <a href="blog/2015/08/01/no-excuses-part3-composer/">Part III</a>), and then forceably commits only the Drupal root (not any of your provisioning or your <code>Vagrantfile</code>) to its repository. Your production repository will be a separate repository that is just an <em>artifact</em> of development.</p>
+
+<p>Make sure that you update your <code>.gitignore</code> (if you are ignoring any executables in <code>bin</code>) so that you can ensure that this file is saved to your repository.</p>
+
+<p>Now create a file called <code>pantheon.settings.php</code> and save it inside of <code>cnf</code> with the following contents:</p>
+
+<pre><code class="php">&lt;?php
+require_once DRUPAL_ROOT . '/sites/default/vendor/autoload.php';
+</code></pre>
+
+<h3 id="step-six%3A-add-deployment-to-circleci">Step Six: Add Deployment to CircleCI</h3>
+
+<p>Add this to the bottom of your <code>circle.yml</code>:</p>
+
+<pre><code class="yml">[...]
+
+deployment:
+  pantheon:
+    branch: master
+    commands:
+      - build/install.sh
+      - composer install --no-dev --no-scripts
+      - bin/deploy
+      - mysqldump -u ubuntu circle_test &gt; pantheon.sql
+      - terminus drush sqlc &lt; pantheon.sql --site=no-excuses --env=dev
+      - terminus site clear-caches --site=no-excuses --env=dev
+</code></pre>
+
+<p>Where I am passing the attribute <code>--site=no-excuses</code>, you should replace it with your Pantheon's site name.</p>
+
+<p>What this bit tells circleCI is that on a successful merge to master (all tests pass), rebuild composer's vendor leaving out projects that are only needed for dev (like drush and behat), rebuild the Drupal project (in case there is any content or users remaining from the Behat tests, which can happen), commit and push only the resulting Drupal root to Pantheon's repository that is tagged with the hash of the development commit that builds it, and then push the database to Pantheon.</p>
+
+<p>And with that, you have defined your deployment and the conditions that a deployment will occur, made it executable, and automated it.</p>
+
+<p>Congratulations. You have achieved the gold standard of a development workflow.</p>
+
+<p><strong>Want to make sure you followed all of my instructions?</strong>
+You can view/fork my no-excuses-example <a href="https://github.com/craychee/no-excuses-Drupal/tree/0.5.0">here</a>.</p>
+
+<h4 id="great-...now-what%3F">Great ...Now what?</h4>
+
+<p>At the end of this series, you have been introduced to a lot of tools that can be iterated on endlessly. You could go back to Part I, where we made our system explicit, and ensure that your environment has more of the tools that you need. Perhaps instead of a bash script that makes your build explicit (as we did in Part II), you want to use <a href="http://gulpjs.com/">Gulp</a> or <a href="http://gruntjs.com/">Grunt</a> or <a href="http://drupalconsole.com/">Drupal Console</a> to manage your build. Have Ansible install the requirements for the project of your choice.</p>
+
+<p>There is always more that you can do with testing. Consider taking on not just a test driven development approach but a behavior driven development approach (see Dan North's seminal <a href="http://dannorth.net/introducing-bdd/">blog post</a> to help understand the distinction) using Behat. Imagine if all of your features were built with human readable tests. Imagine running those tests throughout the project's lifecycle. You can do that now. You have the tools and the automation.</p>
+
+<p>Once you have good system test coverage, build your custom code with unit tests (I highly recommend <a href="http://www.phpspec.net/en/latest/">phpspec</a>). Add accessibility tests with tools like <a href="http://a11yproject.com/">a11y</a>. Add visual regression testing with <a href="https://github.com/BBC-News/wraith">Wraith</a>. Find tools that help you define done, get you to done, and ensure that you stay done.</p>
+
+<p>You may (and almost certainly will) find that this way of working is so much better that you will want to convert existing projects into this model. Since we have abstracted the deployment process into a separate repository from the production repository, it will be easier for you to add this tooling around an existing repository that can then only contain the resulting product of your process.</p>
+
+<p>I will be writing more about these and other topics in the coming months. Stayed tuned and tell me what you are working on or what you would like to see.</p>
+
+</div>
+
+</div><!-- .container -->
+
+</article>
+
+<div class="container">
+
+<div class="entry-content">
+<h3>What do you think?</h3>
+<p>I'd love to hear from you. <a href="mailto:michelle@craychee.io?Subject=Your blog">Contact Michelle</a>.</p>
+</div>
+
+</div><!-- .container -->
+
+
+<footer class="footer inverse">
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 text-center"><small>Powered by <a href="https://sculpin.io/">Sculpin</a></small></div>
+    </div>
+</div>
+
+</footer>
+
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-61998846-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/js/augment.min.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/respond.min.js"></script>
+<script src="/assets/js/jquery.textfill.min.js"></script>
+<script src="/assets/js/highlight.pack.js"></script>
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+$(function(){
+    resizeTextFill();
+    $( window ).resize( resizeTextFill );
+});
+function resizeTextFill()
+{
+    $('.textfill').textfill({ maxFontPixels: 70, widthOnly: true });
+}
+</script>
+</body>
+</html>

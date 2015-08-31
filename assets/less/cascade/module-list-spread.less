@@ -1,0 +1,51 @@
+// 
+// List Spread Module
+// --------------------------------------------------
+
+.list-spread-narrow {
+  .module-padding();
+  h2, h3, h4 {
+    margin-top: 0;
+    line-height: 1em;
+    text-align: center;
+  }
+  ul {
+      .list-unstyled();
+  }
+  .panel1,
+  .panel2 {
+    text-align: center;
+  }
+  .panel2 {
+    h2, h3, h4 {
+      margin-top: 50px;
+    }
+  }
+}
+
+.list-spread-narrow {
+
+  @media (min-width: @screen-tablet) {
+    h2, h3, h4 {
+      text-align: center;
+    }
+    .panel1,
+    .panel2 {
+      text-align: left;
+    }
+    .panel2 {
+      h2, h3, h4 {
+        margin-top: 0;
+      }
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 40px;
+    }
+  }
+  @media (min-width: @screen-desktop) {
+    h2, h3, h4 {
+      text-align: left;
+    }
+  }
+}

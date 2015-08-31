@@ -1,0 +1,37 @@
+// 
+// Icon Grid Module
+// --------------------------------------------------
+
+.icon-grid {
+  .module-padding();
+  
+  .icon-item {
+    text-align: center;
+    // mobile spacing
+    padding: 25px 50px;
+    
+    h2,h3,h4,h5,p {
+      text-align: center;
+      line-height: 1.1em;
+      margin: 0 0 10px;
+    }
+    i.fa {
+      display: inline-block;
+      margin: 0 auto 20px;
+    }
+  }
+  
+  @media (min-width: @screen-tablet) {
+    // spacing for larger screens is set on row for convenience.
+    .row {
+      padding-top: @base-module-padding;
+    }
+    .row:first-child {
+      padding-top: 0;
+    }
+    .icon-item {
+      padding: 0 50px;
+    }
+  }
+  
+}

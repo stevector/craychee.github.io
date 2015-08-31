@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>No Excuses Part II: Making your Drupal Build explicit and executable | Blog of Michelle Krejci</title>
+	<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="We continue to get you started with a Continuous Integration process by getting your Drupal build locked down so you can build it over and over again.">
+<link rel="alternate" type="application/rss+xml" title="Blog of Michelle Krejci Feed" href="/rss.xml" />
+
+<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pygments.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/highlight/default.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@dev_meshev">
+<meta name="twitter:title" content="No Excuses Part II: Making your Drupal Build explicit and executable">
+<meta name="twitter:description" content="We continue to get you started with a Continuous Integration process by getting your Drupal build locked down so you can build it over and over again.">
+<meta name="twitter:creator" content="@dev_meshev">
+<meta name="twitter:image:src" content="http://craychee.io/img/michelle.jpg">
+<meta name="twitter:domain" content="craychee.io">
+
+<meta property="og:type" content="blog">
+<meta property="og:site_name" content="Blog of Michelle Krejci">
+<meta property="og:url" content="/blog/2015/07/29/no-excuses-part2-drupal-config">
+<meta property="og:title" content="No Excuses Part II: Making your Drupal Build explicit and executable">
+<meta property="og:image" content="http://craycheeio/img/michelle.jpg">
+</head>
+<body>
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about-craychee/">About</a></li>
+                <li><a href="mailto:michelle@craychee.io?Subject=Your blog"><img alt="Email Craychee" src="/img/icon_contact.png" /></a></li>
+                <li><a href="http://twitter.com/dev_meshev"><img alt="Craychee's Twitter Account'" src="/img/icon_twitter.png" /></a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<article>
+
+<div class="section blurred-lines">
+    <div class="container">
+
+        <div class="page-header">
+        <h1 class="textfill"><span>No Excuses Part II: Making your Drupal Build explicit and executable</span></h1>                </div>
+
+    </div>
+</div>
+
+<div class="container">
+
+<div class="entry-content">
+<p><strong>NOTE</strong> This post is a continuation of <a href="/blog/2015/05/20/no-excuse-config-management-drupal">No Excuses Part I</a>.</p>
+
+<p>SSH into your newly built machine by running <code>vagrant ssh</code>. Then navigate to <code>/vagrant/www</code> and run <code>drush si --db-url=mysql://default:default@localhost/default -y</code> (substituting whatever you set the user/password/database config to in Part I).</p>
+
+<p>That was fun. Let's not force ourselves to remember to do that all the time though.</p>
+
+<p>In order for this to be executable over and over in different environments and be able to accommodate the build as it gets more complicated, we need to do the following:</p>
+
+<ol>
+<li>Set up a <code>settings.php</code> for a local build (and discuss a good place to put this).</li>
+<li>Create a bash script of drush that can be executed outside of the Drupal root.</li>
+<li>Add this script to the <code>Vagrantfile</code> so that it runs on the build.</li>
+</ol>
+
+<h3 id="step-1.-get-your-settings-sorted.">Step 1. Get your settings sorted.</h3>
+
+<p>One of the benefits of working a known state is that connecting to the database will be the same for everyone. We can actually share a local <code>settings.php</code> without anyone else needing to think about it.</p>
+
+<p>Here is a <code>settings.php</code> that will connect with the environment we provisioned with ansible:</p>
+
+<pre><code class="php">&lt;?php
+$db_url='mysql://default:default@localhost/default';
+$databases=array('default' =&gt; array(
+    'default' =&gt; array(
+        'database' =&gt; 'default',
+        'username' =&gt; 'default',
+        'password' =&gt; 'default',
+        'driver' =&gt; 'mysql',
+        'host' =&gt; 'localhost',
+    ),
+),);
+</code></pre>
+
+<p>(Your database/username/password might be different depending on how you configured mariaDB. If you forgot, open up <code>ansible/vars/all.yml</code> and check.)</p>
+
+<p>This is going to work great locally but let's also think through the different environments that we are going to be building Drupal in.</p>
+
+<p>We know that we need at least <strong>test environment</strong> (like <a href="https://travis-ci.com/">travisCI</a> or <a href="https://circleci.com/about">circleCI</a> to test our deployment strategy and run our test suite) and a <strong>production environment</strong>. There are probably at least two more enivonments in between (e.g., <strong>development</strong>, for a stakeholders to view progress and <strong>staging</strong> for content entry or final approval). We aren't going to talk about those environments today but we will keep them in mind for how we set up our build script.</p>
+
+<p>Let's create a new directory inside the project root called <code>cnf</code> to manage all such environment-specific configuration as we create them. Move the <code>settings.php</code> we just created into the <code>cnf</code> directory. We will rename it later but for now, let's move on to creating a script that will add this <code>settings.php</code> to our project and then bootstrap Drupal.</p>
+
+<h3 id="step-2.-create-a-bash-script.">Step 2. Create a bash script.</h3>
+
+<p>Create a file called <code>install.sh</code>. Open it and add a shebang and <code>set -e</code> (to exit on an error) at the top.</p>
+
+<pre><code class="sh">#!/bin/bash
+
+set -e
+</code></pre>
+
+<p>Let's not add this to the project root but a directory of its own, like we did with settings. Create a directory called <code>build</code> and move <code>install.sh</code> there.</p>
+
+<p>Remember that we ultimately want a site install to happen when we run our script. We started by manually running <code>drush si</code> and passed through database parameters. We created a settings file but we need to get it into the <code>sites/default/</code> directory of our Drupal and then pipe drush commands to the project.</p>
+
+<p>In order to do this, we need to give bash some information: where we are, where the project is relative to where we are, and what to do with our drush commands. That looks like this:</p>
+
+<pre><code class="sh">#!/bin/bash
+
+set -e
+
+path=$(dirname "$0")
+base=$(cd $path/.. &amp;&amp; pwd)
+drush="drush $drush_flags -y -r $base/www"
+</code></pre>
+
+<p>Now when you run <code>install.sh</code>, <code>$path</code> is assigned the value of the location of the path of the bash script relative to where you ran it from. <code>$base</code> is one directory down from there, which is the project root. Finally, we are telling bash that when we use <code>$drush</code>, all arguments that follow are <code>$drush flags</code> and we always pass <code>-y</code> flag after those arguments and execute those commands from inside our project (<code>$base</code>)/www directory (where we keep our Drupal root).</p>
+
+<p>Now that we taught bash those variables, we can do what we need to do: copy our <code>settings.php</code> into Drupal and execute a drush command.</p>
+
+<pre><code class="sh">#!/bin/bash
+
+set -e
+
+path=$(dirname "$0")
+base=$(cd $path/.. &amp;&amp; pwd)
+drush="drush $drush_flags -y -r $base/www"
+
+chmod -R +w $base/www/sites/default
+chmod -R +w $base/cnf
+
+echo "Symlink settings.php into our Drupal."
+ln -sf $base/cnf/settings.php $base/www/sites/default/
+echo "Installing Drupal like a boss."
+$drush si --site-name=no-excuses --account-pass=admin
+</code></pre>
+
+<p>This is what we did: made the source and the destination of our settings config writeable (Drupal has an annoying habit of setting permissions for you), symlinked <code>settings.php</code> into where it belongs, and then ran <code>drush si</code> with a few variables passed through to make our lives easier.</p>
+
+<p>At this point you should be able reliably build your Drupal project again and again with this script. Navigate to <code>192.168.33.99</code> and log in with admin/admin to see the result.</p>
+
+<h3 id="step-3.-make-this-script-run-when-vagrant-builds.">Step 3. Make this script run when Vagrant builds.</h3>
+
+<p>Our goal now is to have the Drupal build when we run <code>vagrant up</code> so that when cloning the project, assuming the developer has met the system requirements (e.g. VirtualBox, Ansible, vagrant), this is all that they need to run to get start developing where you left off. Everyone building the project the same way, over and over again, speeds up development and reduces human error.</p>
+
+<p>We have one script that we need to run: <code>install.sh</code>. Adding it to the bottom of our <code>Vagrantfile</code> looks like this:</p>
+
+<pre><code class="sh">  config.vm.provision :shell, inline: &lt;&lt;SCRIPT
+  su vagrant -c 'cd /vagrant &amp;&amp; build/install.sh;'
+SCRIPT
+</code></pre>
+
+<p>Done.</p>
+
+<p>Our <code>settings.php</code> strategy will need to accommodate different <code>settings.php</code>, depending on the environment. We want the same build script to build the project the same way no matter what the environment.</p>
+
+<p>There are a number of ways to handle environment-specific config. This is how we are going to do it:</p>
+
+<ol>
+<li>Rename the <code>settings.php</code> inside <code>cnf</code> to <code>local.settings.php</code>.</li>
+<li>Edit your <code>.gitignore</code> and add <code>settings.php</code>. (While you are at it, make sure <code>.vagrant</code> is in the <code>.gitignore</code> too.)</li>
+<li>Add this to our <code>Vagrantfile</code> config:</li>
+</ol>
+
+<pre><code class="sh">  config.vm.provision :shell, inline: &lt;&lt;SCRIPT
+  if [[ ! -f /vagrant/cnf/settings.php ]]; then
+  cp /vagrant/cnf/local.settings.php /vagrant/cnf/settings.php
+  fi
+  su vagrant -c 'cd /vagrant &amp;&amp; build/install.sh;'
+SCRIPT
+</code></pre>
+
+<p>Great. Now, when vagrant provisions, it will check if there is a <code>settings.php</code> and copy the local settings if there isn't.</p>
+
+<p>Repeatable, maintainable, executable Drupal build: check.</p>
+
+<p><strong>Want to make sure you followed all of my instructions?</strong>
+You can view/fork my no-excuses-example <a href="https://github.com/craychee/no-excuses-Drupal/tree/0.2.0">here</a>. I feel confident that you figured it out.</p>
+
+<h4 id="great-...now-what%3F">Great ...Now what?</h4>
+
+<p>You will presumably do other things with Drupal besides run install. Your script might start to look like:</p>
+
+<pre><code class="sh">#!/bin/bash
+
+set -e
+
+path=$(dirname "$0")
+base=$(cd $path/.. &amp;&amp; pwd)
+drush="drush $drush_flags -y -r $base/www"
+
+chmod -R +w $base/www/sites/default
+chmod -R +w $base/cnf
+
+echo "Symlink settings.php into our Drupal."
+ln -sf $base/cnf/settings.php $base/www/sites/default/
+echo "Installing Drupal like a boss."
+$drush si --site-name=no-excuses --account-pass=admin
+echo "Install high level module containing all project dependencies."
+$drush en my_module_to_rule_all_modules
+$drush fra
+$drush updb
+$drush cc all
+</code></pre>
+
+<p>Note that you can always just directly run this script (by running <code>build/install.sh</code>) from inside of the vagrant box any time you would like. The more you do this, the better. If you want to trigger vagrant to do it, you can run <code>vagrant provision</code>, which will run both the ansible and the shell commands, or <code>vagrant provision --provision-with shell</code> to just run the install. I think you will find that your workflow will have you building the environment at the start of the day but just running the build script (<code>install.sh</code>) directly many times over daily.</p>
+
+<p>Now that we have our environment and our project locked down in a known state, we can finally add tests. BUT before we do that, we are going to take a quick detour and better manage our Drupal.</p>
+
+<p>Up Next <strong><a href="/blog/2015/08/01/no-excuses-part3-composer/">No Excuses Part III: Building Drupal with Composer</a></strong></p>
+
+</div>
+
+</div><!-- .container -->
+
+</article>
+
+<div class="container">
+
+<div class="entry-content">
+<h3>What do you think?</h3>
+<p>I'd love to hear from you. <a href="mailto:michelle@craychee.io?Subject=Your blog">Contact Michelle</a>.</p>
+</div>
+
+</div><!-- .container -->
+
+
+<footer class="footer inverse">
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 text-center"><small>Powered by <a href="https://sculpin.io/">Sculpin</a></small></div>
+    </div>
+</div>
+
+</footer>
+
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-61998846-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/js/augment.min.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/respond.min.js"></script>
+<script src="/assets/js/jquery.textfill.min.js"></script>
+<script src="/assets/js/highlight.pack.js"></script>
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+$(function(){
+    resizeTextFill();
+    $( window ).resize( resizeTextFill );
+});
+function resizeTextFill()
+{
+    $('.textfill').textfill({ maxFontPixels: 70, widthOnly: true });
+}
+</script>
+</body>
+</html>

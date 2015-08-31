@@ -1,0 +1,31 @@
+// 
+// FAQ Module
+// --------------------------------------------------
+
+.faq {
+  .module-padding();
+  
+  .container {
+    >h2, >h3, >h4, >.title {
+      text-align: center;
+      margin-bottom: 0px;
+    }
+  }
+  
+  // place padding on col div instead of row for responsiveness
+  .row div {
+    padding-top: @base-module-padding;
+  }
+  
+  // remove top padding for first col in first row for mobile when no header
+  .row:first-child div:first-child {
+    padding-top: 0;
+  }
+  
+  @media (min-width: @screen-tablet) {
+    //when no header, remove top padding on first row's cols
+    .row:first-child div {
+      padding-top: 0;
+    }
+  }
+}

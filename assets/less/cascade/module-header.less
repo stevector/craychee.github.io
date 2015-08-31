@@ -1,0 +1,161 @@
+// 
+// Header Module
+// --------------------------------------------------
+
+// Simple Variation
+// -------------------------
+
+.header-simple {
+  .module-short-padding();
+  
+  .tagline + .btn,
+  .btn-nav {
+   margin: 5px 0 0;
+  }
+  
+  h1,h2,h3,h4,h5,h6,
+  .tagline {
+    margin: 0;
+  }
+  @media (min-width: @screen-tablet) {
+    .container {
+      position: relative;
+    }
+    .tagline + .btn,
+    .btn-nav {
+      margin: 0;
+      position: absolute;
+      right: 15px;
+      top: 12px;
+    }
+    .tagline + .btn.btn-sm,
+    .btn-nav.btn-group-sm {
+      top: 13px;
+    }
+    
+    .tagline + .btn.btn-lg,
+    .btn-group.btn-group-lg {
+      top: 6px;
+    }
+  }
+  @media (min-width: @screen-desktop) {
+    .logo {
+      line-height: 1em;
+      margin: 0;
+      position: absolute;
+      left: 15px;
+      top: 0;
+    }
+    .tagline {
+      margin: 5px 0 0;
+      text-align: center;
+    }
+    .tagline + .btn,
+    .btn-nav {
+      top: -4px;
+    }
+    .tagline + .btn.btn-sm,
+    .btn-nav.btn-group-sm {
+      top: -2px;
+    }
+    .tagline + .btn.btn-lg,
+    .btn-nav.btn-group-lg {
+      top: -8px;
+    }
+    
+  }
+  
+}
+
+// Nav Variation
+// -------------------------
+
+.header-nav {
+  .module-short-padding();
+  
+  .nav {
+    font-size: @pairing-font-size-small;
+    line-height: 1em;
+    
+    li {
+      margin-top: 10px;
+    }
+  }
+  
+  @media (min-width: @screen-tablet) {
+    .logo {
+      .pull-left();
+    }
+    
+    .nav {
+      .pull-right();
+      li {
+       margin-top: 0; 
+      }
+    }
+  }
+  
+}
+
+// Photo Variation
+// -------------------------
+
+.header-photo {
+  .module-padding();
+  position: relative;
+  background-color: transparent !important;
+  overflow: hidden;
+  .graphicbox();
+  
+  .logo {
+    margin-bottom: 10px;
+  }
+  
+  @media (min-width: @screen-tablet) {
+    .logo {
+      margin-bottom: 0;
+    }
+    .container {
+      position: relative;
+    }
+    .logo + .btn,
+    .btn-nav {
+      margin: 0;
+      position: absolute;
+      right: 15px;
+      top: -2px;
+    }
+    .logo + .btn.btn-sm,
+    .btn-nav.btn-group-sm {
+      top: 0px;
+    }
+    
+    .logo + .btn.btn-lg,
+    .btn-group.btn-group-lg {
+      top: -8px;
+    }
+  }
+  
+
+}
+
+// Reflect the background image to create a seamless, wider background.
+// All graphicbox background images are 1000px wide, so:
+// offset the reflection by 1000px to reflect that width.
+.header-photo:before {
+  .graphicbox();
+  content: "";
+	position: absolute;
+	width: 1000px;
+	height: 100%;
+	top: 0;
+	left: 1000px;
+	z-index: -1;
+  /* adapted from Chris Coyier's technique at http://css-tricks.com/snippets/css/flip-an-image/ */
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}

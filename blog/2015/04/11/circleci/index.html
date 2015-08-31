@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Using CircleCI to test Drupal | Blog of Michelle Krejci</title>
+	<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A tutorial for building and testing Drupal on CircleCI.">
+<link rel="alternate" type="application/rss+xml" title="Blog of Michelle Krejci Feed" href="/rss.xml" />
+
+<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pygments.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/highlight/default.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@dev_meshev">
+<meta name="twitter:title" content="Using CircleCI to test Drupal">
+<meta name="twitter:description" content="A tutorial for building and testing Drupal on CircleCI.">
+<meta name="twitter:creator" content="@dev_meshev">
+<meta name="twitter:image:src" content="http://craychee.io/img/michelle.jpg">
+<meta name="twitter:domain" content="craychee.io">
+
+<meta property="og:type" content="blog">
+<meta property="og:site_name" content="Blog of Michelle Krejci">
+<meta property="og:url" content="/blog/2015/04/11/circleci">
+<meta property="og:title" content="Using CircleCI to test Drupal">
+<meta property="og:image" content="http://craycheeio/img/michelle.jpg">
+</head>
+<body>
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about-craychee/">About</a></li>
+                <li><a href="mailto:michelle@craychee.io?Subject=Your blog"><img alt="Email Craychee" src="/img/icon_contact.png" /></a></li>
+                <li><a href="http://twitter.com/dev_meshev"><img alt="Craychee's Twitter Account'" src="/img/icon_twitter.png" /></a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<article>
+
+<div class="section blurred-lines">
+    <div class="container">
+
+        <div class="page-header">
+        <h1 class="textfill"><span>Using CircleCI to test Drupal</span></h1>                </div>
+
+    </div>
+</div>
+
+<div class="container">
+
+<div class="entry-content">
+<p><a href="https://circleci.com">Circleci</a> is another straight-forward continuous integration and deployment service that integrates easily with github.</p>
+
+<p>Here is what my <code>circle.yml</code> for running my tests against Drupal 7 looks like:</p>
+
+<pre><code>machine:
+  environment:
+    SERVER: your-project.local
+  php:
+    version: 5.5.21
+  hosts:
+    SERVER: 127.0.0.1
+
+dependencies:
+  pre:
+    - cp cnf/circle.conf /etc/apache2/sites-available/default
+    - sudo sed -e "s?%HOME%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+    - sudo sed -e "s?%PROJECT_DIR%?www?g" --in-place /etc/apache2/sites-available/default
+    - sudo sed -e "s?%SERVER%?SERVER?g" --in-place /etc/apache2/sites-available/default
+    - sudo a2enmod rewrite
+    - sudo service apache2 restart
+    - cp cnf/settings.php www/sites/default
+  override:
+    - composer install --prefer-dist
+  post:
+    - sudo chown -R $(whoami):www-data www
+    - build/install.sh
+
+   test:
+      override:
+          - bin/behat -f pretty
+          - cd www &amp;&amp; ../bin/drush fl | grep -qi 'overridden' &amp;&amp; (echo 'Feature override test: fail' &amp;&amp; exit 0) || (echo 'Feature override: pass' &amp;&amp; exit 1)
+</code></pre>
+
+<p>As always, actually reading the <a href="https://circleci.com/docs/configuration">circleci documentation</a> will decrypt most of this for you, including variable names ("machine", "pre", "override", etc.). So with an RTFM error premtively thrown, here nonetheless is roughly what is being accomplished:</p>
+
+<p>At the very top, I am setting some project-specific tunables since I want to reuse essentially same <code>circle.yml</code> for every project. This is a personal preference but has the virtue of allowing me to share my <code>circle.yml</code> with others.</p>
+
+<pre><code class="php">    machine:
+      environment:
+        SERVER: your-project.local
+      php:
+        version: 5.5.21
+      hosts:
+        SERVER: 127.0.0.1
+</code></pre>
+
+<p>I am creating a custom variable called <code>SERVER</code> that corresponds to the localhost alias of my project. After specifying the php requirement for my project, I am establishing this <code>SERVER</code> variable as my host. I refer again to my host when setting up the virtualhost.</p>
+
+<p>Next we have the project setup, the bulk of which is apache2 configuration:</p>
+
+<pre><code class="php">dependencies:
+      pre:
+        - cp cnf/circle.conf /etc/apache2/sites-available/default
+        - sudo sed -e "s?%HOME%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+        - sudo sed -e "s?%PROJECT_DIR%?www?g" --in-place /etc/apache2/sites-available/default
+        - sudo sed -e "s?%SERVER%?SERVER?g" --in-place /etc/apache2/sites-available/default
+        - sudo a2enmod rewrite
+        - sudo service apache2 restart
+</code></pre>
+
+<p>The two most important actions here are setting a virtualhost for your project so that apache2 knows where the Drupal in order to serve it up and the enabling of <code>rewrite</code>, which Drupal needs.</p>
+
+<p>My virtualhost config is stored inside <code>circle.conf</code> within a directory called <code>cnf</code> where it is then copied into apache2's <code>sites-available</code>. Here is what my generic <code>circle.conf</code> looks like, complete with Rewrite configurations:</p>
+
+<pre><code>&lt;VirtualHost *:80&gt;
+    UseCanonicalName Off
+    DocumentRoot %HOME%/%PROJECT_DIR%
+    ServerName %SERVER%
+
+  &lt;Directory %HOME%/*&gt;
+    Options FollowSymLinks
+    AllowOverride None
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule %HOME%/%PROJECT_DIR%/(.*)$ index.php/?q=$1 [L,QSA]
+    Order allow,deny
+    Allow from all
+  &lt;/Directory&gt;
+
+  &lt;Directory /&gt;
+    Options FollowSymLinks
+    AllowOverride None
+  &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>Notice that I am replacing out the placeholders inside <code>circle.yml</code> with tubables that I am setting at the top of the <code>circle.yml</code>. (I am assuming that your drupal root lives inside <code>www</code> of your project root). Of course, all that <code>sudo sed -e</code> replacement is completely unnecessary if you just hard-code in the circleci and your project's directory paths. Again, I have found it easier to use the same virtualhost file for each project and replace the globals.</p>
+
+<p>Next we copy in a <code>settings.php</code> with circleci variables that Drupal can bootstrap:</p>
+
+<pre><code class="php">        - cp cnf/settings.php www/sites/default
+</code></pre>
+
+<p>Here is what my settings.php looks like:</p>
+
+<pre><code>&lt;?php
+
+$databases['default']['default'] = array(
+      'driver' =&gt; 'mysql',
+       'database' =&gt; 'circle_test',
+       'username' =&gt; 'ubuntu',
+       'password' =&gt; '',
+       'host' =&gt; '127.0.0.1',
+       'prefix' =&gt; '',
+       );
+</code></pre>
+
+<p>Next we are installing the project's dependencies with composer:</p>
+
+<pre><code>    - composer install --prefer-dist
+</code></pre>
+
+<p>You will at least need drush to build your project. If your tests are in behat, as mine are, you will need that as well.</p>
+
+<p>Finally, I build my project with a bash script (a series of drush commands inside <code>install.sh</code>), run my behat test suite, and check that there are no features overridden.</p>
+
+<p>Now go forth and make your Drupal build explicit, repeatable, and testable.</p>
+
+</div>
+
+</div><!-- .container -->
+
+</article>
+
+<div class="container">
+
+<div class="entry-content">
+<h3>What do you think?</h3>
+<p>I'd love to hear from you. <a href="mailto:michelle@craychee.io?Subject=Your blog">Contact Michelle</a>.</p>
+</div>
+
+</div><!-- .container -->
+
+
+<footer class="footer inverse">
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 text-center"><small>Powered by <a href="https://sculpin.io/">Sculpin</a></small></div>
+    </div>
+</div>
+
+</footer>
+
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-61998846-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/js/augment.min.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/respond.min.js"></script>
+<script src="/assets/js/jquery.textfill.min.js"></script>
+<script src="/assets/js/highlight.pack.js"></script>
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+$(function(){
+    resizeTextFill();
+    $( window ).resize( resizeTextFill );
+});
+function resizeTextFill()
+{
+    $('.textfill').textfill({ maxFontPixels: 70, widthOnly: true });
+}
+</script>
+</body>
+</html>

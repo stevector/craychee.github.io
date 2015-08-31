@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Introducing the No Excuses Series | Blog of Michelle Krejci</title>
+	<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Introducing the complete 5 part series to make your Drupal workflow modern and sane.">
+<link rel="alternate" type="application/rss+xml" title="Blog of Michelle Krejci Feed" href="/rss.xml" />
+
+<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pygments.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/highlight/default.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@dev_meshev">
+<meta name="twitter:title" content="Introducing the No Excuses Series">
+<meta name="twitter:description" content="Introducing the complete 5 part series to make your Drupal workflow modern and sane.">
+<meta name="twitter:creator" content="@dev_meshev">
+<meta name="twitter:image:src" content="http://craychee.io/img/michelle.jpg">
+<meta name="twitter:domain" content="craychee.io">
+
+<meta property="og:type" content="blog">
+<meta property="og:site_name" content="Blog of Michelle Krejci">
+<meta property="og:url" content="/blog/2015/08/23/no-excuses-introduction">
+<meta property="og:title" content="Introducing the No Excuses Series">
+<meta property="og:image" content="http://craycheeio/img/michelle.jpg">
+</head>
+<body>
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about-craychee/">About</a></li>
+                <li><a href="mailto:michelle@craychee.io?Subject=Your blog"><img alt="Email Craychee" src="/img/icon_contact.png" /></a></li>
+                <li><a href="http://twitter.com/dev_meshev"><img alt="Craychee's Twitter Account'" src="/img/icon_twitter.png" /></a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<article>
+
+<div class="section blurred-lines">
+    <div class="container">
+
+        <div class="page-header">
+        <h1 class="textfill"><span>Introducing the No Excuses Series</span></h1>                </div>
+
+    </div>
+</div>
+
+<div class="container">
+
+<div class="entry-content">
+<p>A few weeks ago I had the pleasure of talking about Drupal and Continuous Integration with Mike Anello, Ted Bowman, and Ryan Price over at <a href="http://drupaleasy.com/podcast/2015/08/drupaleasy-podcast-160-shamed-michelle-krejci-automated-drupal-deployment">DrupalEasy</a>. During that conversation, I maintained that the barrier of entry is now low enough that there is now no excuse for not implementing a continuous integration workflow.</p>
+
+<p>To prove it, I created the No Excuses series. In five parts, I walk through the basics to get a CI workflow set up for your Drupal process.</p>
+
+<p>In this series, I share how to establish a known-state (via ansible and vagrant), how to make your project build explicit and executable (via bash), how to add testing to define and verify a feature's completion (via behat), how to automate the build and the tests with a CI server (via CircleCI), and finally, how to automate the deployment.</p>
+
+<p><strong>Part I: <a href="/blog/2015/05/20/no-excuse-config-management-drupal/">Drupal-optomized Environment Config with (Ph)Ansible and Vagrant</a></strong><br />
+<strong>Part II: <a href="/blog/2015/07/29/no-excuses-part2-drupal-config/">Making your Drupal Build explicit and executable</a></strong><br />
+<strong>Part III: <a href="/blog/2015/08/01/no-excuses-part3-composer/">Build drupal with Composer</a></strong><br />
+<strong>Part IV: <a href="/blog/2015/08/04/no-excuses-part4-testing/">System testing Drupal with a BDD tool (Behat)</a></strong><br />
+<strong>Part V: <a href="/blog/2015/08/08/no-excuses-part5-deployment/">Automated Deployment</a></strong></p>
+
+<p>The series was written to be followed in order but you could, of course, take from it what is most immediately applicable to you.</p>
+
+<p>This series is meant to be the first iteration: the quickest way that I could come up with to get these tools in your hands so that you can start doing what you know you should be doing. I have vague plans to follow-up with an iteration two, where I go back and improve upon everything we have done here, but my experience has also shown me that once developers have the tools and know how to use them, they can improve upon their usage easily themselves.</p>
+
+<p>I would love to know what you think of the series and what you would like to see in a possible feature series. Feel free to reach out to me over <a href="https://twitter.com/dev_meshev">twitter</a> or via email below.</p>
+
+<p><strong>UPDATE</strong> <a href="http://jeffgeerling.com/">Jeff Geerling</a> is offering a coupon for 50% off the recommended price for his recently published book <em>Ansible for DevOps: Server and configuration management for humans</em> to reader's of this series who want to learn more about Ansible: <a href="http://leanpub.com/ansible-for-devops/c/zDAUa4QMP1CL">http://leanpub.com/ansible-for-devops/c/zDAUa4QMP1CL)</a>. If I do my job right, that will be everyone.</p>
+
+</div>
+
+</div><!-- .container -->
+
+</article>
+
+<div class="container">
+
+<div class="entry-content">
+<h3>What do you think?</h3>
+<p>I'd love to hear from you. <a href="mailto:michelle@craychee.io?Subject=Your blog">Contact Michelle</a>.</p>
+</div>
+
+</div><!-- .container -->
+
+
+<footer class="footer inverse">
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 text-center"><small>Powered by <a href="https://sculpin.io/">Sculpin</a></small></div>
+    </div>
+</div>
+
+</footer>
+
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-61998846-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/js/augment.min.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/respond.min.js"></script>
+<script src="/assets/js/jquery.textfill.min.js"></script>
+<script src="/assets/js/highlight.pack.js"></script>
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+$(function(){
+    resizeTextFill();
+    $( window ).resize( resizeTextFill );
+});
+function resizeTextFill()
+{
+    $('.textfill').textfill({ maxFontPixels: 70, widthOnly: true });
+}
+</script>
+</body>
+</html>

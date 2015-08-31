@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>No Excuses Part I: Drupal-optomized Environment Config with (Ph)Ansible and Vagrant | Blog of Michelle Krejci</title>
+	<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="You have run out of excuses for not implementing a Continuous Integration process. I will give you everything you need to automate your system and drupal build, automate tests and automate deployment. We start today with the basics: getting your system into a versioned, distributable, known-state.">
+<link rel="alternate" type="application/rss+xml" title="Blog of Michelle Krejci Feed" href="/rss.xml" />
+
+<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pygments.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/highlight/default.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@dev_meshev">
+<meta name="twitter:title" content="No Excuses Part I: Drupal-optomized Environment Config with (Ph)Ansible and Vagrant">
+<meta name="twitter:description" content="You have run out of excuses for not implementing a Continuous Integration process. I will give you everything you need to automate your system and drupal build, automate tests and automate deployment. We start today with the basics: getting your system into a versioned, distributable, known-state.">
+<meta name="twitter:creator" content="@dev_meshev">
+<meta name="twitter:image:src" content="http://craychee.io/img/michelle.jpg">
+<meta name="twitter:domain" content="craychee.io">
+
+<meta property="og:type" content="blog">
+<meta property="og:site_name" content="Blog of Michelle Krejci">
+<meta property="og:url" content="/blog/2015/05/20/no-excuse-config-management-drupal">
+<meta property="og:title" content="No Excuses Part I: Drupal-optomized Environment Config with (Ph)Ansible and Vagrant">
+<meta property="og:image" content="http://craycheeio/img/michelle.jpg">
+</head>
+<body>
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about-craychee/">About</a></li>
+                <li><a href="mailto:michelle@craychee.io?Subject=Your blog"><img alt="Email Craychee" src="/img/icon_contact.png" /></a></li>
+                <li><a href="http://twitter.com/dev_meshev"><img alt="Craychee's Twitter Account'" src="/img/icon_twitter.png" /></a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<article>
+
+<div class="section blurred-lines">
+    <div class="container">
+
+        <div class="page-header">
+        <h1 class="textfill"><span>No Excuses Part I: Drupal-optomized Environment Config with (Ph)Ansible and Vagrant</span></h1>                </div>
+
+    </div>
+</div>
+
+<div class="container">
+
+<div class="entry-content">
+<p><strong>UPDATE</strong> <a href="http://jeffgeerling.com/">Jeff Geerling</a> is offering a coupon for 50% off the recommended price for his recently published book <em>Ansible for DevOps: Server and configuration management for humans</em> to reader's of this series who want to learn more about Ansible: <a href="http://leanpub.com/ansible-for-devops/c/zDAUa4QMP1CL">http://leanpub.com/ansible-for-devops/c/zDAUa4QMP1CL)</a>. If I do my job right, that will be everyone.</p>
+
+<p>Building your Drupal project in a known-state is the foundation of your Continuous Integration process.  You want to write and execute tests---and you should!--but your tests won't mean anything if you cannot define and build inside a known-state. Get your system under control first, then we will talk about getting your Drupal application under control.</p>
+
+<p>Ansible has obliterated any stale scraps of lame excuses you might still cling to when it comes to putting off making your environment configuration explicit and version controlled:</p>
+
+<blockquote>
+  <p>"I don't have time to learn a new language."<br />
+  "We do not have any resources to manage it."<br />
+  "The learning curve is too steep."</p>
+</blockquote>
+
+<p>While these excuses may have (barely) held when the configuration options were Chef, Puppet, and Salt, <a href="http://www.ansible.com/home">Ansible</a> is so breathtakingly easy (it is just yml), you are embarassing yourself if you wait any longer.</p>
+
+<p>So don't.</p>
+
+<p>With <a href="http://phansible.com/">Phansible</a>, a point-and-click Ansible configuration maker for php envionments, you can get going even faster with more time to shame others who are dragging their feet.</p>
+
+<h2 id="local-environment-config-in-3-easy-steps">Local environment config in 3 Easy Steps</h2>
+
+<p><strong>NOTE</strong> This particular example is tuned for a <a href="https://pantheon.io/">Pantheon</a> environment. You should always tune your local environment as much as possible to your target production environment. Pantheon's <a href="https://pantheon.io/platform/our-architecture">architecture</a> is opinionated toward performance. My preference is for highly opinionated software and infastructure, so Pantheon is my Drupal hosting platform choice. I will walk through tuning a <code>mod_php</code>/<code>Apache</code> environment at some later point.</p>
+
+<h3 id="step-1.-point-and-click-config">Step 1. Point and click config</h3>
+
+<p>Go over to <a href="http://phansible.com/">Phansible</a>. There are 6 configuration sections.</p>
+
+<ul>
+<li><p><strong>Machine Settings</strong><br />
+Under the <a href="http://phansible.com/#section-vagrant">vagrant</a> section, change the <strong>hostname</strong> to something that reflects your project. I will call mine <code>no-excuses</code>. Bump your <strong>memory</strong> to <code>2048</code>.</p></li>
+<li><p><strong>System packages</strong><br />
+We don't have a lot of options here. Add <code>git</code> and <code>vim</code>. We will manually add a few more that Drupal needs later.</p></li>
+<li><p><strong>Webserver</strong><br />
+Under <strong>Document Root</strong>, change it to <code>/vagrant/www</code>. Accept all of the other <a href="http://phansible.com/#section-webserver">webserver</a> defaults. (The webserver defaults are <code>nginx</code> and <code>php5-fpm</code>, which happens to be Pantheon's architecture too. If you are partial to Apache2 and feel comfortable deviating from my instructions here, you have my blessing. There is not much difference where we are concerned here.)</p></li>
+<li><p><strong>Languages</strong>
+Choose and add the following configuration options:</p>
+
+<p>Php version: 5.6<br />
+Composer: enabled<br />
+Xdebug: enabled<br />
+php packages: <code>php5-gd, php5-cli, php5-curl, php5-mcrypt, php5-mysql, php5-xdebug</code></p></li>
+<li><p><strong>Database</strong><br />
+Install MariaDB. Set a <strong>root password</strong> that you will remember (this is just a local enviroment). Create a default database and username/password for your local Drupal project. (I, for example, always use <code>default</code> as the database name, username, and password.)</p></li>
+<li><p><strong>Timezone</strong><br />
+Set the timezone to wherever you are / wherever is closest to where you are. I am in Chicago, so I select <code>America/Chicago</code>.</p>
+
+<h4 id="press-the-big-%60generate%60-button.">Press the big <code>Generate</code> button.</h4>
+
+<p>Go find someone to brag to about putting your system configuration into code.</p></li>
+</ul>
+
+<h3 id="2.-open-up-the-zip-package-and-add-additional-packages.">2. Open up the zip package and add additional packages.</h3>
+
+<p>Open <code>ansible/vars/all.yml</code>.<br />
+To the <code>php:packages</code> array, add <code>php5-dev</code>.<br />
+To the <code>server:packages</code> array, add:  <code>[sendmail, drush ,unzip, zip, g++, libssl-dev, apache2-utils]</code>.</p>
+
+<h3 id="3.-test-that-this-can-stand-up-an-actual-drupal">3. Test that this can stand up an actual Drupal</h3>
+
+<p>Make sure that the following are installed on your computer:</p>
+
+<ul>
+<li><a href="https://www.virtualbox.org/wiki/Downloads">virtualBox</a> >= 4.3.x</li>
+<li><a href="http://downloads.vagrantup.com/">vagrant</a> >= 1.6.x</li>
+<li><a href="http://docs.ansible.com/ansible/intro_installation.html#installing-the-control-machine">ansible</a> >= 1.8.x</li>
+</ul>
+
+<p>Go download the latest version of Drupal either with drush or from <a href="https://www.Drupal.org/project/Drupal">here</a>. Unzip/Untar (if you downloaded without drush), move it inside your phansible directory and rename it <code>www</code> (remember when we set the name of the Document Root?). Your project directory should now contain two directories, <strong>ansible</strong> and <strong>www</strong>, and one file, <code>Vagrantfile</code>.</p>
+
+<p>Run <code>vagrant up</code>.</p>
+
+<p>When asked for a password, enter your machine's sudo password.</p>
+
+<p>You may get the error <code>ERROR: The file ansible/inventories/dev is marked as executable, but failed to execute correctly.</code>. If so, just run <code>chmod -x ansible/inventories/dev</code> and start the provisioning process up again by running <code>vagrant provision</code>.</p>
+
+<p>Watch as ansible builds your system. Go find another person to high five.</p>
+
+<p>When it finishes, visit <code>192.168.33.99</code> on your local. You should have a Drupal there ready to be installed.</p>
+
+<p><strong>Want to make sure you followed all of my instructions?</strong>
+You can view/fork my no-excuses-example <a href="https://github.com/craychee/no-excuses-Drupal/tree/0.1.0">here</a>. I feel confident that you figured it out.</p>
+
+<p><strong>Did something go wrong?</strong>
+You may get an error like:</p>
+
+<pre><code>==&gt; default: Exporting NFS shared folders...
+NFS is reporting that your exports file is invalid. Vagrant does
+this check before making any changes to the file. Please correct
+the issues below and execute "vagrant reload":
+</code></pre>
+
+<p>If so, remove your <code>exports</code> file (on a Mac, that would be <code>sudo rm /etc/exports</code>) and run <code>vagrant reload</code> again.</p>
+
+<p>You should take some time to read through Vagrant's <a href="http://docs.vagrantup.com/v2/getting-started/">documentation</a> to bring yourself up to speed with the basics.</p>
+
+<h4 id="so...-now-what%3F">So... now what?</h4>
+
+<p>Sure you could point and click through the install (remember what database, user, and password you set up for MariaDB, or look at your code config inside <code>ansible/vars/all.yml</code>), but now that you have put your system requirements explicit (in code) and executable, don't you want to make your Drupal build executable too?</p>
+
+<p>Of course you do. Read more: <strong><a href="/blog/2015/07/29/no-excuses-part2-drupal-config/">No Excuses Part II: Making your Drupal Build explicit and executable</a></strong></p>
+
+</div>
+
+</div><!-- .container -->
+
+</article>
+
+<div class="container">
+
+<div class="entry-content">
+<h3>What do you think?</h3>
+<p>I'd love to hear from you. <a href="mailto:michelle@craychee.io?Subject=Your blog">Contact Michelle</a>.</p>
+</div>
+
+</div><!-- .container -->
+
+
+<footer class="footer inverse">
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 text-center"><small>Powered by <a href="https://sculpin.io/">Sculpin</a></small></div>
+    </div>
+</div>
+
+</footer>
+
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-61998846-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/js/augment.min.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/respond.min.js"></script>
+<script src="/assets/js/jquery.textfill.min.js"></script>
+<script src="/assets/js/highlight.pack.js"></script>
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+$(function(){
+    resizeTextFill();
+    $( window ).resize( resizeTextFill );
+});
+function resizeTextFill()
+{
+    $('.textfill').textfill({ maxFontPixels: 70, widthOnly: true });
+}
+</script>
+</body>
+</html>

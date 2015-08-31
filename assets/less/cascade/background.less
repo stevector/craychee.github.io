@@ -1,0 +1,65 @@
+// --------------------------------------------------
+// BACKGROUNDS
+// --------------------------------------------------
+
+// 
+// Mixins
+// --------------------------------------------------
+
+// Patterns
+// -------------------------
+// Background used on module elements
+  
+.pattern-noise {
+  background-image: data-uri("@{img-path}pattern_noise.png");
+}
+.pattern-pinstripe {
+  background-image: data-uri("@{img-path}pattern_pinstripe.png");
+}
+.pattern-pinstripe-tight {
+  background-image: data-uri("@{img-path}pattern_pinstripe-tight.png");
+}
+.pattern-pinstripe-loose {
+  background-image: data-uri("@{img-path}pattern_pinstripe-loose.png");
+}
+
+// Double Patterns
+// -------------------------
+// Double backgrounds for IE9+ only. Careful with IE8.
+
+.pattern-noise-pinstripe {
+  background-image:   data-uri("@{img-path}pattern_noise.png"),
+                      data-uri("@{img-path}pattern_pinstripe.png");
+}
+.pattern-noise-pinstripe-tight {
+  background-image:   data-uri("@{img-path}pattern_noise.png"),
+                      data-uri("@{img-path}pattern_pinstripe-tight.png");
+}
+.pattern-noise-pinstripe-loose {
+  background-image:   data-uri("@{img-path}pattern_noise.png"),
+                      data-uri("@{img-path}pattern_pinstripe-loose.png");
+}
+
+// Photo Backgrounds
+// -------------------------
+// Specific to each color scheme.
+// Primarily used in graphicboxes.
+
+.bg(@photo; @color-scheme; @filetype) {
+  background-image:   url("@{img-path}@{photo}_@{color-scheme}.@{filetype}");
+}
+
+// For use as inline html classes, in case you want to use different backgrounds at once.
+// Include !important so it overrides module defaults.
+.bg-blur-a {
+  .bg(blur-a; @color-scheme; jpg) !important;
+}
+.bg-blur-b {
+  .bg(blur-b; @color-scheme; jpg) !important;
+}
+.bg-grainy-a {
+  .bg(grainy-a; @color-scheme; jpg) !important;
+}
+.bg-grainy-b {
+  .bg(grainy-b; @color-scheme; jpg) !important;
+}

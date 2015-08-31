@@ -1,0 +1,89 @@
+// 
+// Pricing Module
+// --------------------------------------------------
+
+.pricing {
+  .module-padding();
+  
+  .container {
+    >h2, >h3, >h4, >.title {
+      text-align: center;
+      margin: 0 auto @base-module-padding;
+    }
+  }
+  
+  .panel {
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  
+  // clearfix
+  .panel-footer:after {
+    clear: both;
+    content: " ";
+    display: table;
+  }
+  
+  .panel-heading,
+  .panel-footer {
+    text-align: center;
+    padding: 20px;
+    
+    h2,h3,h4,h5,p {
+      margin: 0;
+      text-align: center;
+      line-height: 1em;
+    }
+  }
+  
+  .panel-footer {
+    
+    h2,h3,h4,h5,
+    .price {
+      margin-bottom: 10px;
+      text-align: right;
+      &.pull-right {
+        margin-top: 10px;
+      }
+    }
+    
+  }
+  
+  // add top margin
+  .row > div {
+    margin-top: @base-module-padding;
+  }
+  // remove margin from first panel when a headline is present
+  .row > div:first-child,
+  h2 + .row > div:first-child,
+  h3 + .row > div:first-child,
+  h4 + .row > div:first-child,
+  .title + .row > div:first-child {
+    margin-top: 0;
+  }
+  
+  @media (min-width: @screen-tablet) {
+    // remove margin for panels at larger screen sizes
+    .row div {
+      margin-top: 0;
+    }
+    // make heights of panel sections the same
+    .panel-heading {
+      min-height: 145px;
+    }
+    .panel-body {
+      min-height: 315px;
+    }
+  }
+  
+  @media (min-width: @screen-desktop) {
+    //make heights of panel sections the same
+    .panel-heading {
+      min-height: 125px;
+    }
+    .panel-body {
+      min-height: 205px;
+    }
+  }
+  
+}

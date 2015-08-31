@@ -1,0 +1,98 @@
+// 
+// Icon & Passage Module
+// --------------------------------------------------
+
+.nav-app-icon {
+  padding: 0;
+  
+  .row {
+    background: @ui-color;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  &.inverse .row {
+    background: lighten(@dark-color, 10%);
+  }
+  
+  // required for responsive navigation
+  .title-bar {
+    padding: 10px 20px;
+    border-top-left-radius: @border-radius-base;
+    border-top-right-radius: @border-radius-base;
+    border: 1px solid transparent;
+    
+    .title {
+      margin: 5px 0 0;
+      font-size: @pairing-font-size-base;
+      .normal-weight();
+      .pull-left();
+    }
+    .navbar-toggle {
+      margin: 0;
+    }
+  }
+  // add gradients to title-bar when not @flat
+  .title-bar.inverse-major when not (@flat) {
+    #gradient > .vertical(overlay(@major-color, #ccc), overlay(@major-color, #333));
+  }
+  .title-bar.inverse-minor when not (@flat) {
+    #gradient > .vertical(overlay(@minor-color, #ccc), overlay(@minor-color, #333));
+  }
+  .title-bar.inverse when not (@flat) {
+    #gradient > .vertical(overlay(@dark-color, #ccc), overlay(@dark-color, #333));
+  }
+  
+  // add bg-color to title-bar when @flat
+  .title-bar.inverse-major when (@flat) {
+    background-color: @major-color;
+  }
+  .title-bar.inverse-minor when (@flat) {
+    background-color: @minor-color;
+  }
+  .title-bar.inverse when (@flat) {
+    background-color: @dark-color;
+  }
+  
+  .nav-icon {
+    
+    .group-title {
+      font-size: @pairing-font-size-base;
+      line-height: 1em;
+      margin: 30px 0 10px;
+    }
+    li:first-child .group-title {
+      margin-top: 0;
+    }
+    .navbar {
+      font-size: @pairing-font-size-small;
+      line-height: 1em;
+      padding-top: 20px;
+    }
+    .navbar-collapse {
+      padding: 0;
+      max-height: 100%; // remove scrollbar
+    }
+    
+    
+  }
+  
+  .app-view {
+    padding: 20px;
+    border-left: 1px solid rgba(0,0,0,0.1);
+    background: @light-color;
+  }
+  &.inverse .app-view {
+    background: @dark-color;
+  }
+  
+  @media (min-width: @screen-tablet) {
+    .module-padding();
+    
+    .title-bar {
+      .title {
+        margin: 0;
+      }
+    }
+    
+  }
+  
+}

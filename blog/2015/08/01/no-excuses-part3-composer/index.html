@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>No Excuses Part III: Build drupal with Composer | Blog of Michelle Krejci</title>
+	<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Excuses are up; time to build your drupal with Composer.">
+<link rel="alternate" type="application/rss+xml" title="Blog of Michelle Krejci Feed" href="/rss.xml" />
+
+<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pygments.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/highlight/default.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@dev_meshev">
+<meta name="twitter:title" content="No Excuses Part III: Build drupal with Composer">
+<meta name="twitter:description" content="Excuses are up; time to build your drupal with Composer.">
+<meta name="twitter:creator" content="@dev_meshev">
+<meta name="twitter:image:src" content="http://craychee.io/img/michelle.jpg">
+<meta name="twitter:domain" content="craychee.io">
+
+<meta property="og:type" content="blog">
+<meta property="og:site_name" content="Blog of Michelle Krejci">
+<meta property="og:url" content="/blog/2015/08/01/no-excuses-part3-composer">
+<meta property="og:title" content="No Excuses Part III: Build drupal with Composer">
+<meta property="og:image" content="http://craycheeio/img/michelle.jpg">
+</head>
+<body>
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about-craychee/">About</a></li>
+                <li><a href="mailto:michelle@craychee.io?Subject=Your blog"><img alt="Email Craychee" src="/img/icon_contact.png" /></a></li>
+                <li><a href="http://twitter.com/dev_meshev"><img alt="Craychee's Twitter Account'" src="/img/icon_twitter.png" /></a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<article>
+
+<div class="section blurred-lines">
+    <div class="container">
+
+        <div class="page-header">
+        <h1 class="textfill"><span>No Excuses Part III: Build drupal with Composer</span></h1>                </div>
+
+    </div>
+</div>
+
+<div class="container">
+
+<div class="entry-content">
+<p><strong>NOTE</strong> This post is a continuation of <a href="/blog/2015/05/20/no-excuse-config-management-drupal">No Excuses Part I</a>, and <a href="/blog/2015/07/29/no-excuses-part2-drupal-config">No Excuses Part II</a>.</p>
+
+<p>There is no getting around using composer. If you are going to continue to develop modern php applications (including with Drupal) composer is <em>the</em> dependency manager for PHP.  We will be using composer to install <code>behat</code> in the next part so although you could skip this part and go right to testing, you can't completely avoid it.</p>
+
+<p>Might as well stop with the excuses and start managing your project's dependencies (which includes Drupal itself) with composer.</p>
+
+<h3 id="step-one%3A-generate-your-composer">Step One: Generate Your composer</h3>
+
+<p>Ensure that you are inside your virtual machine (<code>vagrant ssh</code>) and navigate to the project root (<code>/vagrant</code>, <strong>not</strong> <code>~/vagrant</code>). Run <code>composer init</code> to walk through the creation of our first composer project.</p>
+
+<p>Let's do this.</p>
+
+<p><strong>Package name:</strong> the convention here is <code>organization/project_name</code> (like on github). My project will be <code>craychee/no-excuses</code>.<br />
+<strong>Description:</strong> Help yourself and others who look at your project by explaining what it is. My project can be described as <code>The companion example repository for the No Excuses blog series on http://craychee.io.</code><br />
+<strong>Author:</strong> Take proper credit/responsibility for your work. The format is strictly enforced here. This is what my byline looks like: <code>Michelle Krejci &lt;michelle@craychee.io&gt;</code>.<br />
+<strong>Minimum Stability:</strong> Our minimal stability is the only stability we have: <code>dev</code>.<br />
+<strong>Package Type:</strong> <code>project</code><br />
+<strong>License:</strong> Your project is proprietary unless you specify otherwise. I will choose <code>GPL-2.0</code>.</p>
+
+<p>You will now be asked if you would you like to define your dependencies interactively. We have another step that we need to take care of first so answer "no" to the questions about dependencies and then confirm its generation.</p>
+
+<p>You can read more about composer's scheme <a href="https://getcomposer.org/doc/04-schema.md">here</a>.</p>
+
+<h3 id="step-two%3A-make-drupal-a-dependency">Step Two: Make drupal a Dependency</h3>
+
+<p>We need to use the drupal-composer <a href="https://packagist.drupal-composer.org/">packagist</a> repository. This wonderful project mirrors all of drupal.org's projects for composer, which we will need since we want projects from drupal.org installed via composer.</p>
+
+<p>Add this to the <code>composer.json</code>:</p>
+
+<pre><code class="json">[...]
+"repositories": [
+    {
+        "type": "composer",
+        "url": "http://packagist.drupal-composer.org/"
+    }
+],
+</code></pre>
+
+<p>If you aren't hosting with <a href="https://pantheon.io/">Pantheon</a> or don't otherwise prefer <a href="https://github.com/pantheon-systems/drops-7">drops-7</a>, you can now just add drupal as a requirement with:</p>
+
+<pre><code class="json">"require": {
+        "drupal/drupal": "7.38"
+        }
+</code></pre>
+
+<p><strong>A note on versioning:</strong><br />
+The versioning works here the same as it does on drupal.org.</p>
+
+<p>If you host with Pantheon or otherwise just prefer drops-7, you have just a bit more work. Inside the <code>repository</code> array, under where we have added the packagist.drupal-composer.org repository, add:</p>
+
+<pre><code class="json">{
+"repositories": [
+    [...]
+{
+    "type": "package",
+    "package": {
+        "name": "pantheon-systems/drops-7",
+        "type": "drupal-core",
+         "version": "7.38",
+         "source": {
+         "url": "https://github.com/pantheon-systems/drops-7.git",
+         "type": "git",
+         "reference": "master"
+         },
+         "replace": {
+             "drupal/drupal": "self.version",
+             "drupal/field": "self.version",
+             "drupal/file": "self.version",
+             "drupal/system": "self.version",
+             "drupal/path": "self.version"
+         }
+    }
+}
+],
+</code></pre>
+
+<p>Then under <code>require</code> we will add:</p>
+
+<pre><code class="json">"require": {
+        "pantheon-systems/drops-7": "7.38",
+        }
+</code></pre>
+
+<p>We just told composer that we want to use <code>pantheon-systems</code>'s repository. Any repository that depends on <code>drupal/drupal</code> or modules that drupal core contains should be replaced by <code>pantheon-systems</code>, which is more than capable of fulfilling all of your Drupal needs. For example, <code>drupal/pathauto</code> (a mirror of https://www.drupal.org/project/pathauto), depends on <code>drupal/path</code>, which is part of core. The drupal composer project expects that drupal core is <code>drupal/drupal</code>, so here we are saying that <code>pantheon-systems/drops-7</code> can satisfy that requirement instead.</p>
+
+<p><strong>Note</strong> that I only listed a few drupal core modules here (<code>field</code>, <code>file</code>, <code>system</code>, <code>path</code>). I did this only for brevity. You can either list all of drupal's core modules so that you don't need to add additional dependencies or you can list them all, as this <a href="https://github.com/pantheon-systems/example-drupal7-travis-composer/blob/master/composer.json">example repository</a> does, or you can take it on a case by case basis.</p>
+
+<p>Now your <code>composer.json</code> should look either something like this:</p>
+
+<pre><code class="json">{
+    "name": "craychee/no-excuses",
+    "description": "The companion example repository for the No Excuses blog series on http://craychee.io.",
+    "type": "project",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Michelle Krejci",
+            "email": "michelle@craychee.io"
+        }
+    ],
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packagist.drupal-composer.org/"
+        }
+    ],
+    "require": {
+        "drupal/drupal": "7.38"
+    }
+}
+</code></pre>
+
+<p>Or this:</p>
+
+<pre><code class="json">{
+    [...]
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packagist.drupal-composer.org/"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "pantheon-systems/drops-7",
+                "type": "drupal-core",
+                "version": "7.38",
+                "source": {
+                    "url": "https://github.com/pantheon-systems/drops-7.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "replace": {
+                    "drupal/drupal": "self.version",
+                    "drupal/field": "self.version",
+                    "drupal/file": "self.version",
+                    "drupal/system": "self.version",
+                    "drupal/path": "self.version"
+                }
+            }
+        }
+    ],
+    "require": {
+        "pantheon-systems/drops-7": "7.38"
+    },
+}
+</code></pre>
+
+<h3 id="step-three%3A-install">Step Three: Install</h3>
+
+<p>From inside your virtual machine, run <code>composer install</code>. Drupal will be installed inside <code>vendor</code>.</p>
+
+<p>This might take a while initially. You get a cup of coffee OR head over to <a href="http://drupal-composer.org/">http://drupal-composer.org/</a> and make a donation. The packagist account that we are using is supported by donations.</p>
+
+<h3 id="step-four%3A-add-a-drupal-module-to-the-dependencies.">Step Four: Add a drupal module to the dependencies.</h3>
+
+<p>Add this to your <code>composer.json</code>:</p>
+
+<pre><code class="json">"require": {
+[...]
+        "drupal/features": "~7.2",
+        }
+</code></pre>
+
+<p>And run <code>composer update</code> to install.</p>
+
+<h3 id="step-five%3A-make-the-drupal-root-that-drupal-expects.">Step Five: Make the drupal root that drupal expects.</h3>
+
+<p>We now have our Drupal root inside <code>vendor/drupal/drupal</code> (or <code>vendor/pantheon-systems/drupal</code>) and our first Drupal contrib module inside <code>vendor/drupal/features</code>.</p>
+
+<p>Brilliant. Now how do we make a Drupal root?</p>
+
+<p>You have a number of options. Greg Anderson describes his method of using drupal installers <a href="https://pantheon.io/blog/example-repository-build-drupal-composer-travis">here</a>. In this method, Drupal doesn't hit <code>vendor</code>. Drupal is assembled with composer. This method is similar to the method described on <a href="https://www.drupal.org/node/2471553">drupal.org</a>.</p>
+
+<p>For reasons that are beyond the scope of this blog series, I prefer to let composer do its thing (install inside <code>vendor</code>) and I then assemble Drupal root using a symphony2 library. There is safety in numbers, so if you prefer to follow the installer path method, I won't be disappointed in you.</p>
+
+<p>If you do want to stick with me here, we are going to require said library:</p>
+
+<pre><code class="json">"require": {
+[...]
+        "craychee/rootcanal": "dev-master",
+        }
+</code></pre>
+
+<p>And now under the <code>require</code> section, add:</p>
+
+<pre><code class="json">    "config": {
+        "bin-dir": "bin"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "bin/rootcanal"
+        ],
+        "post-update-cmd": [
+            "bin/rootcanal"
+        ]
+    }
+</code></pre>
+
+<p>Make sure that you have completely removed <code>www</code> from the project. We are going to put the creation of that root under composer's control.</p>
+
+<p>Now run <code>composer update</code>.</p>
+
+<p>Check the contents of your newly created <code>www</code> to ensure that you have your Drupal root. Or better still, visit <code>http://192.168.33.99/</code>, log in, and ensure that <code>features</code> is available for you to enable now.</p>
+
+<p>One more thing, add this to the bottom of your <code>local.settings.php</code>:</p>
+
+<pre><code class="php">require_once DRUPAL_ROOT . '/sites/default/vendor/autoload.php';
+</code></pre>
+
+<h3 id="step-six%3A-add-this-to-our-vagrant-provision">Step Six: Add this to our vagrant provision</h3>
+
+<p>Open your <code>Vagrantfile</code> and insert a <code>composer install</code> before your build:</p>
+
+<pre><code class="sh">  config.vm.provision :shell, inline: &lt;&lt;SCRIPT
+  if [[ ! -f /vagrant/cnf/settings.php ]]; then
+  cp /vagrant/cnf/local.settings.php /vagrant/cnf/settings.php
+  fi
+  su vagrant -c 'cd /vagrant &amp;&amp; composer install &amp;&amp; build/install.sh;'
+SCRIPT
+</code></pre>
+
+<p>Perfect. Our project dependencies will be added with <code>vagrant up</code>.</p>
+
+<p>Now all of our dependencies are being managed and assembled with composer, we have no need for <code>vendor</code> or <code>www</code> part of the project. Commit <code>composer.json</code> and <code>composer.lock</code> to the repository and open <code>.gitignore</code> and add <code>vendor</code>, <code>www</code>, and <code>bin</code>.</p>
+
+<p><strong>Want to make sure you followed all of my instructions?</strong>
+You can view/fork my no-excuses-example <a href="https://github.com/craychee/no-excuses-drupal/tree/0.3.0">here</a>.</p>
+
+<p><strong>Did you get an error?</strong>
+Occasionally I get an error that looks like <code>Failed to remove file "/vagrant/www/sites/default/vendor"</code>. I admit that I do not have a graceful way to resolve this. When I get this, from my host machine (i.e., not inside the vagrant box) I just blow away the <code>www</code> directory as a sudo user: <code>sudo rm -Rf www</code>. I will send one lemon-flavored toothpick to anyone who can resolve this for me on a more sustained basis.</p>
+
+<h4 id="great-...now-what%3F">Great ...Now what?</h4>
+
+<p>You will be adding <strong>contrib</strong> modules side <code>composer.json</code> (and running <code>composer update</code>) or you can use <code>composer require [...]</code>. As for the rest, if you are using my method of assembling Drupal root, you will add custom modules inside a <strong>modules</strong> directory inside the project root and custom themes inside <strong>themes</strong> directory. You will only be commiting your own work and configuration along with your composer.json.</p>
+
+<p>Up Next: <strong><a href="/blog/2015/08/04/no-excuses-part4-testing/">No Excuses Part IV: Time to test</a></strong></p>
+
+</div>
+
+</div><!-- .container -->
+
+</article>
+
+<div class="container">
+
+<div class="entry-content">
+<h3>What do you think?</h3>
+<p>I'd love to hear from you. <a href="mailto:michelle@craychee.io?Subject=Your blog">Contact Michelle</a>.</p>
+</div>
+
+</div><!-- .container -->
+
+
+<footer class="footer inverse">
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 text-center"><small>Powered by <a href="https://sculpin.io/">Sculpin</a></small></div>
+    </div>
+</div>
+
+</footer>
+
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-61998846-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/js/augment.min.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/respond.min.js"></script>
+<script src="/assets/js/jquery.textfill.min.js"></script>
+<script src="/assets/js/highlight.pack.js"></script>
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+$(function(){
+    resizeTextFill();
+    $( window ).resize( resizeTextFill );
+});
+function resizeTextFill()
+{
+    $('.textfill').textfill({ maxFontPixels: 70, widthOnly: true });
+}
+</script>
+</body>
+</html>

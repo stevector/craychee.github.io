@@ -1,0 +1,85 @@
+// 
+// Staggers Module
+// --------------------------------------------------
+
+.staggers {
+  border-bottom: 1px solid @ui-color;
+  text-align: center;
+
+  .graphicbox {
+    .inverse();
+    .image();
+    max-width: 350px;
+    margin: 0 auto;
+    height: 75%;
+    font-size: 60px;
+    line-height: 1em;
+    text-align: center;
+    padding: 60px 0;
+  }
+  
+  &.inverse .graphicbox {
+    .inverse-image();
+  }
+  
+  .stagger-graphicbox,
+  .stagger-icon {
+    .module-padding();
+    border-top: 1px solid @ui-color;
+  }
+  .stagger-graphicbox:first-child,
+  .stagger-icon:first-child {
+    border-top: none;
+  }
+  .stagger-icon {
+
+  }
+  h3 {
+    margin-top: 20px;
+  }
+  
+  // Reposition graphicbox backgrounds per factors so they aren't all the same.
+  // nth-child won't work in IE<=9, so use ordinal number classes or polyfill if you need IE support
+  .stagger-graphicbox:nth-child(1),
+  .stagger-graphicbox.first {
+    .graphicbox {
+      background-position: left top;
+    }
+  }
+  .stagger-graphicbox:nth-child(2n+2),
+  .stagger-graphicbox.second {
+    .graphicbox {
+      background-position: right top;
+    }
+  }
+  .stagger-graphicbox:nth-child(3n+3),
+  .stagger-graphicbox.third {
+    .graphicbox {
+      background-position: right bottom;
+    }
+  }
+  .stagger-graphicbox:nth-child(4n+4),
+  .stagger-graphicbox.fourth {
+    .graphicbox {
+      background-position: left bottom;
+    }
+  }
+  
+  // Responsive icon sizes
+  
+  @media (min-width: @screen-tablet) {
+    text-align: left;
+    .graphicbox {
+      font-size: 80px;
+    }
+    h3 {
+      margin-top: 0;
+    }
+  }
+  
+  @media (min-width: @screen-desktop) {
+    .graphicbox {
+      font-size: 100px;
+    }
+  }
+}

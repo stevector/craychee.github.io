@@ -1,0 +1,238 @@
+// 
+// LOGO EFFECTS
+// --------------------------------------------------
+
+//
+// Supported Values
+// --------------------------------------------------
+// 
+// @logo-text-shadow: false;
+// @logo-text-shadow: glow;
+// @logo-text-shadow: double;
+// @logo-text-shadow: extrude;
+// @logo-text-shadow: hard;
+// @logo-text-shadow: ghost;
+// 
+// @logo-icon => icon-reference.html
+// 
+// @logo-gradient: false;
+// @logo-gradient: true;
+// 
+// @logo-stroke: false;
+// @logo-stroke: true;
+// 
+
+
+// 
+// Logo Text Shadow
+// -------------------------
+// Can cause rendering issues when used with logo-gradient
+
+// No shadow
+
+.logo-text-shadow(@shadow-type) when (@shadow-type = false) {
+  .logo {
+    text-shadow: none;
+  }
+  .inverse .logo,
+  .inverse-major .logo,
+  .inverse-minor .logo {
+    text-shadow: none;
+  }
+}
+
+// Simple glow
+
+.logo-text-shadow(@shadow-type) when (@shadow-type = glow) {
+  .logo {
+    text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  }
+  .inverse .logo,
+  .inverse-major .logo,
+  .inverse-minor .logo {
+    text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+  }
+}
+
+// Double hard-edged shadow
+
+.logo-text-shadow(@shadow-type) when (@shadow-type = double) {
+  .logo {
+    text-shadow:  1px 2px 0px @light-color,
+                  3px 4px 0px rgba(0, 0, 0, 0.2);
+  }
+  .inverse .logo {
+    text-shadow:  2px 3px 0px @dark-color,
+                  3px 4px 0px rgba(255, 255, 255, 0.2);
+  }
+  .inverse-major .logo {
+    text-shadow:  2px 3px 0px @major-color,
+                  3px 4px 0px rgba(255, 255, 255, 0.2);
+  }
+  .inverse-minor .logo {
+    text-shadow:  1px 2px 0px @minor-color,
+                  3px 4px 0px rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+// 3d extrude effect
+
+.logo-text-shadow(@shadow-type) when (@shadow-type = extrude) {
+  .logo {
+    text-shadow: 0 1px 0 lighten(@dark-color, 35%),
+                 0 2px 0 lighten(@dark-color, 40%),
+                 0 3px 0 lighten(@dark-color, 45%),
+                 0 4px 0 lighten(@dark-color, 50%),
+                 0 5px 0 lighten(@dark-color, 55%),
+                 0 20px 20px rgba(0,0,0,.20);;
+  }
+  .inverse .logo,
+  .inverse-major .logo,
+  .inverse-minor .logo {
+    text-shadow: 0 1px 0 darken(@light-color, 25%),
+                 0 2px 0 darken(@light-color, 30%),
+                 0 3px 0 darken(@light-color, 35%),
+                 0 4px 0 darken(@light-color, 40%),
+                 0 5px 0 darken(@light-color, 45%),
+                 0 20px 20px rgba(0,0,0,.20);
+  }
+}
+
+// hard-edged shadow
+
+.logo-text-shadow(@shadow-type) when (@shadow-type = hard) {
+  .logo {
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+  }
+  .inverse .logo,
+  .inverse-major .logo,
+  .inverse-minor .logo {
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+  }
+}
+
+// hard-edged shadow
+
+.logo-text-shadow(@shadow-type) when (@shadow-type = ghost) {
+  .logo {
+    text-shadow: -3px 3px 0px rgba(0,0,0,10%),
+                 -6px 6px 0px rgba(0,0,0,5%);
+  }
+  .inverse .logo,
+  .inverse-major .logo,
+  .inverse-minor .logo {
+    text-shadow: -3px 3px 0px rgba(255,255,255,10%),
+                 -6px 6px 0px rgba(255,255,255,5%);
+  }
+}
+
+
+
+.logo-text-shadow(@logo-text-shadow);
+
+
+// Logo Icon
+// -------------------------
+
+// No icon
+
+.logo-icon(@icon) when (@icon = false) {
+  .logo:before {
+    content: '';
+  }
+}
+
+// Prepend icon from cascade-variables.less
+
+.logo-icon(@icon) when not (@icon = false) {
+  .logo:before {
+    
+    // Reformat variable name from fa-X to fa-var-X
+    // So people can copy icon name directly from Font Awesome Docs into cascade-variables.less
+    @icon-name: ~`"@{icon}".replace("fa-","fa-var-")`;
+    
+   .fa();
+  
+    content: "@{@{icon-name}}";
+    
+    margin-right: 0.2em;
+  }
+}
+.logo-icon(@logo-icon);
+
+
+// Logo Gradient
+// -------------------------
+// Webkit only.
+// Can cause certain logo fonts to have parts of letterforms cropped off.
+// Fall back to no gradient when a text shadow is used
+
+.logo-gradient(@gradient) when (@gradient = true) and (@logo-text-shadow = false) {
+  
+  .logo {
+    background: -webkit-gradient( linear, 0% 0%, 0% 100%, from(lighten(@dark-color, 20%)), to(darken(@dark-color, 20%)) );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    span, em, strong {
+      color: fadeout(@dark-color, 30%) !important;
+      background: none;
+      -webkit-background-clip: none;
+      -webkit-text-fill-color:  fadeout(@dark-color, 30%) !important;
+    }
+  }
+  
+  .inverse .logo,
+  .inverse-major .logo,
+  .inverse-minor .logo {
+    background: -webkit-gradient( linear, 0% 0%, 0% 100%, from(lighten(@light-color, 30%)), to(darken(@light-color, 20%)) );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    span, em, strong {
+      color: fadeout(@light-color, 30%) !important;
+      background: none;
+      -webkit-background-clip: none;
+      -webkit-text-fill-color:  fadeout(@light-color, 30%) !important;
+    }
+  }
+  
+}
+
+.logo-gradient(@gradient) when (@gradient = true) and not (@logo-text-shadow = false){
+  // fall back to no gradient when a text shadow is used
+}
+
+.logo-gradient(@logo-gradient);
+
+
+// 
+// Logo Stroke
+// -------------------------
+// Webkit only.
+// Removed for .logo-small
+// Best used in conjuntion with @logo-gradient, so it's visible.
+// Does cause faux boldness, but it looks nice at large sizes.
+
+.logo-stroke(@stroke) when (@stroke = true) {
+  
+  .inverse .logo ,
+  .inverse-major .logo,
+  .inverse-minor .logo  {
+    -webkit-text-stroke: 1px lighten(@light-color, 10%);
+  }
+  .logo {
+    -webkit-text-stroke: 1px darken(@dark-color, 10%);
+  }
+  .logo.logo-small,
+  .logo em,
+  .logo strong,
+  .logo span {
+    -webkit-text-stroke: 0;
+  }
+  
+}
+
+.logo-stroke(@logo-stroke);
+

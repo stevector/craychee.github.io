@@ -1,0 +1,79 @@
+// 
+// LOGO
+// --------------------------------------------------
+
+
+//
+// List of all supported @logo values
+// --------------------------------------------------
+// 1  @logo: sans;
+// 2  @logo: serif;
+
+// 
+// Core Logo
+// --------------------------------------------------
+
+.logo {
+  &,
+   i {
+    margin: 0;
+    line-height: 1em;
+  }
+  span, em, strong {
+    color: fadeout(@dark-color, 30%);
+  }
+  a {
+    color: @dark-color;
+  }
+  a:hover {
+    
+  }
+}
+.inverse .logo {
+  span, em, strong {
+    color: fadeout(@light-color, 30%) !important;
+  }
+  a {
+    color: @light-color !important;
+  }
+  a:hover {
+    color: @minor-color !important;
+  }
+}
+.inverse-major .logo {
+  span, em, strong {
+    color: fadeout(@light-color, 30%) !important;
+  }
+  a {
+    color: @light-color !important;
+  }
+  a:hover {
+    color: @minor-color !important;
+  }
+}
+.inverse-minor .logo {
+  span, em, strong {
+    color: fadeout(@dark-color, 30%) !important;
+  }
+  a {
+    color: @dark-color !important;
+  }
+  a:hover {
+    color: @major-color !important;
+  }
+}
+
+//
+// Logo Options
+// --------------------------------------------------
+
+
+.logo-font(sans) {
+  @import 'logo-sans.less';
+}
+.logo-font(serif) {
+  @import 'logo-serif.less';
+}
+
+// write @font-face and rules for chosen logo font family
+.logo-font(@logo);
