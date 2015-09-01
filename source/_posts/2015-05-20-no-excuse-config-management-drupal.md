@@ -1,5 +1,5 @@
 ---
-title: No Excuses Part I: Drupal-optomized Environment Config with (Ph)Ansible and Vagrant
+title: No Excuses Part I: Drupal-optimized Environment Config with (Ph)Ansible and Vagrant
 tags:
 - Ansible
 - php
